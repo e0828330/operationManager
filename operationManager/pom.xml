@@ -168,6 +168,7 @@
 			<artifactId>spring-rabbit</artifactId>
 			<version>1.2.1.RELEASE</version>
 		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -182,4 +183,6 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+
 </project>
