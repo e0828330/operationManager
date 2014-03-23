@@ -5,12 +5,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/")
 public class MainController {
 
-	 @RequestMapping("/")
+	 @RequestMapping("/rest")
 	 public @ResponseBody String root() {
 		 System.out.println("CALLED!!!!");
 		 return "Test";
+	 }
+	 
+	 @RequestMapping("/rest/bla")
+	 public @ResponseBody String test2() {
+		 System.out.println("CALLED!!!!");
+		 return "Bla";
 	 }
 }
