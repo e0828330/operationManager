@@ -1,5 +1,8 @@
 package service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import model.Patient;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,17 +16,29 @@ public class TestService {
 	@Autowired
 	private PatientRepository patientRepo;
 	
-	public String getString() {
-		String result = "";
+	/**
+	 * Returns a list of patients
+	 * @return
+	 */
+	public List<Patient> getPatients() {
+		ArrayList<Patient> result = new ArrayList<>();
 		for (Patient p : patientRepo.findAll()) {
-			result += "Patient: " + p.getName() + "\n";
+			result.add(p);
 		}
+
 		return result;
 	}
 	
-	public void savePatient() {
+	/**
+	 * Saves patient to the database
+	 * 
+	 * @param firstName
+	 * @param lastName
+	 */
+	public void addPatient(String firstName, String lastName) {
 		Patient p = new Patient();
-		p.setName("Tester");
+		p.setFirstName(firstName);
+		p.setLastName(lastName);
 		patientRepo.save(p);
 	}
 }

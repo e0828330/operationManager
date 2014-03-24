@@ -17,7 +17,7 @@ public class SimplePage extends WebPage {
 	private TestService service;
 	
 	public SimplePage() {
-		System.out.println(service.getString());
+		System.out.println(service.getPatients().size());
 		add(new Label("msg", "test"));
 	}
 }
