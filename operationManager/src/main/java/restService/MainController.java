@@ -10,13 +10,11 @@ import service.TestService;
 @Controller
 public class MainController {
 
-	@Autowired
-	private TestService service;
 
 	@RequestMapping("/rest")
 	public @ResponseBody
 	String root() {
-		return service.getString();
+		return "test";
 	}
 
 	@RequestMapping("/rest/bla")
