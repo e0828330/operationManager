@@ -46,26 +46,4 @@ public class TestSimplePage {
         server.join();
 	}
 
-	private static IOPSlotService mockOPSlotService() {
-		IOPSlotService opSlotService = Mockito.mock(OPSlotService.class);
-		Mockito.when(opSlotService.getOPSlots(Mockito.anyLong(), Mockito.anyLong())).thenAnswer(new Answer<List<OPSlot>>() {
-
-			@Override
-			public List<OPSlot> answer(InvocationOnMock invocation)
-					throws Throwable {
-				List<OPSlot> opSlots = new ArrayList<OPSlot>();
-				
-				OPSlot slot1 = new OPSlot();
-				slot1.setDate(new Date());
-				
-				return opSlots;
-			}
-			
-		});
-		
-		Mockito.when(opSlotService.getOPSlotCount()).thenReturn(1L);
-		
-		return opSlotService;
-	}
-
 }
