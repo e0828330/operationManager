@@ -8,9 +8,12 @@ import javax.swing.Spring;
 
 import model.OPSlot;
 
+import org.apache.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import org.apache.wicket.spring.SpringWebApplicationFactory;
+import org.apache.wicket.util.tester.WicketTester;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
+import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
@@ -44,6 +47,17 @@ public class TestSimplePage {
  
 		server.start();
         server.join();
+	}
+	
+	@Test
+	public void should_render_table() {
+		WicketTester tester = new WicketTester();
+		
+		tester.startPage(SimplePage.class);
+		
+		tester.assertRenderedPage(SimplePage.class);
+		
+		tester.assertComponent("overviewTable", DataTable.class);
 	}
 
 }
