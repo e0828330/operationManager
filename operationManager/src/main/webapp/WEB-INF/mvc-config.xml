@@ -11,4 +11,5 @@
 
 	<context:annotation-config />
     <mvc:annotation-driven />
+    <mvc:resources mapping="/**" location="/"/>
 </beans>

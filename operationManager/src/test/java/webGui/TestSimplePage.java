@@ -32,7 +32,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
 
 import service.IOPSlotService;
-import service.real.OPSlotService;
 
 public class TestSimplePage {
 	
@@ -42,7 +41,7 @@ public class TestSimplePage {
 		 
         WebAppContext webapp = new WebAppContext();
         webapp.setContextPath("/test");
-        webapp.setWar("src/main/webtest");
+        webapp.setWar("src/main/webapp");
         server.setHandler(webapp);
  
 		server.start();
