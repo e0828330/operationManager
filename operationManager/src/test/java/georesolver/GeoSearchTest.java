@@ -50,7 +50,7 @@ public class GeoSearchTest {
 	public void findNearShouldHit() {
 		// Wien - Mitte
 		List<Hospital> result = repo.findByPositionNear(new Point(48.2065, 16.384821), new Distance(10, Metrics.KILOMETERS));
-		assertEquals(result.get(0), hospital);
+		assertTrue(result.contains(hospital));
 	}
 
 	@Test
