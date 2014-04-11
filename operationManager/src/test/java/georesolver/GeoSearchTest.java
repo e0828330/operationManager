@@ -39,7 +39,6 @@ public class GeoSearchTest {
 		hospital.setName("SMZ Ost");
 		hospital.setPosition(new Point(48.219011, 16.464193));
 		repo.save(hospital);
-
 	}
 
 	@After
