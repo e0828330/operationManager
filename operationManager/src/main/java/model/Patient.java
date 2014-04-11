@@ -5,6 +5,7 @@ import java.io.Serializable;
 import lombok.Data;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.geo.Point;
 
 @Data
 public class Patient implements Serializable {
@@ -18,4 +19,6 @@ public class Patient implements Serializable {
 
 	private String firstName;
 	private String lastName;
+	
+	private Point position;
 }
