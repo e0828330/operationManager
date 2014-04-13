@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.3-strict.dtd" 
+      lang="en">
+<head>
+<meta charset="UTF-8">
+<title wicket:id="pageTitle"></title>
+<link rel="stylesheet" href="resources/base.css" />
+<script src="resources/utils.js"></script>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+</head>
+<body>
+
+<!-- Header/Login -->
+<header>
+	<div style="margin-left: 10%; float: left; font-size: 1.4em; line-height: 60px; height: 60px;">
+		<a href="./" style="text-decoration: none; color: #336699">Operations Manager</a>
+	</div>
+	<div style="display: table; margin: 15px 10% 0 0; float: right;">
+		<div style="table-row">
+			<div style="display: table-cell;"><input type="text" name="username" style="margin-right: 10px;" value="Username" onclick="clearField(this)" onblur="restoreDefaultIfEmpty(this, 'Username')" /></div>
+			<div style="display: table-cell;"><input type="password" name="password" value="Password"  onclick="clearField(this)" onblur="restoreDefaultIfEmpty(this, 'Password')" /></div>
+		</div>
+	</div>
+</header>
+
+<!-- Navigation -->
+<div id="navContainer">
+	<nav>
+		<ul>
+			<li><a href="#" wicket:id="startpage">Start</a></li>
+			<li><a href="#" wicket:id="loginpage">LoginPage</a></li>
+			<li><a href="#">Link 3</a></li>
+		</ul>
+	</nav>
+</div>
+
+<div id="mainContent">
+	<wicket:child />
+</div>
+
+
+</body>
+</html>

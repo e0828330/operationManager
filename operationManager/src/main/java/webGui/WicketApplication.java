@@ -55,8 +55,8 @@ public class WicketApplication extends WebApplication {
 	}
 
 	@Override
-	public Class<SimplePage> getHomePage() {
-		return SimplePage.class;
+	public Class<IndexPage> getHomePage() {
+		return IndexPage.class;
 	}
 
 	@Override
