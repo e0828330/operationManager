@@ -4,8 +4,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
+import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.core.util.resource.UrlResourceStream;
 import org.apache.wicket.core.util.resource.locator.ResourceStreamLocator;
+import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.resource.IResourceStream;
@@ -13,9 +16,11 @@ import org.apache.wicket.util.string.Strings;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+import session.OperationManagerWebSession;
+
 @Configuration
 @ComponentScan
-public class WicketApplication extends WebApplication {
+public class WicketApplication extends AuthenticatedWebApplication {
 
 	/**
 	 * Copied from wicket examples
@@ -55,8 +60,8 @@ public class WicketApplication extends WebApplication {
 	}
 
 	@Override
-	public Class<IndexPage> getHomePage() {
-		return IndexPage.class;
+	public Class<StartPage> getHomePage() {
+		return StartPage.class;
 	}
 
 	@Override
@@ -64,6 +69,16 @@ public class WicketApplication extends WebApplication {
 		super.init();
 		getComponentInstantiationListeners().add(new SpringComponentInjector(this));
 		getResourceSettings().setResourceStreamLocator(new CustomResourceStreamLocator());
+	}
+
+	@Override
+	protected Class<? extends WebPage> getSignInPageClass() {
+		return StartPage.class;
+	}
+
+	@Override
+	protected Class<? extends AbstractAuthenticatedWebSession> getWebSessionClass() {
+		return OperationManagerWebSession.class;
 	}
 
 }
