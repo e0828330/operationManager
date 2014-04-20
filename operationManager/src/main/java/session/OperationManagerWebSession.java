@@ -6,13 +6,18 @@ import java.util.Map.Entry;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.apache.wicket.request.Request;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import service.IAuthenticationService;
 
 public class OperationManagerWebSession extends AuthenticatedWebSession {
 
 	private static final long serialVersionUID = 8512888632456915860L;
 	
-	private String username = "";
-	private String password = "";
+	@Autowired
+	IAuthenticationService authenticationService;
+	
+	private Role activeRole = Role.DEFAULT;
 	
 	public enum Role {
 		DEFAULT, DOCTOR, HOSPITAL, PATIENT
@@ -28,14 +33,9 @@ public class OperationManagerWebSession extends AuthenticatedWebSession {
 	// TODO: authentication
 	@Override
 	public boolean authenticate(String username, String password) {
-		boolean success = username.trim().equals("doctor") && password.trim().equals("doctor");
+		activeRole = authenticationService.authenticate(username, password);
 		
-		if (success) {
-			this.username = username.trim();
-			this.password = password.trim();
-			this.authenticated.put(Role.DOCTOR, true);
-		}
-		return success;
+		return activeRole != Role.DEFAULT;
 	}
 
 	@Override
