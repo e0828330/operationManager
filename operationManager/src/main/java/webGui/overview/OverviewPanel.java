@@ -36,6 +36,8 @@ import org.mockito.InjectMocks;
 
 import service.IOPSlotService;
 import service.real.OPSlotService;
+import session.OperationManagerWebSession;
+import session.OperationManagerWebSession.Role;
 
 public class OverviewPanel extends Panel {
 	private static final long serialVersionUID = 1L;
@@ -58,6 +60,7 @@ public class OverviewPanel extends Panel {
 
 	private List<IColumn<OPSlot, String>> getColumns() {
 		List<IColumn<OPSlot, String>> columns = new ArrayList<IColumn<OPSlot, String>>();
+		OperationManagerWebSession session = (OperationManagerWebSession) getSession();
 		
 		columns.add(new OPSlotColumn() {
 			private static final long serialVersionUID = 1L;
@@ -93,57 +96,81 @@ public class OverviewPanel extends Panel {
 			}
 			
 		});
-		columns.add(new OPSlotColumn() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void populateItem(Item<ICellPopulator<OPSlot>> cellItem,
-					String componentId, IModel<OPSlot> rowModel) {
-				OPSlot slot = rowModel.getObject();
+		if (session.getActiveRole() != Role.HOSPITAL) {
+			columns.add(new OPSlotColumn() {
+				private static final long serialVersionUID = 1L;
+	
+				@Override
+				public void populateItem(Item<ICellPopulator<OPSlot>> cellItem,
+						String componentId, IModel<OPSlot> rowModel) {
+					OPSlot slot = rowModel.getObject();
+					
+					cellItem.add(new Label(componentId, slot.getHospital().getName()));
+				}
+	
+				@Override
+				protected String getColumnPropertyName() {
+					return "hospital";
+				}
 				
-				cellItem.add(new Label(componentId, slot.getHospital().getName()));
-			}
-
-			@Override
-			protected String getColumnPropertyName() {
-				return "hospital";
-			}
-			
-		});
-		columns.add(new OPSlotColumn() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void populateItem(Item<ICellPopulator<OPSlot>> cellItem,
-					String componentId, IModel<OPSlot> rowModel) {
-				OPSlot slot = rowModel.getObject();
+			});
+		}
+		if (session.getActiveRole() != Role.DOCTOR) {
+			columns.add(new OPSlotColumn() {
+				private static final long serialVersionUID = 1L;
+	
+				@Override
+				public void populateItem(Item<ICellPopulator<OPSlot>> cellItem,
+						String componentId, IModel<OPSlot> rowModel) {
+					OPSlot slot = rowModel.getObject();
+					
+					cellItem.add(new Label(componentId, slot.getDoctor().getName()));
+				}
+	
+				@Override
+				protected String getColumnPropertyName() {
+					return "doctor";
+				}
 				
-				cellItem.add(new Label(componentId, slot.getDoctor().getName()));
-			}
-
-			@Override
-			protected String getColumnPropertyName() {
-				return "doctor";
-			}
-			
-		});
-		columns.add(new OPSlotColumn() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void populateItem(Item<ICellPopulator<OPSlot>> cellItem,
-					String componentId, IModel<OPSlot> rowModel) {
-				OPSlot slot = rowModel.getObject();
+			});
+		}
+		if (session.getActiveRole() == Role.DOCTOR || session.getActiveRole() == Role.HOSPITAL) {
+			columns.add(new OPSlotColumn() {
+				private static final long serialVersionUID = 1L;
+	
+				@Override
+				public void populateItem(Item<ICellPopulator<OPSlot>> cellItem,
+						String componentId, IModel<OPSlot> rowModel) {
+					OPSlot slot = rowModel.getObject();
+					
+					cellItem.add(new Label(componentId, slot.getPatient().getFirstName() + " " + slot.getPatient().getLastName()));
+				}
+	
+				@Override
+				protected String getColumnPropertyName() {
+					return "patient";
+				}
 				
-				cellItem.add(new EnumLabel<OperationStatus>(componentId, slot.getStatus()));
-			}
-
-			@Override
-			protected String getColumnPropertyName() {
-				return "status";
-			}
-			
-		});
+			});
+		}
+		if (session.getActiveRole() == Role.DEFAULT) {
+			columns.add(new OPSlotColumn() {
+				private static final long serialVersionUID = 1L;
+	
+				@Override
+				public void populateItem(Item<ICellPopulator<OPSlot>> cellItem,
+						String componentId, IModel<OPSlot> rowModel) {
+					OPSlot slot = rowModel.getObject();
+					
+					cellItem.add(new EnumLabel<OperationStatus>(componentId, slot.getStatus()));
+				}
+	
+				@Override
+				protected String getColumnPropertyName() {
+					return "status";
+				}
+			});
+		}
 		
 		return columns;
 	}

@@ -21,4 +21,5 @@ public class OPSlot implements Serializable {
 	private Hospital hospital;
 	private Doctor doctor;
 	private OperationStatus status;
+	private Patient patient;
 }

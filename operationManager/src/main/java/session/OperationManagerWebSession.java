@@ -17,7 +17,11 @@ public class OperationManagerWebSession extends AuthenticatedWebSession {
 	@Autowired
 	IAuthenticationService authenticationService;
 	
-	private Role activeRole = Role.DEFAULT;
+	private Role activeRole = Role.HOSPITAL;
+	
+	public Role getActiveRole() {
+		return activeRole;
+	}
 	
 	public enum Role {
 		DEFAULT, DOCTOR, HOSPITAL, PATIENT

@@ -17,6 +17,7 @@ import model.Hospital;
 import model.OPSlot;
 import model.OperationStatus;
 import model.OperationType;
+import model.Patient;
 
 @Service
 public class MockedOPSlotService {
@@ -32,9 +33,9 @@ public class MockedOPSlotService {
 					throws Throwable {
 				List<OPSlot> opSlots = new ArrayList<OPSlot>();
 				
-				opSlots.add(getMockedOPSlot(OperationType.eye, "SMZ", "Dr. Augfehler", OperationStatus.reserved));
-				opSlots.add(getMockedOPSlot(OperationType.ortho, "LK-K", "-", OperationStatus.free));
-				opSlots.add(getMockedOPSlot(OperationType.cardio, "LK-B", "Dr. Morks", OperationStatus.reserved));
+				opSlots.add(getMockedOPSlot(OperationType.eye, "SMZ", "Dr. Augfehler", "Adelheid", "Abesser", OperationStatus.reserved));
+				opSlots.add(getMockedOPSlot(OperationType.ortho, "LK-K", "-", "-", "", OperationStatus.free));
+				opSlots.add(getMockedOPSlot(OperationType.cardio, "LK-B", "Dr. Morks", "Gloria", "Geraus", OperationStatus.reserved));
 				
 				return opSlots;
 			}
@@ -46,12 +47,16 @@ public class MockedOPSlotService {
 		return mock;
 	}
 	
-	private static OPSlot getMockedOPSlot(OperationType type, String hospitalName, String doctorName, OperationStatus status) {
+	private static OPSlot getMockedOPSlot(OperationType type, String hospitalName, String doctorName, String patientFirstName, String patientLastName, OperationStatus status) {
 		Hospital hospital = new Hospital();
 		hospital.setName(hospitalName);
 		
 		Doctor doctor = new Doctor();
 		doctor.setName(doctorName);
+		
+		Patient patient = new Patient();
+		patient.setFirstName(patientFirstName);
+		patient.setLastName(patientLastName);
 		
 		OPSlot slot = new OPSlot();
 		slot.setDate(new Date());
@@ -59,6 +64,7 @@ public class MockedOPSlotService {
 		slot.setHospital(hospital);
 		slot.setStatus(status);
 		slot.setType(type);
+		slot.setPatient(patient);
 		
 		return slot;
 	}
