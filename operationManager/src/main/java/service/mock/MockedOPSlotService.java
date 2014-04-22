@@ -34,7 +34,7 @@ public class MockedOPSlotService {
 				List<OPSlot> opSlots = new ArrayList<OPSlot>();
 				
 				opSlots.add(getMockedOPSlot(OperationType.eye, "SMZ", "Dr. Augfehler", "Adelheid", "Abesser", OperationStatus.reserved));
-				opSlots.add(getMockedOPSlot(OperationType.ortho, "LK-K", "-", "-", "", OperationStatus.free));
+				opSlots.add(getMockedOPSlot(OperationType.ortho, "LK-K", null, null, null, OperationStatus.free));
 				opSlots.add(getMockedOPSlot(OperationType.cardio, "LK-B", "Dr. Morks", "Gloria", "Geraus", OperationStatus.reserved));
 				
 				return opSlots;
@@ -48,18 +48,30 @@ public class MockedOPSlotService {
 	}
 	
 	private static OPSlot getMockedOPSlot(OperationType type, String hospitalName, String doctorName, String patientFirstName, String patientLastName, OperationStatus status) {
-		Hospital hospital = new Hospital();
-		hospital.setName(hospitalName);
+		Hospital hospital = null;
+		Doctor doctor = null;
+		Patient patient = null;
 		
-		Doctor doctor = new Doctor();
-		doctor.setName(doctorName);
+		if (hospitalName != null) {
+			hospital = new Hospital();
+			hospital.setName(hospitalName);
+		}
 		
-		Patient patient = new Patient();
-		patient.setFirstName(patientFirstName);
-		patient.setLastName(patientLastName);
+		if (doctorName != null) {
+			doctor = new Doctor();
+			doctor.setName(doctorName);
+		}
+		
+		if (patientFirstName != null) {
+			patient = new Patient();
+			patient.setFirstName(patientFirstName);
+			patient.setLastName(patientLastName);
+		}
 		
 		OPSlot slot = new OPSlot();
 		slot.setDate(new Date());
+		slot.setFrom(new Date());
+		slot.setTo(new Date());
 		slot.setDoctor(doctor);
 		slot.setHospital(hospital);
 		slot.setStatus(status);

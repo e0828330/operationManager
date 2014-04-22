@@ -17,6 +17,8 @@ public class OPSlot implements Serializable {
 	private String id;
 	
 	private Date date;
+	private Date from;
+	private Date to;
 	private OperationType type;
 	private Hospital hospital;
 	private Doctor doctor;

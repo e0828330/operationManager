@@ -61,7 +61,7 @@ public class OverviewPanel extends Panel {
 	private List<IColumn<OPSlot, String>> getColumns() {
 		List<IColumn<OPSlot, String>> columns = new ArrayList<IColumn<OPSlot, String>>();
 		OperationManagerWebSession session = (OperationManagerWebSession) getSession();
-		
+
 		columns.add(new OPSlotColumn() {
 			private static final long serialVersionUID = 1L;
 
@@ -70,12 +70,46 @@ public class OverviewPanel extends Panel {
 					String componentId, IModel<OPSlot> rowModel) {
 				OPSlot slot = rowModel.getObject();
 				
-				cellItem.add(new DateLabel(componentId, new Model<Date>(slot.getDate()), new PatternDateConverter("dd.MM.YY", false)));
+				cellItem.add(new DateLabel(componentId, new Model<Date>(slot.getDate()), new PatternDateConverter("dd.MM.YYYY", false)));
 			}
 
 			@Override
 			protected String getColumnPropertyName() {
 				return "date";
+			}
+			
+		});
+		columns.add(new OPSlotColumn() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void populateItem(Item<ICellPopulator<OPSlot>> cellItem,
+					String componentId, IModel<OPSlot> rowModel) {
+				OPSlot slot = rowModel.getObject();
+				
+				cellItem.add(new DateLabel(componentId, new Model<Date>(slot.getDate()), new PatternDateConverter("HH:mm", false)));
+			}
+
+			@Override
+			protected String getColumnPropertyName() {
+				return "from";
+			}
+			
+		});
+		columns.add(new OPSlotColumn() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void populateItem(Item<ICellPopulator<OPSlot>> cellItem,
+					String componentId, IModel<OPSlot> rowModel) {
+				OPSlot slot = rowModel.getObject();
+				
+				cellItem.add(new DateLabel(componentId, new Model<Date>(slot.getDate()), new PatternDateConverter("HH:mm", false)));
+			}
+
+			@Override
+			protected String getColumnPropertyName() {
+				return "to";
 			}
 			
 		});
@@ -105,7 +139,7 @@ public class OverviewPanel extends Panel {
 						String componentId, IModel<OPSlot> rowModel) {
 					OPSlot slot = rowModel.getObject();
 					
-					cellItem.add(new Label(componentId, slot.getHospital().getName()));
+					cellItem.add(new Label(componentId, slot.getHospital() == null ? "-" : slot.getHospital().getName()));
 				}
 	
 				@Override
@@ -124,7 +158,7 @@ public class OverviewPanel extends Panel {
 						String componentId, IModel<OPSlot> rowModel) {
 					OPSlot slot = rowModel.getObject();
 					
-					cellItem.add(new Label(componentId, slot.getDoctor().getName()));
+					cellItem.add(new Label(componentId, slot.getDoctor() == null ? "-" : slot.getDoctor().getName()));
 				}
 	
 				@Override
@@ -143,7 +177,7 @@ public class OverviewPanel extends Panel {
 						String componentId, IModel<OPSlot> rowModel) {
 					OPSlot slot = rowModel.getObject();
 					
-					cellItem.add(new Label(componentId, slot.getPatient().getFirstName() + " " + slot.getPatient().getLastName()));
+					cellItem.add(new Label(componentId, slot.getPatient() == null ? "-" : slot.getPatient().getFirstName() + " " + slot.getPatient().getLastName()));
 				}
 	
 				@Override
