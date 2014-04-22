@@ -25,24 +25,24 @@ public class MockedOPSlotService {
 	@Bean
 	static IOPSlotService getOPSlotService() {
 		IOPSlotService mock = Mockito.mock(IOPSlotService.class);
-
-		Mockito.when(mock.getOPSlots(Mockito.any(SortParam.class), Mockito.anyLong(), Mockito.anyLong())).thenAnswer(new Answer<List<OPSlot>>() {
-
-			@Override
-			public List<OPSlot> answer(InvocationOnMock invocation)
-					throws Throwable {
-				List<OPSlot> opSlots = new ArrayList<OPSlot>();
-				
-				opSlots.add(getMockedOPSlot(OperationType.eye, "SMZ", "Dr. Augfehler", "Adelheid", "Abesser", OperationStatus.reserved));
-				opSlots.add(getMockedOPSlot(OperationType.ortho, "LK-K", null, null, null, OperationStatus.free));
-				opSlots.add(getMockedOPSlot(OperationType.cardio, "LK-B", "Dr. Morks", "Gloria", "Geraus", OperationStatus.reserved));
-				
-				return opSlots;
-			}
-			
-		});
 		
-		Mockito.when(mock.getOPSlotCount()).thenReturn(3L);
+		List<OPSlot> first = new ArrayList<OPSlot>();
+		List<OPSlot> second = new ArrayList<OPSlot>();
+		List<OPSlot> third = new ArrayList<OPSlot>();
+		
+		first.add(getMockedOPSlot(OperationType.eye, "SMZ", "Dr. Augfehler", "Adelheid", "Abesser", OperationStatus.reserved));
+		
+		second.add(getMockedOPSlot(OperationType.eye, "SMZ", "Dr. Augfehler", "Adelheid", "Abesser", OperationStatus.reserved));
+		second.add(getMockedOPSlot(OperationType.ortho, "LK-K", null, null, null, OperationStatus.free));
+		
+		third.add(getMockedOPSlot(OperationType.eye, "SMZ", "Dr. Augfehler", "Adelheid", "Abesser", OperationStatus.reserved));
+		third.add(getMockedOPSlot(OperationType.ortho, "LK-K", null, null, null, OperationStatus.free));
+		third.add(getMockedOPSlot(OperationType.cardio, "LK-B", "Dr. Morks", "Gloria", "Geraus", OperationStatus.reserved));
+
+		//return different lists the first 3 calls, so the AjaxSelfUpdatingTimerBehavior can be tested
+		Mockito.when(mock.getOPSlots(Mockito.any(SortParam.class), Mockito.anyLong(), Mockito.anyLong())).thenReturn(first).thenReturn(second).thenReturn(third);
+		
+		Mockito.when(mock.getOPSlotCount()).thenReturn(1L).thenReturn(2L).thenReturn(3L);
 		
 		return mock;
 	}

@@ -11,6 +11,7 @@ import model.OperationStatus;
 import model.OperationType;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
 import org.apache.wicket.datetime.PatternDateConverter;
 import org.apache.wicket.datetime.markup.html.basic.DateLabel;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
@@ -32,6 +33,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.time.Duration;
 import org.mockito.InjectMocks;
 
 import service.IOPSlotService;
@@ -54,6 +56,7 @@ public class OverviewPanel extends Panel {
 		super.onInitialize();
 		
 		DataTable<OPSlot, String> table = new DefaultDataTable<OPSlot, String>("overviewTable", getColumns(), getDataProvider(), 10);
+		table.add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(5)));
 
 		add(table);
 	}
