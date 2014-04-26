@@ -2,6 +2,7 @@ package webGui.overview;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -9,35 +10,36 @@ import java.util.List;
 import model.OPSlot;
 import model.OperationStatus;
 import model.OperationType;
+import model.dto.OPSlotFilter;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
 import org.apache.wicket.datetime.PatternDateConverter;
 import org.apache.wicket.datetime.markup.html.basic.DateLabel;
+import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.HeadersToolbar;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.ISortableDataProvider;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.NavigationToolbar;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.markup.html.basic.EnumLabel;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.EnumChoiceRenderer;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
-import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.time.Duration;
-import org.mockito.InjectMocks;
 
 import service.IOPSlotService;
-import service.real.OPSlotService;
 import session.OperationManagerWebSession;
 import session.OperationManagerWebSession.Role;
 
@@ -46,14 +48,35 @@ public class OverviewPanel extends Panel {
 	
 	@SpringBean
 	IOPSlotService opSlotService;
+	
+	private IModel<OPSlotFilter> filterModel;
 
 	public OverviewPanel(String id) {
 		super(id);
+		
+		filterModel = new CompoundPropertyModel<OPSlotFilter>(new OPSlotFilter());
 	}
 	
 	@Override
 	protected void onInitialize() {
 		super.onInitialize();
+		
+		Form<OPSlotFilter> filterForm = new Form<OPSlotFilter>("filterForm", filterModel);
+		
+		filterForm.add(new DateTextField("date", "dd.MM.YYYY"));
+		filterForm.add(new DateTextField("from", "HH:mm"));
+		filterForm.add(new DateTextField("to", "HH:mm"));
+		filterForm.add(new TextField<String>("patient"));
+		filterForm.add(new TextField<String>("hospital"));
+		filterForm.add(new TextField<String>("doctor"));
+		filterForm.add(new DropDownChoice<OperationType>("type", Arrays.asList(OperationType.values()),
+				new EnumChoiceRenderer<OperationType>(OverviewPanel.this)));
+		filterForm.add(new DropDownChoice<OperationStatus>("status", Arrays.asList(OperationStatus.values()),
+				new EnumChoiceRenderer<OperationStatus>(OverviewPanel.this)));
+		
+		filterForm.add(new Button("filterButton", new ResourceModel("filterButton")));
+		
+		add(filterForm);
 		
 		DataTable<OPSlot, String> table = new DefaultDataTable<OPSlot, String>("overviewTable", getColumns(), getDataProvider(), 10);
 		table.add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(5)));
@@ -218,7 +241,7 @@ public class OverviewPanel extends Panel {
 
 			@Override
 			public Iterator<? extends OPSlot> iterator(long first, long count) {
-				return opSlotService.getOPSlots(getSort(), first, count).iterator();
+				return opSlotService.getOPSlots(getSort(), filterModel.getObject(), first, count).iterator();
 			}
 
 			@Override
@@ -228,7 +251,7 @@ public class OverviewPanel extends Panel {
 
 			@Override
 			public long size() {
-				return opSlotService.getOPSlotCount();
+				return opSlotService.getOPSlotCount(filterModel.getObject());
 			}
 			
 		};

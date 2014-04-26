@@ -5,6 +5,32 @@
       lang="en"> 
 	<body>
 		<wicket:panel>
+			<form wicket:id="filterForm">
+				<table>
+					<tr>
+						<td><wicket:message key="date" /></td>
+						<td><wicket:message key="from" /></td>
+						<td><wicket:message key="to" /></td>
+						<td><wicket:message key="type" /></td>
+						<td><wicket:message key="hospital" /></td>
+						<td><wicket:message key="doctor" /></td>
+						<td><wicket:message key="patient" /></td>
+						<td><wicket:message key="status" /></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td><input type="text" wicket:id="date" /></td>
+						<td><input type="text" wicket:id="from" /></td>
+						<td><input type="text" wicket:id="to" /></td>
+						<td><select wicket:id="type" /></td>
+						<td><input type="text" wicket:id="hospital" /></td>
+						<td><input type="text" wicket:id="doctor" /></td>
+						<td><input type="text" wicket:id="patient" /></td>
+						<td><select wicket:id="status" /></td>
+						<td><input type="submit" wicket:id="filterButton" /></td>
+					</tr>
+				</table>
+			</form>
 			<table wicket:id="overviewTable" />
 		</wicket:panel>
 	</body>
