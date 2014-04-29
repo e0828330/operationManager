@@ -83,7 +83,17 @@ nav ul li a.active_link {
 #mainContent {
 	min-width: 800px;
 	margin: 0 auto;
-	max-width: 800px;
+	max-width: 98%;
 	min-height: 300px;
-	padding: 30px 0 0 0;
+	padding: 30px 1% 0 1%;
+}
+
+.fixedTable {
+	width: 100%;
+	border: 0;
+	margin: 0 auto;
+}
+
+.fixedTable tr td input[type="text"] {
+	width: 96%;	
 }

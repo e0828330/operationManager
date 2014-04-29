@@ -20,13 +20,17 @@ public class IndexPage extends WebPage {
 	private static final long serialVersionUID = -4448644188854079942L;
 	
 	private String defaultTitle = "Startpage OperationsManager";
-	
-	private Role activeRole = Role.DEFAULT;
 			
 	private Hashtable<String, Class<? extends Page>> links;
 	
-	public IndexPage() {
+	public IndexPage() {		
+		OperationManagerWebSession session = (OperationManagerWebSession) WebSession.get();
+
+		// Role
+		String role = session.getRoles().isEmpty() ? "" : session.getRoles().toString();
+		
 		add(new Label(TemplateConstants.PAGE_TITLE, this.defaultTitle));
+		add(new Label("loginrole", role));
 	}
 	
 }

@@ -5,7 +5,7 @@ import org.apache.wicket.markup.html.basic.Label;
 
 import webGui.overview.OverviewPanel;
 
-@AuthorizeInstantiation("DEFAULT")
+
 public class StartPage extends IndexPage {
 	private static final long serialVersionUID = -5751552070055708995L;
 	

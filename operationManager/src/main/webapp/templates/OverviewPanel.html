@@ -4,9 +4,10 @@
       xml:lang="en" 
       lang="en"> 
 	<body>
+
 		<wicket:panel>
 			<form wicket:id="filterForm">
-				<table>
+				<table class="fixedTable">
 					<tr>
 						<td><wicket:message key="date" /></td>
 						<td><wicket:message key="from" /></td>
@@ -31,7 +32,7 @@
 					</tr>
 				</table>
 			</form>
-			<table wicket:id="overviewTable" />
+			<table class="fixedTable" wicket:id="overviewTable" />
 		</wicket:panel>
 	</body>
 </html>
