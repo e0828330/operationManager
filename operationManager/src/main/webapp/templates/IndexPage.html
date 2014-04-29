@@ -17,16 +17,26 @@
 		<a href="./" style="text-decoration: none; color: #336699">Operations Manager</a>
 	</div>
 	
-	<div style="display: table; margin: 15px 10% 0 0; float: right;">
-		<div style="table-row">
-			<div style="display: table-cell;"><input type="text" name="username" style="margin-right: 10px;" value="Username" onclick="clearField(this)" onblur="restoreDefaultIfEmpty(this, 'Username')" /></div>
-			<div style="display: table-cell;"><input type="password" name="password" value="Password"  onclick="clearField(this)" onblur="restoreDefaultIfEmpty(this, 'Password')" /></div>
+	<form wicket:id="loginForm">
+		<div style="display: table; margin: 15px 10% 0 0; float: right;">
+			<div style="table-row">
+				<div style="display: table-cell;"><input type="text" class="login" wicket:id="wusername" name="username" style="margin-right: 10px;" value="Username" onclick="clearField(this)" onblur="restoreDefaultIfEmpty(this, 'Username')" /></div>
+				<div style="display: table-cell;"><input type="password" class="login" wicket:id="wpassword" name="password" style="margin-right: 10px;" value="Password"  onclick="clearField(this)" onblur="restoreDefaultIfEmpty(this, 'Password')" /></div>
+				<div style="display: table-cell;"><input type="submit" class="login" value="Login" /></div>
+			</div>
 		</div>
-	</div>
+	</form>
+	<form wicket:id="logoutForm">
+		<div style="display: table; margin: 15px 10% 0 0; float: right;">
+			<div style="table-row">
+				<div style="display: table-cell;"><span wicket:id="wloginrole" style="margin-right: 10px;"></span></div>
+				<div style="display: table-cell;"><input type="submit" class="login" value="Logout" /></div>
+			</div>
+		</div>
+	</form>	
 </header>
 
 <div id="mainContent">
-	<span wicket:id="loginrole"></span>
 	<wicket:child />
 </div>
 
