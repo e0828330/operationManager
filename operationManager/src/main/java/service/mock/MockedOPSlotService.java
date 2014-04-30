@@ -59,7 +59,7 @@ public class MockedOPSlotService {
 		
 		if (doctorName != null) {
 			doctor = new Doctor();
-			doctor.setName(doctorName);
+			doctor.setLastName(doctorName);
 		}
 		
 		if (patientFirstName != null) {

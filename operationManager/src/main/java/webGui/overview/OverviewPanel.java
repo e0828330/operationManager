@@ -184,7 +184,7 @@ public class OverviewPanel extends Panel {
 						String componentId, IModel<OPSlot> rowModel) {
 					OPSlot slot = rowModel.getObject();
 					
-					cellItem.add(new Label(componentId, slot.getDoctor() == null ? "-" : slot.getDoctor().getName()));
+					cellItem.add(new Label(componentId, slot.getDoctor() == null ? "-" : slot.getDoctor().getLastName()));
 				}
 	
 				@Override

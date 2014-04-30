@@ -15,5 +15,6 @@ public class Doctor extends User implements Serializable {
 	@Id
 	private String id;
 
-	private String name;
+	private String firstName;
+	private String lastName;
 }
