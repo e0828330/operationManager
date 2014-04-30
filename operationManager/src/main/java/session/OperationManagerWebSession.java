@@ -21,9 +21,6 @@ public class OperationManagerWebSession extends AuthenticatedWebSession {
 	private Role activeRole = Role.DEFAULT;
 	//private String userID = null;
 	
-	
-	
-	
 	// For authentication
 	private Roles roles = new Roles();
 	
