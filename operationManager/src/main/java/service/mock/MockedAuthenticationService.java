@@ -6,9 +6,11 @@ import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Service;
 
 import service.IAuthenticationService;
 
+@Service
 public class MockedAuthenticationService {
 
 	@Bean
@@ -24,11 +26,11 @@ public class MockedAuthenticationService {
 				if (username.equals("patient")) {
 					return Role.PATIENT;
 				}
-				else if (username.equals("patient")) {
-					return Role.PATIENT;
+				else if (username.equals("doctor")) {
+					return Role.DOCTOR;
 				}
-				else if (username.equals("patient")) {
-					return Role.PATIENT;
+				else if (username.equals("hospital")) {
+					return Role.HOSPITAL;
 				}
 				return Role.DEFAULT;
 			}
