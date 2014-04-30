@@ -1,13 +1,20 @@
 package testData;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.security.NoSuchAlgorithmException;
 
 import model.Patient;
 import model.Role;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -28,9 +35,21 @@ public class TestData {
 	@Autowired 
 	private DoctorRepository doctorRepo;
 	
+	@Autowired 
+	private MongoTemplate mongoTemplate;
 	
 	@Test
+	public void testPatientLogin() throws NoSuchAlgorithmException {
+		Patient p = patientRepo.findByUsernameAndPassword("abesser", Utils.computeHash("test01"));
+		assertTrue(p != null);
+		assertEquals(p.getLastName(), "Abesser");
+	}
+	
+	@Before
 	public void generateTestDB() throws NoSuchAlgorithmException {
+		
+		mongoTemplate.remove(new Query(), "patient");
+		
 		// Patients
 		Patient p = new Patient();
 		p.setFirstName("Adelheid");
@@ -78,5 +97,10 @@ public class TestData {
 		p.setPassword(Utils.computeHash("test06"));
 		p.setRole(Role.PATIENT);
 		patientRepo.save(p);
+	}
+	
+	@After
+	public void cleanDataBase() {
+		mongoTemplate.remove(new Query(), "patient");
 	}
 }
