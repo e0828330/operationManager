@@ -3,12 +3,14 @@ package model;
 import java.io.Serializable;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.geo.Point;
 
 @Data
-public class Patient implements Serializable {
+@EqualsAndHashCode(callSuper=true)
+public class Patient extends User implements Serializable {
 	/**
 	 * 
 	 */
