@@ -56,7 +56,7 @@ public class IndexPage extends WebPage {
 		
 		
 		// If logged in, hide login formular
-		if (!session.getActiveRole().toString().equals(OperationManagerWebSession.Role.DEFAULT.name())) {
+		if (!session.getActiveRole().toString().equals(Role.DEFAULT.name())) {
 			loginForm.setVisible(false);
 			logoutForm.setVisible(true);
 			logoutForm.add(new Label("wloginrole", role));
