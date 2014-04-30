@@ -17,7 +17,6 @@ public class OPSlotService implements IOPSlotService {
 	
 	@Autowired
 	private OPSlotRepository repo;
-
 	
 	@Override
 	public List<OPSlot> getOPSlots(SortParam<String> sort, OPSlotFilter filter, long first, long count) {
