@@ -4,6 +4,7 @@ import model.Role;
 
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -19,6 +20,9 @@ public class OperationManagerWebSession extends AuthenticatedWebSession {
 	// Data for login
 	private Role activeRole = Role.DEFAULT;
 	//private String userID = null;
+	
+	
+	
 	
 	// For authentication
 	private Roles roles = new Roles();
@@ -44,6 +48,7 @@ public class OperationManagerWebSession extends AuthenticatedWebSession {
 	
 	public OperationManagerWebSession(Request request) {
 		super(request);
+		Injector.get().inject(this);
 	}
 
 	@Override
