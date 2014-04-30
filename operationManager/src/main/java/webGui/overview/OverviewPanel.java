@@ -10,6 +10,7 @@ import java.util.List;
 import model.OPSlot;
 import model.OperationStatus;
 import model.OperationType;
+import model.Role;
 import model.dto.OPSlotFilter;
 
 import org.apache.wicket.Component;
@@ -41,7 +42,6 @@ import org.apache.wicket.util.time.Duration;
 
 import service.IOPSlotService;
 import session.OperationManagerWebSession;
-import session.OperationManagerWebSession.Role;
 
 public class OverviewPanel extends Panel {
 	private static final long serialVersionUID = 1L;

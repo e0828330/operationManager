@@ -15,7 +15,7 @@ public class Patient extends User implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 5300740584902282823L;
-
+	
 	@Id
 	private String id;
 

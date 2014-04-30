@@ -3,6 +3,8 @@ package session;
 import java.util.Hashtable;
 import java.util.Map.Entry;
 
+import model.Role;
+
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.apache.wicket.request.Request;
@@ -21,10 +23,6 @@ public class OperationManagerWebSession extends AuthenticatedWebSession {
 	
 	public Role getActiveRole() {
 		return activeRole;
-	}
-	
-	public enum Role {
-		DEFAULT, DOCTOR, HOSPITAL, PATIENT
 	}
 	
 	private Hashtable<Role, Boolean> authenticated;
@@ -46,10 +44,10 @@ public class OperationManagerWebSession extends AuthenticatedWebSession {
 	public Roles getRoles() {
 		// Default
 		this.authenticated = new Hashtable<>();
-		this.authenticated.put(OperationManagerWebSession.Role.DEFAULT, true);
-		this.authenticated.put(OperationManagerWebSession.Role.DOCTOR, false);
-		this.authenticated.put(OperationManagerWebSession.Role.HOSPITAL, false);
-		this.authenticated.put(OperationManagerWebSession.Role.PATIENT, false);
+		this.authenticated.put(Role.DEFAULT, true);
+		this.authenticated.put(Role.DOCTOR, false);
+		this.authenticated.put(Role.HOSPITAL, false);
+		this.authenticated.put(Role.PATIENT, false);
 		
 		Roles roles = new Roles();
 		for (Entry<Role, Boolean> entry : this.authenticated.entrySet()) {

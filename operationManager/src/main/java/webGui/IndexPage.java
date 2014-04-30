@@ -1,18 +1,13 @@
 package webGui;
 
 import java.util.Hashtable;
-import java.util.Map.Entry;
+
+import model.Role;
 
 import org.apache.wicket.Page;
-import org.apache.wicket.authroles.authorization.strategies.role.Roles;
-import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.protocol.http.WebSession;
 
-import session.OperationManagerWebSession;
-import session.OperationManagerWebSession.Role;
 import utils.TemplateConstants;
 
 public class IndexPage extends WebPage {

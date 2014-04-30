@@ -1,6 +1,6 @@
 package service;
 
-import session.OperationManagerWebSession.Role;
+import model.Role;
 
 public interface IAuthenticationService {
 	Role authenticate(String username, String password);
