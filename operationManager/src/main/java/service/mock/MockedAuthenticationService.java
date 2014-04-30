@@ -1,12 +1,13 @@
 package service.mock;
 
+import model.Role;
+
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.context.annotation.Bean;
 
 import service.IAuthenticationService;
-import session.OperationManagerWebSession.Role;
 
 public class MockedAuthenticationService {
 

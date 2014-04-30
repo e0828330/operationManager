@@ -1,5 +1,7 @@
 package session;
 
+import model.Role;
+
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.apache.wicket.request.Request;
@@ -30,17 +32,13 @@ public class OperationManagerWebSession extends AuthenticatedWebSession {
 	public Role getActiveRole() {
 		return activeRole;
 	}
-	
+
 	/**
 	 * Returns the ID of the logged in user.
 	 * @return The user-ID (hash value)
 	 */
 	public String getUserID() {
 		return this.userID;
-	}
-	
-	public enum Role {
-		DEFAULT, DOCTOR, HOSPITAL, PATIENT
 	}
 
 	
@@ -68,6 +66,7 @@ public class OperationManagerWebSession extends AuthenticatedWebSession {
 
 	@Override
 	public Roles getRoles() {
+
 		if (this.roles.isEmpty()) {
 			roles.add(this.activeRole.name());
 		}
