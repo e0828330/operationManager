@@ -5,6 +5,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.security.NoSuchAlgorithmException;
 
+import model.Doctor;
+import model.Hospital;
+import model.OPSlot;
 import model.Patient;
 import model.Role;
 
@@ -49,6 +52,8 @@ public class TestData {
 	public void generateTestDB() throws NoSuchAlgorithmException {
 		
 		mongoTemplate.remove(new Query(), "patient");
+		mongoTemplate.remove(new Query(), "hospital");
+		mongoTemplate.remove(new Query(), "doctor");
 		
 		// Patients
 		Patient p = new Patient();
@@ -97,10 +102,76 @@ public class TestData {
 		p.setPassword(Utils.computeHash("test06"));
 		p.setRole(Role.PATIENT);
 		patientRepo.save(p);
+		
+		
+		// Doctors
+		Doctor d = new Doctor();
+		d.setFirstName("Albert");
+		d.setLastName("Aufschneider");
+		d.setUsername("albert");
+		d.setPassword(Utils.computeHash("test07"));
+		d.setRole(Role.DOCTOR);
+		doctorRepo.save(d);
+		
+		d = new Doctor();
+		d.setFirstName("Emily");
+		d.setLastName("Ehmoser");
+		d.setUsername("emily");
+		d.setPassword(Utils.computeHash("test08"));
+		d.setRole(Role.DOCTOR);
+		doctorRepo.save(d);
+		
+		d = new Doctor();
+		d.setFirstName("Adam");
+		d.setLastName("Augefehler");
+		d.setUsername("adam");
+		d.setPassword(Utils.computeHash("test08"));
+		d.setRole(Role.DOCTOR);
+		doctorRepo.save(d);
+		
+		d = new Doctor();
+		d.setFirstName("Maria");
+		d.setLastName("Morks");
+		d.setUsername("maria");
+		d.setPassword(Utils.computeHash("test09"));
+		d.setRole(Role.DOCTOR);
+		doctorRepo.save(d);
+		
+		// Hospitals
+		Hospital h = new Hospital();
+		h.setName("SMZ Ost");
+		h.setUsername("smzost");
+		h.setPassword("test10");
+		h.setRole(Role.HOSPITAL);
+		hsRepo.save(h);
+		
+		h = new Hospital();
+		h.setName("LKH Krems");
+		h.setUsername("lkhkrems");
+		h.setPassword("test11");
+		h.setRole(Role.HOSPITAL);
+		hsRepo.save(h);
+	
+		h = new Hospital();
+		h.setName("LKH Baden");
+		h.setUsername("lkhbaden");
+		h.setPassword("test12");
+		h.setRole(Role.HOSPITAL);
+		hsRepo.save(h);
+		
+		h = new Hospital();
+		h.setName("Rudolfinerhaus");
+		h.setUsername("rudolfinerhaus");
+		h.setPassword("test13");
+		h.setRole(Role.HOSPITAL);
+		hsRepo.save(h);
+				
 	}
 	
 	@After
 	public void cleanDataBase() {
 		mongoTemplate.remove(new Query(), "patient");
+		mongoTemplate.remove(new Query(), "hospital");
+		mongoTemplate.remove(new Query(), "doctor");
 	}
 }
