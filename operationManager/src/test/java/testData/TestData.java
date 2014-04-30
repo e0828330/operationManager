@@ -3,6 +3,7 @@ package testData;
 import java.security.NoSuchAlgorithmException;
 
 import model.Patient;
+import model.Role;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,6 +37,7 @@ public class TestData {
 		p.setLastName("Abesser");
 		p.setUsername("abesser");
 		p.setPassword(Utils.computeHash("test01"));
+		p.setRole(Role.PATIENT);
 		patientRepo.save(p);
 
 		p = new Patient();
@@ -43,6 +45,7 @@ public class TestData {
 		p.setLastName("Berger");
 		p.setUsername("berger");
 		p.setPassword(Utils.computeHash("test02"));
+		p.setRole(Role.PATIENT);
 		patientRepo.save(p);
 		
 		p = new Patient();
@@ -50,6 +53,7 @@ public class TestData {
 		p.setLastName("Bauer");
 		p.setUsername("bauer");
 		p.setPassword(Utils.computeHash("test03"));
+		p.setRole(Role.PATIENT);
 		patientRepo.save(p);
 
 		p = new Patient();
@@ -64,6 +68,7 @@ public class TestData {
 		p.setLastName("Geraus");
 		p.setUsername("geraus");
 		p.setPassword(Utils.computeHash("test05"));
+		p.setRole(Role.PATIENT);
 		patientRepo.save(p);
 		
 		p = new Patient();
@@ -71,6 +76,7 @@ public class TestData {
 		p.setLastName("Takacs");
 		p.setUsername("takacs");
 		p.setPassword(Utils.computeHash("test06"));
+		p.setRole(Role.PATIENT);
 		patientRepo.save(p);
 	}
 }
