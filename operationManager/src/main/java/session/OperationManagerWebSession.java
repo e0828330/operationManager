@@ -14,7 +14,7 @@ public class OperationManagerWebSession extends AuthenticatedWebSession {
 
 	private static final long serialVersionUID = 8512888632456915860L;
 	
-	@SpringBean
+	@SpringBean(name="getAuthenticationService")
 	IAuthenticationService authenticationService;
 	
 	// Data for login

@@ -141,28 +141,28 @@ public class TestData {
 		Hospital h = new Hospital();
 		h.setName("SMZ Ost");
 		h.setUsername("smzost");
-		h.setPassword("test10");
+		h.setPassword(Utils.computeHash("test10"));
 		h.setRole(Role.HOSPITAL);
 		hsRepo.save(h);
 		
 		h = new Hospital();
 		h.setName("LKH Krems");
 		h.setUsername("lkhkrems");
-		h.setPassword("test11");
+		h.setPassword(Utils.computeHash("test11"));
 		h.setRole(Role.HOSPITAL);
 		hsRepo.save(h);
 	
 		h = new Hospital();
 		h.setName("LKH Baden");
 		h.setUsername("lkhbaden");
-		h.setPassword("test12");
+		h.setPassword(Utils.computeHash("test12"));
 		h.setRole(Role.HOSPITAL);
 		hsRepo.save(h);
 		
 		h = new Hospital();
 		h.setName("Rudolfinerhaus");
 		h.setUsername("rudolfinerhaus");
-		h.setPassword("test13");
+		h.setPassword(Utils.computeHash("test13"));
 		h.setRole(Role.HOSPITAL);
 		hsRepo.save(h);
 				

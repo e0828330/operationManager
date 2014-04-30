@@ -52,7 +52,7 @@ public class AuthenticationService implements IAuthenticationService {
 			
 			// Look for hospital
 			Hospital hospital = this.hsRepo.findByUsernameAndPassword(username, Utils.computeHash(password));
-			if (hospital != null && doctor.getRole() != null) {
+			if (hospital != null && hospital.getRole() != null) {
 				return hospital.getRole();
 			}
 			
