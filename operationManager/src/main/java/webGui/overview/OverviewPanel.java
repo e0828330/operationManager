@@ -259,6 +259,11 @@ public class OverviewPanel extends Panel {
 	
 	private abstract class OPSlotColumn implements IColumn<OPSlot, String>, Serializable {
 
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -4730014859884285134L;
+
 		protected abstract String getColumnPropertyName();
 
 		@Override
