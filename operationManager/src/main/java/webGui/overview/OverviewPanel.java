@@ -88,20 +88,7 @@ public class OverviewPanel extends Panel {
 		filterForm.add(new DropDownChoice<OperationStatus>("status", Arrays.asList(OperationStatus.values()),
 				new EnumChoiceRenderer<OperationStatus>(OverviewPanel.this)));
 		
-		filterForm.add(new Button("filterButton", new ResourceModel("filterButton")) {
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = -2116934726776864932L;
-			
-			@Override
-			public void onSubmit() {
-				filterModel.getObject().setDate(datePicker.getModelObject());
-				filterModel.getObject().setFrom(fromPicker.getModelObject());
-				filterModel.getObject().setTo(toPicker.getModelObject());
-			}
-			
-		});
+		filterForm.add(new Button("filterButton", new ResourceModel("filterButton")));
 		
 		add(filterForm);
 		
