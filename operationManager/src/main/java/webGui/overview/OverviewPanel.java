@@ -72,14 +72,9 @@ public class OverviewPanel extends Panel {
 		final KendoFeedbackPanel feedback = new KendoFeedbackPanel("feedback");
 		filterForm.add(feedback);
 
-		final DatePicker datePicker = new DatePicker("date", Locale.GERMAN);
-		final TimePicker fromPicker = new TimePicker("from", Locale.GERMAN);
-		final TimePicker toPicker = new TimePicker("to", Locale.GERMAN);
-
-		filterForm.add(datePicker);
-		filterForm.add(fromPicker);
-		filterForm.add(toPicker);
-		
+		filterForm.add(new DatePicker("date", Locale.GERMAN));
+		filterForm.add(new TimePicker("from", Locale.GERMAN));
+		filterForm.add(new TimePicker("to", Locale.GERMAN));
 		filterForm.add(new TextField<String>("patient"));
 		filterForm.add(new TextField<String>("hospital"));
 		filterForm.add(new TextField<String>("doctor"));
@@ -254,7 +249,7 @@ public class OverviewPanel extends Panel {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public Iterator<? extends OPSlot> iterator(long first, long count) {;
+			public Iterator<? extends OPSlot> iterator(long first, long count) {
 				return opSlotService.getOPSlots(getSort(), filterModel.getObject(), table.getCurrentPage(), table.getItemsPerPage()).iterator();
 			}
 
@@ -272,10 +267,6 @@ public class OverviewPanel extends Panel {
 	}
 	
 	private abstract class OPSlotColumn implements IColumn<OPSlot, String>, Serializable {
-
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = -4730014859884285134L;
 
 		protected abstract String getColumnPropertyName();
