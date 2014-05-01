@@ -1,5 +1,7 @@
 package service.real;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import lombok.Data;
@@ -32,6 +34,9 @@ public class OPSlotService implements IOPSlotService {
 		private String status;
 		private String type;
 
+		private String dateMin;
+		private String dateMax;
+
 		public FilterParams(OPSlotFilter filter) {
 			status = "";
 			type = "";
@@ -53,6 +58,18 @@ public class OPSlotService implements IOPSlotService {
 			if (filter.getType() != null) {
 				type = filter.getType().name();
 			}
+			
+			// Handle dates
+			Calendar cal = Calendar.getInstance();
+	       
+			if (filter.getDate() != null) {
+				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				setDateMin(df.format(filter.getDate()));
+
+				cal.setTime(filter.getDate());
+			    cal.add(Calendar.DATE, 1); 
+				setDateMax(df.format(cal.getTime()));
+			}
 		}
 	}
 	
@@ -71,7 +88,9 @@ public class OPSlotService implements IOPSlotService {
 		}
 		
 		return (List<OPSlot>) repo.findByFilter(filterParams.getPatient(), filterParams.getHospital(), filterParams.getDoctor(),
-												filterParams.getStatus(), filterParams.getType(), pager);
+												filterParams.getStatus(), filterParams.getType(),
+												filterParams.getDateMin(), filterParams.getDateMax(),
+												pager);
 	}
 
 	@Override
@@ -79,7 +98,8 @@ public class OPSlotService implements IOPSlotService {
 		FilterParams filterParams = new FilterParams(filter);
 		
 		return repo.countByFilter(filterParams.getPatient(), filterParams.getHospital(), filterParams.getDoctor(),
-								  filterParams.getStatus(), filterParams.getType());
+								  filterParams.getStatus(), filterParams.getType(),
+								  filterParams.getDateMin(), filterParams.getDateMax());
 	}
 
 	@Override
