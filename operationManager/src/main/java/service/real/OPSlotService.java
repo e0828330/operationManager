@@ -69,4 +69,14 @@ public class OPSlotService implements IOPSlotService {
 		
 		return repo.countByFilter(filter.getPatient(), filter.getHospital(), filter.getDoctor(), status, type);
 	}
+
+	@Override
+	public void saveOPSlot(OPSlot slot) {
+		repo.save(slot);
+	}
+
+	@Override
+	public void reserveOPSlot(OPSlot slot) {
+		// TODO Auto-generated method stub
+	}
 }

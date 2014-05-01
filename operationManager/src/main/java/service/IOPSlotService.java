@@ -17,13 +17,27 @@ public interface IOPSlotService {
 	 * @param count the number of elements to return
 	 * @return
 	 */
-	List<OPSlot> getOPSlots(SortParam<String> sort, OPSlotFilter filter, long first, long count);
+	public List<OPSlot> getOPSlots(SortParam<String> sort, OPSlotFilter filter, long first, long count);
 	
 	/**
 	 * returns the number of found OP slots
 	 * @param filter a filter object to narrow the results
 	 * @return
 	 */
-	long getOPSlotCount(OPSlotFilter filter);
-
+	public long getOPSlotCount(OPSlotFilter filter);
+	
+	
+	/**
+	 * Saves the passed in OP slot
+	 * @param slot
+	 */
+	public void saveOPSlot(OPSlot slot);
+	
+	/**
+	 * Sends the given slot to the georesolver queue for reservation
+	 * 
+	 * @param slot
+	 */
+	public void reserveOPSlot(OPSlot slot);
+	
 }
