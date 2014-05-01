@@ -36,12 +36,13 @@ public class OPSlotService implements IOPSlotService {
 
 		private String dateMin;
 		private String dateMax;
+		
+		private Integer fromMinute;
+		private Integer toMinute;
 
 		public FilterParams(OPSlotFilter filter) {
 			status = "";
 			type = "";
-			
-			System.err.println(filter);
 
 			if (filter.getPatient() == null) {
 				setPatient("");
@@ -70,6 +71,18 @@ public class OPSlotService implements IOPSlotService {
 			    cal.add(Calendar.DATE, 1); 
 				setDateMax(df.format(cal.getTime()));
 			}
+		
+			// Convert time to number of minutes
+			if (filter.getFrom() != null) {
+				cal.setTime(filter.getFrom());
+				setFromMinute(cal.get(Calendar.HOUR_OF_DAY) * 60 + cal.get(Calendar.MINUTE));
+			}
+
+			// Convert time to number of minutes
+			if (filter.getTo() != null) {
+				cal.setTime(filter.getTo());
+				setToMinute(cal.get(Calendar.HOUR_OF_DAY) * 60 + cal.get(Calendar.MINUTE));
+			}
 		}
 	}
 	
@@ -90,6 +103,7 @@ public class OPSlotService implements IOPSlotService {
 		return (List<OPSlot>) repo.findByFilter(filterParams.getPatient(), filterParams.getHospital(), filterParams.getDoctor(),
 												filterParams.getStatus(), filterParams.getType(),
 												filterParams.getDateMin(), filterParams.getDateMax(),
+												filterParams.getFromMinute(), filterParams.getToMinute(),
 												pager);
 	}
 
@@ -99,7 +113,8 @@ public class OPSlotService implements IOPSlotService {
 		
 		return repo.countByFilter(filterParams.getPatient(), filterParams.getHospital(), filterParams.getDoctor(),
 								  filterParams.getStatus(), filterParams.getType(),
-								  filterParams.getDateMin(), filterParams.getDateMax());
+								  filterParams.getDateMin(), filterParams.getDateMax(),
+								  filterParams.getFromMinute(), filterParams.getToMinute());
 	}
 
 	@Override

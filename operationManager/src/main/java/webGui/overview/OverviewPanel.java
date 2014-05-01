@@ -140,7 +140,7 @@ public class OverviewPanel extends Panel {
 					String componentId, IModel<OPSlot> rowModel) {
 				OPSlot slot = rowModel.getObject();
 				
-				cellItem.add(new DateLabel(componentId, new Model<Date>(slot.getDate()), new PatternDateConverter("HH:mm", false)));
+				cellItem.add(new DateLabel(componentId, new Model<Date>(slot.getFrom()), new PatternDateConverter("HH:mm", false)));
 			}
 
 			@Override
@@ -157,7 +157,7 @@ public class OverviewPanel extends Panel {
 					String componentId, IModel<OPSlot> rowModel) {
 				OPSlot slot = rowModel.getObject();
 				
-				cellItem.add(new DateLabel(componentId, new Model<Date>(slot.getDate()), new PatternDateConverter("HH:mm", false)));
+				cellItem.add(new DateLabel(componentId, new Model<Date>(slot.getTo()), new PatternDateConverter("HH:mm", false)));
 			}
 
 			@Override
