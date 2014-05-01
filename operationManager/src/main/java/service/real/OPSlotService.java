@@ -2,6 +2,7 @@ package service.real;
 
 import java.util.List;
 
+import lombok.Data;
 import model.OPSlot;
 import model.dto.OPSlotFilter;
 
@@ -20,29 +21,42 @@ public class OPSlotService implements IOPSlotService {
 	@Autowired
 	private OPSlotRepository repo;
 	
+	@Data
+	/**
+	 * Used to avoid having to duplicate the param parsing
+	 */
+	private class FilterParams {
+		private String patient;
+		private String hospital;
+		private String doctor;
+		private String status;
+		private String type;
+
+		public FilterParams(OPSlotFilter filter) {
+			if (filter.getPatient() == null) {
+				setPatient("");
+			}
+			if (filter.getHospital() == null) {
+				setHospital("");
+			}
+			if (filter.getDoctor() == null) {
+				setDoctor("");
+			}
+			if (filter.getStatus() != null) {
+				status = filter.getStatus().name();
+			}
+			if (filter.getType() != null) {
+				type = filter.getType().name();
+			}
+		}
+	}
+	
 	@Override
 	public List<OPSlot> getOPSlots(SortParam<String> sort, OPSlotFilter filter, long page, long itemsPerPage) {		
-		String status = "";
-		String type = "";
-				
-		if (filter.getPatient() == null) {
-			filter.setPatient("");
-		}
-		if (filter.getHospital() == null) {
-			filter.setHospital("");
-		}
-		if (filter.getDoctor() == null) {
-			filter.setDoctor("");
-		}
-		if (filter.getStatus() != null) {
-			status = filter.getStatus().name();
-		}
-		if (filter.getType() != null) {
-			type = filter.getType().name();
-		}
+		FilterParams filterParams = new FilterParams(filter);
 
+		/* Sort and paging */
 		PageRequest pager;
-		
 		if (sort != null) {
 			Sort sorter = new Sort(sort.isAscending() ? Sort.Direction.ASC : Sort.Direction.DESC, sort.getProperty());
 			pager = new PageRequest((int)page, (int)itemsPerPage, sorter);
@@ -51,32 +65,16 @@ public class OPSlotService implements IOPSlotService {
 			pager = new PageRequest((int)page, (int)itemsPerPage);
 		}
 		
-		return (List<OPSlot>) repo.findByFilter(filter.getPatient(), filter.getHospital(), filter.getDoctor(), status, type, pager);
+		return (List<OPSlot>) repo.findByFilter(filterParams.getPatient(), filterParams.getHospital(), filterParams.getDoctor(),
+												filterParams.getStatus(), filterParams.getType(), pager);
 	}
 
 	@Override
 	public long getOPSlotCount(OPSlotFilter filter) {
-
-		String status = "";
-		String type = "";
+		FilterParams filterParams = new FilterParams(filter);
 		
-		if (filter.getPatient() == null) {
-			filter.setPatient("");
-		}
-		if (filter.getHospital() == null) {
-			filter.setHospital("");
-		}
-		if (filter.getDoctor() == null) {
-			filter.setDoctor("");
-		}
-		if (filter.getStatus() != null) {
-			status = filter.getStatus().name();
-		}
-		if (filter.getType() != null) {
-			type = filter.getType().name();
-		}
-		
-		return repo.countByFilter(filter.getPatient(), filter.getHospital(), filter.getDoctor(), status, type);
+		return repo.countByFilter(filterParams.getPatient(), filterParams.getHospital(), filterParams.getDoctor(),
+								  filterParams.getStatus(), filterParams.getType());
 	}
 
 	@Override
