@@ -3,7 +3,6 @@ package webGui.overview;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -73,12 +72,14 @@ public class OverviewPanel extends Panel {
 		final KendoFeedbackPanel feedback = new KendoFeedbackPanel("feedback");
 		filterForm.add(feedback);
 
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(0, 0, 0, 0, 0, 0);
+		final DatePicker datePicker = new DatePicker("date", Locale.GERMAN);
+		final TimePicker fromPicker = new TimePicker("from", Locale.GERMAN);
+		final TimePicker toPicker = new TimePicker("to", Locale.GERMAN);
 
-		filterForm.add(new DatePicker("date", Model.of(new Date()), Locale.GERMAN));
-		filterForm.add(new TimePicker("from", Model.of(calendar.getTime()), Locale.GERMAN));
-		filterForm.add(new TimePicker("to", Model.of(calendar.getTime()), Locale.GERMAN));
+		filterForm.add(datePicker);
+		filterForm.add(fromPicker);
+		filterForm.add(toPicker);
+		
 		filterForm.add(new TextField<String>("patient"));
 		filterForm.add(new TextField<String>("hospital"));
 		filterForm.add(new TextField<String>("doctor"));
@@ -87,7 +88,20 @@ public class OverviewPanel extends Panel {
 		filterForm.add(new DropDownChoice<OperationStatus>("status", Arrays.asList(OperationStatus.values()),
 				new EnumChoiceRenderer<OperationStatus>(OverviewPanel.this)));
 		
-		filterForm.add(new Button("filterButton", new ResourceModel("filterButton")));
+		filterForm.add(new Button("filterButton", new ResourceModel("filterButton")) {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -2116934726776864932L;
+			
+			@Override
+			public void onSubmit() {
+				filterModel.getObject().setDate(datePicker.getModelObject());
+				filterModel.getObject().setFrom(fromPicker.getModelObject());
+				filterModel.getObject().setTo(toPicker.getModelObject());
+			}
+			
+		});
 		
 		add(filterForm);
 		
