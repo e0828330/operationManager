@@ -25,7 +25,10 @@ public interface OPSlotRepository extends PagingAndSortingRepository<OPSlot, Str
 			+ "	{'patient.lastName' : {$regex : ?0, $options: 'i'} } ]"
 			+ "}, "
 			+ "{'hospital.name' : {$regex : ?1, $options: 'i'} }, "
-			+ "{ $or : [ {'doctor' : { $exists: false } }, { 'doctor.name' : { $regex : ?2 , 'options' : 'i'} } ] }, "
+			+ "{ $or : [ {'doctor' : { $exists: false } }, "
+			+ "	{'doctor.firstName' : {$regex : ?0, $options: 'i'} }, "
+			+ "	{'doctor.lastName' : {$regex : ?0, $options: 'i'} } ]"
+			+ "}, "
 			+ "{'status' : {$regex : ?3, $options: 'i'} }, "
 			+ "{'type' : {$regex : ?4, $options: 'i'} } "
 			+ "]}")
@@ -53,7 +56,10 @@ public interface OPSlotRepository extends PagingAndSortingRepository<OPSlot, Str
 			+ "	{'patient.lastName' : {$regex : ?0, $options: 'i'} } ]"
 			+ "}, "
 			+ "{'hospital.name' : {$regex : ?1, $options: 'i'} }, "
-			+ "{ $or : [ {'doctor' : { $exists: false } }, { 'doctor.name' : { $regex : ?2 , 'options' : 'i'} } ] }, "
+			+ "{ $or : [ {'doctor' : { $exists: false } }, "
+			+ "	{'doctor.firstName' : {$regex : ?0, $options: 'i'} }, "
+			+ "	{'doctor.lastName' : {$regex : ?0, $options: 'i'} } ]"
+			+ "}, "
 			+ "{'status' : {$regex : ?3, $options: 'i'} }, "
 			+ "{'type' : {$regex : ?4, $options: 'i'} } "
 			+ "]}", count = true)
