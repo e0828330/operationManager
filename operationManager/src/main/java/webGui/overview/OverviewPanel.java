@@ -240,14 +240,10 @@ public class OverviewPanel extends Panel {
 	private ISortableDataProvider<OPSlot, String> getDataProvider() {
 		return new SortableDataProvider<OPSlot, String>() {
 			private static final long serialVersionUID = 1L;
-			private long numRows;
 
 			@Override
-			public Iterator<? extends OPSlot> iterator(long first, long count) {
-				System.err.println(numRows);
-				System.err.println("From " + first + " to " + count);
-				System.err.println(table.getCurrentPage());
-				return opSlotService.getOPSlots(getSort(), filterModel.getObject(), table.getCurrentPage(), count).iterator();
+			public Iterator<? extends OPSlot> iterator(long first, long count) {;
+				return opSlotService.getOPSlots(getSort(), filterModel.getObject(), table.getCurrentPage(), table.getItemsPerPage()).iterator();
 			}
 
 			@Override
