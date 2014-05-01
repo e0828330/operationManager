@@ -9,7 +9,6 @@ import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.core.util.resource.UrlResourceStream;
 import org.apache.wicket.core.util.resource.locator.ResourceStreamLocator;
 import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.util.string.Strings;
@@ -67,6 +66,7 @@ public class WicketApplication extends AuthenticatedWebApplication {
 	@Override
 	protected void init() {
 		super.init();
+		this.getMarkupSettings().setStripWicketTags(true);
 		getComponentInstantiationListeners().add(new SpringComponentInjector(this));
 		getResourceSettings().setResourceStreamLocator(new CustomResourceStreamLocator());
 	}

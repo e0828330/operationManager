@@ -3,9 +3,11 @@ package webGui.overview;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import model.OPSlot;
 import model.OperationStatus;
@@ -17,7 +19,6 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
 import org.apache.wicket.datetime.PatternDateConverter;
 import org.apache.wicket.datetime.markup.html.basic.DateLabel;
-import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
@@ -43,6 +44,10 @@ import org.apache.wicket.util.time.Duration;
 import service.IOPSlotService;
 import session.OperationManagerWebSession;
 
+import com.googlecode.wicket.kendo.ui.form.datetime.DatePicker;
+import com.googlecode.wicket.kendo.ui.form.datetime.TimePicker;
+import com.googlecode.wicket.kendo.ui.panel.KendoFeedbackPanel;
+
 public class OverviewPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 	
@@ -58,16 +63,22 @@ public class OverviewPanel extends Panel {
 		
 		filterModel = new CompoundPropertyModel<OPSlotFilter>(new OPSlotFilter());
 	}
-	
+
 	@Override
 	protected void onInitialize() {
 		super.onInitialize();
 		
 		Form<OPSlotFilter> filterForm = new Form<OPSlotFilter>("filterForm", filterModel);
 		
-		filterForm.add(new DateTextField("date", "dd.MM.YYYY"));
-		filterForm.add(new DateTextField("from", "HH:mm"));
-		filterForm.add(new DateTextField("to", "HH:mm"));
+		final KendoFeedbackPanel feedback = new KendoFeedbackPanel("feedback");
+		filterForm.add(feedback);
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(0, 0, 0, 0, 0, 0);
+
+		filterForm.add(new DatePicker("date", Model.of(new Date()), Locale.GERMAN));
+		filterForm.add(new TimePicker("from", Model.of(calendar.getTime()), Locale.GERMAN));
+		filterForm.add(new TimePicker("to", Model.of(calendar.getTime()), Locale.GERMAN));
 		filterForm.add(new TextField<String>("patient"));
 		filterForm.add(new TextField<String>("hospital"));
 		filterForm.add(new TextField<String>("doctor"));
