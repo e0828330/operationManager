@@ -8,6 +8,7 @@ import model.dto.OPSlotFilter;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import repository.OPSlotRepository;
@@ -20,12 +21,10 @@ public class OPSlotService implements IOPSlotService {
 	private OPSlotRepository repo;
 	
 	@Override
-	public List<OPSlot> getOPSlots(SortParam<String> sort, OPSlotFilter filter, long page, long itemsPerPage) {
-		System.out.println(filter.toString());
-		
+	public List<OPSlot> getOPSlots(SortParam<String> sort, OPSlotFilter filter, long page, long itemsPerPage) {		
 		String status = "";
 		String type = "";
-		
+				
 		if (filter.getPatient() == null) {
 			filter.setPatient("");
 		}
@@ -41,8 +40,16 @@ public class OPSlotService implements IOPSlotService {
 		if (filter.getType() != null) {
 			type = filter.getType().name();
 		}
+
+		PageRequest pager;
 		
-		PageRequest pager = new PageRequest((int)page, (int)itemsPerPage);
+		if (sort != null) {
+			Sort sorter = new Sort(sort.isAscending() ? Sort.Direction.ASC : Sort.Direction.DESC, sort.getProperty());
+			pager = new PageRequest((int)page, (int)itemsPerPage, sorter);
+		}
+		else {
+			pager = new PageRequest((int)page, (int)itemsPerPage);
+		}
 		
 		return (List<OPSlot>) repo.findByFilter(filter.getPatient(), filter.getHospital(), filter.getDoctor(), status, type, pager);
 	}
