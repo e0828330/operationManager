@@ -7,6 +7,7 @@ import model.dto.OPSlotFilter;
 
 import org.apache.wicket.extensions.markup.html.repeater.util.SortParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import repository.OPSlotRepository;
@@ -19,7 +20,7 @@ public class OPSlotService implements IOPSlotService {
 	private OPSlotRepository repo;
 	
 	@Override
-	public List<OPSlot> getOPSlots(SortParam<String> sort, OPSlotFilter filter, long first, long count) {
+	public List<OPSlot> getOPSlots(SortParam<String> sort, OPSlotFilter filter, long page, long itemsPerPage) {
 		System.out.println(filter.toString());
 		
 		String status = "";
@@ -41,8 +42,9 @@ public class OPSlotService implements IOPSlotService {
 			type = filter.getType().name();
 		}
 		
+		PageRequest pager = new PageRequest((int)page, (int)itemsPerPage);
 		
-		return (List<OPSlot>) repo.findByFilter(filter.getPatient(), filter.getHospital(), filter.getDoctor(), status, type);
+		return (List<OPSlot>) repo.findByFilter(filter.getPatient(), filter.getHospital(), filter.getDoctor(), status, type, pager);
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import java.util.List;
 
 import model.OPSlot;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
@@ -36,7 +37,8 @@ public interface OPSlotRepository extends PagingAndSortingRepository<OPSlot, Str
 									 String hospital,
 									 String doctor,
 									 String status,
-									 String type);
+									 String type,
+									 Pageable page);
 	
 	
 	/**

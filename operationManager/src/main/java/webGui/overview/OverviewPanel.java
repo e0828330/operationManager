@@ -50,6 +50,8 @@ public class OverviewPanel extends Panel {
 	IOPSlotService opSlotService;
 	
 	private IModel<OPSlotFilter> filterModel;
+	
+	private DataTable<OPSlot, String> table;
 
 	public OverviewPanel(String id) {
 		super(id);
@@ -78,7 +80,7 @@ public class OverviewPanel extends Panel {
 		
 		add(filterForm);
 		
-		DataTable<OPSlot, String> table = new DefaultDataTable<OPSlot, String>("overviewTable", getColumns(), getDataProvider(), 10);
+		table = new DefaultDataTable<OPSlot, String>("overviewTable", getColumns(), getDataProvider(), 10);
 		table.add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(5)));
 
 		add(table);
@@ -238,10 +240,14 @@ public class OverviewPanel extends Panel {
 	private ISortableDataProvider<OPSlot, String> getDataProvider() {
 		return new SortableDataProvider<OPSlot, String>() {
 			private static final long serialVersionUID = 1L;
+			private long numRows;
 
 			@Override
 			public Iterator<? extends OPSlot> iterator(long first, long count) {
-				return opSlotService.getOPSlots(getSort(), filterModel.getObject(), first, count).iterator();
+				System.err.println(numRows);
+				System.err.println("From " + first + " to " + count);
+				System.err.println(table.getCurrentPage());
+				return opSlotService.getOPSlots(getSort(), filterModel.getObject(), table.getCurrentPage(), count).iterator();
 			}
 
 			@Override
