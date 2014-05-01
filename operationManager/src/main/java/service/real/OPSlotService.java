@@ -33,6 +33,9 @@ public class OPSlotService implements IOPSlotService {
 		private String type;
 
 		public FilterParams(OPSlotFilter filter) {
+			status = "";
+			type = "";
+
 			if (filter.getPatient() == null) {
 				setPatient("");
 			}
