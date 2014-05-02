@@ -47,12 +47,24 @@ public class OPSlotService implements IOPSlotService {
 			if (filter.getPatient() == null) {
 				setPatient("");
 			}
+			else {
+				setPatient(filter.getPatient());
+			}
+
 			if (filter.getHospital() == null) {
 				setHospital("");
 			}
+			else {
+				setHospital(filter.getHospital());
+			}
+
 			if (filter.getDoctor() == null) {
 				setDoctor("");
 			}
+			else {
+				setDoctor(filter.getDoctor());
+			}
+			
 			if (filter.getStatus() != null) {
 				status = filter.getStatus().name();
 			}
@@ -99,7 +111,7 @@ public class OPSlotService implements IOPSlotService {
 		else {
 			pager = new PageRequest((int)page, (int)itemsPerPage);
 		}
-		
+
 		return (List<OPSlot>) repo.findByFilter(filterParams.getPatient(), filterParams.getHospital(), filterParams.getDoctor(),
 												filterParams.getStatus(), filterParams.getType(),
 												filterParams.getDateMin(), filterParams.getDateMax(),
