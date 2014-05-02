@@ -104,11 +104,24 @@ nav ul li a.active_link {
 
 #mainContent {
 	min-width: 800px;
+	max-width: 1000px;
 	margin: 0 auto;
 	max-width: 98%;
 	min-height: 300px;
-	padding: 30px 1% 0 1%;
+	padding: 20px 1% 0 1%;
 	font-size: 0.8em;
+}
+
+#banner {
+	background-image: url('./images/header.png');
+	background-repeat: no-repeat;
+	background-position: 50% 0;
+	height: 152px;
+	width: 980px;
+}
+
+#wrapper {
+box-shadow: 0px 2px 5px #aaa; border: 1px solid #eee; min-height: 400px;background-color: white; width: 980px; margin: 0 auto; padding: 10px;	
 }
 
 .fixedTable {
