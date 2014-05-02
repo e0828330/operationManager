@@ -125,6 +125,11 @@ nav ul li a.active_link {
 	background-color: #eee;
 }
 
+.fixedTable tr.headers th a {
+	text-decoration: none;
+	color: black;
+}
+
 .fixedTable tr.headers th {
 	background-color: #ddd;
 		border: 1px solid #c0c0c0;
