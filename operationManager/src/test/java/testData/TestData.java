@@ -7,7 +7,6 @@ import java.security.NoSuchAlgorithmException;
 
 import model.Doctor;
 import model.Hospital;
-import model.OPSlot;
 import model.Patient;
 import model.Role;
 
@@ -17,6 +16,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.geo.Point;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -102,8 +102,7 @@ public class TestData {
 		p.setPassword(Utils.computeHash("test06"));
 		p.setRole(Role.PATIENT);
 		patientRepo.save(p);
-		
-		
+
 		// Doctors
 		Doctor d = new Doctor();
 		d.setFirstName("Albert");
@@ -143,6 +142,7 @@ public class TestData {
 		h.setUsername("smzost");
 		h.setPassword(Utils.computeHash("test10"));
 		h.setRole(Role.HOSPITAL);
+		h.setPosition(new Point(48.219218, 16.464200));
 		hsRepo.save(h);
 		
 		h = new Hospital();
@@ -150,6 +150,7 @@ public class TestData {
 		h.setUsername("lkhkrems");
 		h.setPassword(Utils.computeHash("test11"));
 		h.setRole(Role.HOSPITAL);
+		h.setPosition(new Point(48.412252, 15.614987));
 		hsRepo.save(h);
 	
 		h = new Hospital();
@@ -157,6 +158,7 @@ public class TestData {
 		h.setUsername("lkhbaden");
 		h.setPassword(Utils.computeHash("test12"));
 		h.setRole(Role.HOSPITAL);
+		h.setPosition(new Point(48.000463, 16.254158));
 		hsRepo.save(h);
 		
 		h = new Hospital();
@@ -164,6 +166,7 @@ public class TestData {
 		h.setUsername("rudolfinerhaus");
 		h.setPassword(Utils.computeHash("test13"));
 		h.setRole(Role.HOSPITAL);
+		h.setPosition(new Point(48.243323, 16.347580));
 		hsRepo.save(h);
 				
 	}
