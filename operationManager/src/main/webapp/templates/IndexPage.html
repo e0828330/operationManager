@@ -1,58 +1,87 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" 
-      xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.3-strict.dtd" 
-      lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.3-strict.dtd"
+	lang="en">
 <head>
 <meta charset="UTF-8">
 <title wicket:id="pageTitle"></title>
 <link rel="stylesheet" href="resources/base.css" />
 
-<link rel="stylesheet" type="text/css" href="resources/css/kendo/kendo.common.min.css" media="all" />
-<link rel="stylesheet" type="text/css" href="resources/css/kendo/kendo.default.min.css" media="all" />
+<link rel="stylesheet" type="text/css"
+	href="resources/css/kendo/kendo.common.min.css" media="all" />
+<link rel="stylesheet" type="text/css"
+	href="resources/css/kendo/kendo.default.min.css" media="all" />
 
 <script src="resources/js/kendo.culture.de.min.js"></script>
 
 <script src="resources/utils.js"></script>
-<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans'
+	rel='stylesheet' type='text/css'>
 </head>
 <body>
 
-<!-- Header/Login -->
-<header>
-	<div style="margin-left: 10%; float: left; font-size: 1.4em; line-height: 60px; height: 60px;">
-		<a href="./" style="text-decoration: none; color: #336699">Operations Manager</a>
-	</div>
-	
-	<form wicket:id="loginForm">
-		<div style="display: table; margin: 15px 10% 0 0; float: right;">
-			<div style="table-row">
-				<div style="display: table-cell;"><input type="text" class="login" wicket:id="wusername" name="username" style="margin-right: 10px;" value="Username" onclick="clearField(this)" onblur="restoreDefaultIfEmpty(this, 'Username')" /></div>
-				<div style="display: table-cell;"><input type="password" class="login" wicket:id="wpassword" name="password" style="margin-right: 10px;" value="Password"  onclick="clearField(this)" onblur="restoreDefaultIfEmpty(this, 'Password')" /></div>
-				<div style="display: table-cell;"><input type="submit" class="login" value="Login" /></div>
+	<!-- Header/Login -->
+	<header>
+		<div style="width: 1000px; margin: 0 auto;">
+			<div
+				style="margin-left: 2%; float: left; font-size: 1.4em; line-height: 60px; height: 60px;">
+				<a href="./" style="text-decoration: none; color: #336699">Operations
+					Manager</a>
 			</div>
-		</div>
-	</form>
-	<form wicket:id="logoutForm">
-		<div style="display: table; margin: 15px 10% 0 0; float: right;">
-			<div style="table-row">
-				<div style="display: table-cell;"><span wicket:id="wloginrole" style="margin-right: 10px;"></span></div>
-				<div style="display: table-cell;"><input type="submit" class="login" value="Logout" /></div>
-			</div>
-		</div>
-	</form>	
-</header>
 
-<div id="mainContent">
-			<div id="wrapper">
+			<form wicket:id="loginForm">
+				<div style="display: table; margin: 15px 2% 0 0; float: right;">
+
+					<div style="display: table-cell;">
+						<input type="text" class="login" wicket:id="wusername"
+							name="username" style="margin-right: 10px;" value="Username"
+							onclick="clearField(this)"
+							onblur="restoreDefaultIfEmpty(this, 'Username')" />
+					</div>
+					<div style="display: table-cell;">
+						<input type="password" class="login" wicket:id="wpassword"
+							name="password" style="margin-right: 10px;" value="Password"
+							onclick="clearField(this)"
+							onblur="restoreDefaultIfEmpty(this, 'Password')" />
+					</div>
+					<div style="display: table-cell;">
+						<input type="submit" class="login" value="Login" />
+					</div>
+
+				</div>
+			</form>
+			<form wicket:id="logoutForm">
+				<div style="display: table; margin: 15px 2% 0 0; float: right;">
+
+					<div style="display: table-cell;">
+						<span wicket:id="wloginrole" style="margin-right: 10px;"></span>
+					</div>
+					<div style="display: table-cell;">
+						<input type="submit" class="login" value="Logout" />
+					</div>
+
+				</div>
+			</form>
+		</div>
+	</header>
+
+	<div id="mainContent">
+		<div id="wrapper">
 			<div id="banner">
-				<div style="float: right; margin: 50px 20px 0 0; font-family: Open Sans;">
-				<span style="font-size: 1.8em; font-weight: 700; float: right; color: white;">Transparente OP-Wartelisten</span><br />
-				<p style="color: white; font-size: 1.2em; width: 300px; float: right;">Jetzt eintragen und ein passender OP-Slot wird für Sie ermittelt und reserviert!</p>
+				<div
+					style="float: right; margin: 50px 20px 0 0; font-family: Open Sans;">
+					<span
+						style="font-size: 1.8em; font-weight: 700; float: right; color: white;">Transparente
+						OP-Wartelisten</span><br />
+					<p
+						style="color: white; font-size: 1.2em; width: 300px; float: right;">Jetzt
+						eintragen und ein passender OP-Slot wird für Sie ermittelt und
+						reserviert!</p>
 				</div>
 			</div>
-	<wicket:child />
+			<wicket:child />
+		</div>
 	</div>
-</div>
 
 
 </body>
