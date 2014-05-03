@@ -5,7 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import model.Doctor;
 import model.Hospital;
 import model.Patient;
-import model.Role;
+import model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -36,30 +36,43 @@ public class AuthenticationService implements IAuthenticationService {
 	}	
 	
 	@Override
-	public Role authenticate(String username, String password) {
+	public User authenticate(String username, String password) {
+		User user = null;
 		try {
 			// First look for patient
 			Patient patient = this.patientRepo.findByUsernameAndPassword(username, Utils.computeHash(password));
 			if (patient != null && patient.getRole() != null) {
-				return patient.getRole();
+				user = new User();
+				user.setPassword(patient.getPassword());
+				user.setRole(patient.getRole());
+				user.setUsername(patient.getUsername());
+				return user;
 			}
 			
 			// Look for doctor
 			Doctor doctor = this.doctorRepo.findByUsernameAndPassword(username, Utils.computeHash(password));
 			if (doctor != null && doctor.getRole() != null) {
-				return doctor.getRole();
+				user = new User();
+				user.setPassword(doctor.getPassword());
+				user.setRole(doctor.getRole());
+				user.setUsername(doctor.getUsername());
+				return user;
 			}
 			
 			// Look for hospital
 			Hospital hospital = this.hsRepo.findByUsernameAndPassword(username, Utils.computeHash(password));
 			if (hospital != null && hospital.getRole() != null) {
-				return hospital.getRole();
+				user = new User();
+				user.setPassword(hospital.getPassword());
+				user.setRole(hospital.getRole());
+				user.setUsername(hospital.getUsername());
+				return user;
 			}
 			
 		} catch (NoSuchAlgorithmException e) {
-			return Role.DEFAULT;
+			return null;
 		}
-		return Role.DEFAULT;
+		return null;
 	}
 	
 }

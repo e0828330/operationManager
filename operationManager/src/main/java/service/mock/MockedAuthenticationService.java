@@ -1,6 +1,7 @@
 package service.mock;
 
 import model.Role;
+import model.User;
 
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
@@ -17,22 +18,26 @@ public class MockedAuthenticationService {
 	static IAuthenticationService getAuthenticationService() {
 		IAuthenticationService mock = Mockito.mock(IAuthenticationService.class);
 		
-		Mockito.when(mock.authenticate(Mockito.anyString(), Mockito.anyString())).thenAnswer(new Answer<Role>() {
+		Mockito.when(mock.authenticate(Mockito.anyString(), Mockito.anyString())).thenAnswer(new Answer<User>() {
 
 			@Override
-			public Role answer(InvocationOnMock invocation) throws Throwable {
+			public User answer(InvocationOnMock invocation) throws Throwable {
 				String username = (String)invocation.getArguments()[0];
-				
+				User user = new User();
+				user.setUsername(username);
 				if (username.equals("patient")) {
-					return Role.PATIENT;
+					user.setRole(Role.PATIENT);
+					return user;
 				}
 				else if (username.equals("doctor")) {
-					return Role.DOCTOR;
+					user.setRole(Role.DOCTOR);
+					return user;
 				}
 				else if (username.equals("hospital")) {
-					return Role.HOSPITAL;
+					user.setRole(Role.HOSPITAL);
+					return user;
 				}
-				return Role.DEFAULT;
+				return null;
 			}
 			
 		});

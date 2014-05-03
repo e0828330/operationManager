@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import model.OPSlot;
-import model.Role;
+import model.User;
 import model.dto.OPSlotFilter;
 
 import org.apache.wicket.extensions.markup.html.repeater.util.SortParam;
@@ -54,7 +54,7 @@ public class OPSlotController {
 											   @RequestParam(value="patient", required=false, defaultValue="") String patient,
 											   @RequestParam(value="doctor", required=false, defaultValue="") String doctor,
 											   @RequestParam(value="hospital", required=false, defaultValue="") String hospital) {
-		Role role = authenticationService.authenticate(username, password);
+		User user = authenticationService.authenticate(username, password);
 		// TODO: Pass role
 		
 		OPSlotFilter filter = new OPSlotFilter();

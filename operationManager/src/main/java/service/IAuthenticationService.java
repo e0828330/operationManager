@@ -1,7 +1,7 @@
 package service;
 
-import model.Role;
+import model.User;
 
 public interface IAuthenticationService {
-	Role authenticate(String username, String password);
+	public User authenticate(String username, String password);
 }

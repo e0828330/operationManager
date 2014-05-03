@@ -1,6 +1,7 @@
 package session;
 
 import model.Role;
+import model.User;
 
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
@@ -19,7 +20,7 @@ public class OperationManagerWebSession extends AuthenticatedWebSession {
 	
 	// Data for login
 	private Role activeRole = Role.DEFAULT;
-	//private String userID = null;
+	private User activeUser = null;
 	
 	// For authentication
 	private Roles roles = new Roles();
@@ -31,17 +32,17 @@ public class OperationManagerWebSession extends AuthenticatedWebSession {
 	 * @return The current authenticated Role.
 	 */
 	public Role getActiveRole() {
-		return activeRole;
+		return this.activeRole;
 	}
-
+	
 	/**
-	 * Returns the ID of the logged in user.
-	 * @return The user-ID (hash value)
-	 */
-	/*public String getUserID() {
-		return this.userID;
-	}*/
-
+	 * Returns the active user for authentication.
+	 * If no user is logged in, it will store null.
+	 * @return The current authenticated User.
+	 */	
+	public User getActiveUser() {
+		return this.activeUser;
+	}
 	
 	public OperationManagerWebSession(Request request) {
 		super(request);
@@ -53,10 +54,9 @@ public class OperationManagerWebSession extends AuthenticatedWebSession {
 		// reset stored login
 		this.roles.clear();
 		this.activeRole = Role.DEFAULT;
-		//this.userID = null;
+		this.activeUser = null;
 		
 		// check login
-		//System.out.println("try to login user: " + username + ", " + password);
 		this.checkLogin(username, password);
 		
 		// store role
@@ -76,11 +76,13 @@ public class OperationManagerWebSession extends AuthenticatedWebSession {
 	
 	public void logout() {
 		this.roles.clear();
+		this.activeUser = null;
 		this.activeRole = Role.DEFAULT;
 	}
 	
 	private void checkLogin(String username, String password) {
-		this.activeRole =  authenticationService.authenticate(username, password);		
+		this.activeUser =  authenticationService.authenticate(username, password);
+		this.activeRole = (this.activeUser == null) ? Role.DEFAULT : this.activeUser.getRole();
 	}
 
 }
