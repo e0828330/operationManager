@@ -14,7 +14,6 @@
 
 <script src="resources/js/kendo.culture.de.min.js"></script>
 
-<script src="resources/utils.js"></script>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans'
 	rel='stylesheet' type='text/css'>
 </head>
@@ -38,14 +37,12 @@
 					<div style="display: table-cell;">
 						<input type="text" class="login" id="usernamefield" wicket:id="wusername"
 							name="username" style="margin-right: 10px;" value="Username"
-							onclick="clearField(this)"
-							onblur="restoreDefaultIfEmpty(this, 'Username')" />
+							placeholder="Username" required="required" />
 					</div>
 					<div style="display: table-cell;">
 						<input type="password" class="login" wicket:id="wpassword"
 							name="password" style="margin-right: 10px;" value="Password"
-							onclick="clearField(this)"
-							onblur="restoreDefaultIfEmpty(this, 'Password')" />
+							placeholder="Passwort" required="required" />
 					</div>
 					<div style="display: table-cell;">
 						<input type="submit" class="login" value="Login" />
