@@ -41,40 +41,19 @@ public class AuthenticationService implements IAuthenticationService {
 			// First look for patient
 			Patient patient = this.patientRepo.findByUsernameAndPassword(username, Utils.computeHash(password));
 			if (patient != null && patient.getRole() != null) {
-				Patient p = new Patient();
-				p.setPassword(patient.getPassword());
-				p.setRole(patient.getRole());
-				p.setUsername(patient.getUsername());
-				p.setPosition(patient.getPosition());
-				p.setLastName(patient.getLastName());
-				p.setFirstName(patient.getFirstName());
-				p.setId(patient.getId());
-				return p;
+				return patient;
 			}
 			
 			// Look for doctor
 			Doctor doctor = this.doctorRepo.findByUsernameAndPassword(username, Utils.computeHash(password));
 			if (doctor != null && doctor.getRole() != null) {
-				Doctor d = new Doctor();
-				d.setPassword(doctor.getPassword());
-				d.setRole(doctor.getRole());
-				d.setUsername(doctor.getUsername());
-				d.setFirstName(doctor.getFirstName());
-				d.setLastName(d.getLastName());
-				d.setId(d.getId());
-				return d;
+				return doctor;
 			}
 			
 			// Look for hospital
 			Hospital hospital = this.hsRepo.findByUsernameAndPassword(username, Utils.computeHash(password));
 			if (hospital != null && hospital.getRole() != null) {
-				Hospital h = new Hospital();
-				h.setPassword(hospital.getPassword());
-				h.setRole(hospital.getRole());
-				h.setUsername(hospital.getUsername());
-				h.setPosition(hospital.getPosition());
-				h.setName(hospital.getName());
-				return h;
+				return hospital;
 			}
 			
 		} catch (NoSuchAlgorithmException e) {
