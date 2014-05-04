@@ -1,5 +1,8 @@
 package service.mock;
 
+import model.Doctor;
+import model.Hospital;
+import model.Patient;
 import model.Role;
 import model.User;
 
@@ -23,19 +26,29 @@ public class MockedAuthenticationService {
 			@Override
 			public User answer(InvocationOnMock invocation) throws Throwable {
 				String username = (String)invocation.getArguments()[0];
-				User user = new User();
-				user.setUsername(username);
+
 				if (username.equals("patient")) {
-					user.setRole(Role.PATIENT);
-					return user;
+					Patient p = new Patient();
+					p.setRole(Role.PATIENT);
+					p.setUsername("pastient");
+					p.setFirstName("Wayne");
+					p.setLastName("TestingPatient");
+					return p;
 				}
 				else if (username.equals("doctor")) {
-					user.setRole(Role.DOCTOR);
-					return user;
+					Doctor d = new Doctor();
+					d.setRole(Role.DOCTOR);
+					d.setUsername("doctor");
+					d.setFirstName("Wayne");
+					d.setLastName("TestingDoctor");
+					return d;
 				}
 				else if (username.equals("hospital")) {
-					user.setRole(Role.HOSPITAL);
-					return user;
+					Hospital h = new Hospital();
+					h.setRole(Role.HOSPITAL);
+					h.setUsername("hospital");
+					h.setName("TestingHospital");
+					return h;
 				}
 				return null;
 			}

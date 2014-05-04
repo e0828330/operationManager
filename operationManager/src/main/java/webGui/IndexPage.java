@@ -1,10 +1,9 @@
 package webGui;
 
-import java.util.Hashtable;
+import model.Doctor;
+import model.Hospital;
+import model.Patient;
 
-import model.Role;
-
-import org.apache.wicket.Page;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -22,29 +21,22 @@ public class IndexPage extends WebPage {
 	private static final long serialVersionUID = -4448644188854079942L;
 	
 	private String defaultTitle = "Startpage OperationsManager";
-			
-	private Hashtable<String, Class<? extends Page>> links;
 	
 	public IndexPage(final PageParameters parameters) {		
 		final OperationManagerWebSession session = (OperationManagerWebSession) WebSession.get();
-
-		System.err.println("PARAMETERS  = " + parameters);
 		
 		if (parameters != null && !parameters.isEmpty() &&  parameters.get("authenticated") != null) {	
 			if (parameters.get("authenticated").toString().equals("success")) {
 				add(new Label("authentication_failure").setVisible(false));
 			}
 			else {
-				System.err.println("B");
 				add(new Label("authentication_failure", "Login fehlgeschlagen!").setVisible(true));
 			}
 		}
 		else if (session.getActiveUser() != null) {
-			System.err.println("C");
 			add(new Label("authentication_failure").setVisible(false));
 		}
 		else {
-			System.err.println("D");
 			add(new Label("authentication_failure").setVisible(false));
 		}
 		
@@ -83,7 +75,19 @@ public class IndexPage extends WebPage {
 		if (session.getActiveUser() != null) {
 			loginForm.setVisible(false);
 			logoutForm.setVisible(true);
-			logoutForm.add(new Label("wloginrole", role + "|" + session.getActiveUser().getUsername()));
+			if (session.getActiveUser() instanceof Patient) {
+				Patient p = (Patient) session.getActiveUser();
+				logoutForm.add(new Label("wloginrole", p.getFirstName() + " " + p.getLastName()));
+			}
+			else if (session.getActiveUser() instanceof Doctor) {
+				Doctor d = (Doctor) session.getActiveUser();
+				logoutForm.add(new Label("wloginrole", d.getFirstName() + " " + d.getLastName()));
+			}
+			else {
+				Hospital h = (Hospital) session.getActiveUser();
+				logoutForm.add(new Label("wloginrole", h.getName()));
+			}
+			
 		}
 		else {
 			loginForm.setVisible(true);

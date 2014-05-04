@@ -37,36 +37,44 @@ public class AuthenticationService implements IAuthenticationService {
 	
 	@Override
 	public User authenticate(String username, String password) {
-		User user = null;
 		try {
 			// First look for patient
 			Patient patient = this.patientRepo.findByUsernameAndPassword(username, Utils.computeHash(password));
 			if (patient != null && patient.getRole() != null) {
-				user = new User();
-				user.setPassword(patient.getPassword());
-				user.setRole(patient.getRole());
-				user.setUsername(patient.getUsername());
-				return user;
+				Patient p = new Patient();
+				p.setPassword(patient.getPassword());
+				p.setRole(patient.getRole());
+				p.setUsername(patient.getUsername());
+				p.setPosition(patient.getPosition());
+				p.setLastName(patient.getLastName());
+				p.setFirstName(patient.getFirstName());
+				p.setId(patient.getId());
+				return p;
 			}
 			
 			// Look for doctor
 			Doctor doctor = this.doctorRepo.findByUsernameAndPassword(username, Utils.computeHash(password));
 			if (doctor != null && doctor.getRole() != null) {
-				user = new User();
-				user.setPassword(doctor.getPassword());
-				user.setRole(doctor.getRole());
-				user.setUsername(doctor.getUsername());
-				return user;
+				Doctor d = new Doctor();
+				d.setPassword(doctor.getPassword());
+				d.setRole(doctor.getRole());
+				d.setUsername(doctor.getUsername());
+				d.setFirstName(doctor.getFirstName());
+				d.setLastName(d.getLastName());
+				d.setId(d.getId());
+				return d;
 			}
 			
 			// Look for hospital
 			Hospital hospital = this.hsRepo.findByUsernameAndPassword(username, Utils.computeHash(password));
 			if (hospital != null && hospital.getRole() != null) {
-				user = new User();
-				user.setPassword(hospital.getPassword());
-				user.setRole(hospital.getRole());
-				user.setUsername(hospital.getUsername());
-				return user;
+				Hospital h = new Hospital();
+				h.setPassword(hospital.getPassword());
+				h.setRole(hospital.getRole());
+				h.setUsername(hospital.getUsername());
+				h.setPosition(hospital.getPosition());
+				h.setName(hospital.getName());
+				return h;
 			}
 			
 		} catch (NoSuchAlgorithmException e) {
