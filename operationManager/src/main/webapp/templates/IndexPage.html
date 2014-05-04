@@ -28,12 +28,15 @@
 				<a href="./" style="text-decoration: none; color: #336699">Operations
 					Manager</a>
 			</div>
-
+			<div id="error_login" wicket:id="authentication_failure"
+				style="height: 30px; width: 200px; line-height: 30px; background-color: #fff; border: 1px solid #c0c0c0; 
+				color: red; position: absolute; z-index: 5; text-align: center; box-shadow: 0px 2px 3px #aaa; border-radius: 5px; font-size: 0.8em;">
+			</div>
 			<form wicket:id="loginForm">
 				<div style="display: table; margin: 15px 2% 0 0; float: right;">
 
 					<div style="display: table-cell;">
-						<input type="text" class="login" wicket:id="wusername"
+						<input type="text" class="login" id="usernamefield" wicket:id="wusername"
 							name="username" style="margin-right: 10px;" value="Username"
 							onclick="clearField(this)"
 							onblur="restoreDefaultIfEmpty(this, 'Username')" />
@@ -80,6 +83,35 @@
 				</div>
 			</div>
 			<wicket:child />
+
+			<script type="text/javascript">
+				function getOffsetTop(element) {
+					var y = 0;
+					tmp = element;
+					if (tmp.offsetParent) {
+						do {
+							y += tmp.offsetTop;
+						} while (tmp = tmp.offsetParent);
+					}
+					y += element.offsetHeight;
+					return y;
+				}
+
+				function getOffsetLeft(element) {
+					var x = 0;
+					tmp = element;
+					if (tmp.offsetParent) {
+						do {
+							x += tmp.offsetLeft;
+						} while (tmp = tmp.offsetParent);
+					}
+					return x;
+				}
+				
+				document.getElementById("error_login").style.left = getOffsetLeft(document.getElementById("usernamefield")) + "px";
+				document.getElementById("error_login").style.top = (getOffsetTop(document.getElementById("usernamefield")) + 10) + "px";
+			</script>
+
 		</div>
 	</div>
 

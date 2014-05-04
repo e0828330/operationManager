@@ -1,7 +1,6 @@
 package webGui;
 
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import webGui.overview.OverviewPanel;
 
@@ -9,7 +8,8 @@ import webGui.overview.OverviewPanel;
 public class StartPage extends IndexPage {
 	private static final long serialVersionUID = -5751552070055708995L;
 	
-	public StartPage() {
+	public StartPage(final PageParameters parameters) {
+		super(parameters);
 		add(new OverviewPanel("overview"));
 
 	}

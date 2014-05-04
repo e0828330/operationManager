@@ -1,7 +1,9 @@
 package webGui;
 
 import java.util.Hashtable;
+
 import model.Role;
+
 import org.apache.wicket.Page;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
@@ -10,9 +12,9 @@ import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.protocol.http.WebSession;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import session.OperationManagerWebSession;
-
 import utils.TemplateConstants;
 
 public class IndexPage extends WebPage {
@@ -23,9 +25,29 @@ public class IndexPage extends WebPage {
 			
 	private Hashtable<String, Class<? extends Page>> links;
 	
-	public IndexPage() {		
+	public IndexPage(final PageParameters parameters) {		
 		final OperationManagerWebSession session = (OperationManagerWebSession) WebSession.get();
 
+		System.err.println("PARAMETERS  = " + parameters);
+		
+		if (parameters != null && !parameters.isEmpty() &&  parameters.get("authenticated") != null) {	
+			if (parameters.get("authenticated").toString().equals("success")) {
+				add(new Label("authentication_failure").setVisible(false));
+			}
+			else {
+				System.err.println("B");
+				add(new Label("authentication_failure", "Login fehlgeschlagen!").setVisible(true));
+			}
+		}
+		else if (session.getActiveUser() != null) {
+			System.err.println("C");
+			add(new Label("authentication_failure").setVisible(false));
+		}
+		else {
+			System.err.println("D");
+			add(new Label("authentication_failure").setVisible(false));
+		}
+		
 		// Role
 		String role = session.getRoles().isEmpty() ? "" : session.getRoles().toString();
 
@@ -38,7 +60,9 @@ public class IndexPage extends WebPage {
 				String username_value = username.getModelObject();
 				String password_value = password.getModelObject();
 				session.authenticate(username_value, password_value);
-				setResponsePage(StartPage.class);
+				PageParameters pageParameters = new PageParameters();
+				pageParameters.add("authenticated", session.getActiveUser() == null ? "failure" : "success");
+				setResponsePage(StartPage.class, pageParameters);
 			};
 		};
 		loginForm.add(username);
