@@ -16,6 +16,7 @@ public class TestSimplePage {
         WebAppContext webapp = new WebAppContext();
         webapp.setContextPath("/test");
         webapp.setWar("src/main/webapp");
+        webapp.setOverrideDescriptor("src/main/webapp/WEB-INF/web-test.xml");
         server.setHandler(webapp);
  
 		server.start();
