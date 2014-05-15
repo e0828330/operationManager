@@ -34,15 +34,9 @@ public class IndexPage extends WebPage {
 				add(new Label("authentication_failure", "Login fehlgeschlagen!").setVisible(true));
 			}
 		}
-		else if (session.getActiveUser() != null) {
-			add(new Label("authentication_failure").setVisible(false));
-		}
 		else {
 			add(new Label("authentication_failure").setVisible(false));
 		}
-		
-		// Role
-		String role = session.getRoles().isEmpty() ? "" : session.getRoles().toString();
 
 		// Login form
 		final TextField<String> username = new TextField<String>("wusername", Model.of(""));
@@ -52,9 +46,8 @@ public class IndexPage extends WebPage {
 			protected void onSubmit() {
 				String username_value = username.getModelObject();
 				String password_value = password.getModelObject();
-				session.authenticate(username_value, password_value);
 				PageParameters pageParameters = new PageParameters();
-				pageParameters.add("authenticated", session.getActiveUser() == null ? "failure" : "success");
+				pageParameters.add("authenticated", !session.authenticate(username_value, password_value) ? "failure" : "success");
 				setResponsePage(StartPage.class, pageParameters);
 			};
 		};
