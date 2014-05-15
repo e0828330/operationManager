@@ -6,6 +6,7 @@ import java.util.List;
 
 import lombok.Data;
 import model.OPSlot;
+import model.User;
 import model.dto.OPSlotFilter;
 
 import org.apache.wicket.extensions.markup.html.repeater.util.SortParam;
@@ -99,8 +100,10 @@ public class OPSlotService implements IOPSlotService {
 	}
 	
 	@Override
-	public List<OPSlot> getOPSlots(SortParam<String> sort, OPSlotFilter filter, long page, long itemsPerPage) {		
+	public List<OPSlot> getOPSlots(User user, SortParam<String> sort, OPSlotFilter filter, long page, long itemsPerPage) {		
 		FilterParams filterParams = new FilterParams(filter);
+
+		// TODO: Handle user
 
 		/* Sort and paging */
 		PageRequest pager;
@@ -120,9 +123,9 @@ public class OPSlotService implements IOPSlotService {
 	}
 
 	@Override
-	public long getOPSlotCount(OPSlotFilter filter) {
+	public long getOPSlotCount(User user, OPSlotFilter filter) {
 		FilterParams filterParams = new FilterParams(filter);
-		
+		// TODO: Handle user
 		return repo.countByFilter(filterParams.getPatient(), filterParams.getHospital(), filterParams.getDoctor(),
 								  filterParams.getStatus(), filterParams.getType(),
 								  filterParams.getDateMin(), filterParams.getDateMax(),

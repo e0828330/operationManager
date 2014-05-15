@@ -247,10 +247,11 @@ public class OverviewPanel extends Panel {
 	private ISortableDataProvider<OPSlot, String> getDataProvider() {
 		return new SortableDataProvider<OPSlot, String>() {
 			private static final long serialVersionUID = 1L;
+			OperationManagerWebSession session = (OperationManagerWebSession) getSession();
 
 			@Override
 			public Iterator<? extends OPSlot> iterator(long first, long count) {
-				return opSlotService.getOPSlots(getSort(), filterModel.getObject(), table.getCurrentPage(), table.getItemsPerPage()).iterator();
+				return opSlotService.getOPSlots(session.getActiveUser(), getSort(), filterModel.getObject(), table.getCurrentPage(), table.getItemsPerPage()).iterator();
 			}
 
 			@Override
@@ -260,7 +261,7 @@ public class OverviewPanel extends Panel {
 
 			@Override
 			public long size() {
-				return opSlotService.getOPSlotCount(filterModel.getObject());
+				return opSlotService.getOPSlotCount(session.getActiveUser(), filterModel.getObject());
 			}
 			
 		};

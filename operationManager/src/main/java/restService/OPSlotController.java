@@ -55,7 +55,6 @@ public class OPSlotController {
 											   @RequestParam(value="doctor", required=false, defaultValue="") String doctor,
 											   @RequestParam(value="hospital", required=false, defaultValue="") String hospital) {
 		User user = authenticationService.authenticate(username, password);
-		// TODO: Pass role
 		
 		OPSlotFilter filter = new OPSlotFilter();
 		
@@ -76,7 +75,8 @@ public class OPSlotController {
 		filter.setPatient(patient);
 		filter.setDoctor(doctor);
 		filter.setHospital(hospital);
+		//TODO Remove based on user role
 		
-		return opSlotService.getOPSlots(new SortParam<String>("date", false), filter, 0, Integer.MAX_VALUE);
+		return opSlotService.getOPSlots(user, new SortParam<String>("date", false), filter, 0, Integer.MAX_VALUE);
 	}
 }

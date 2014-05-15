@@ -5,6 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import model.Doctor;
 import model.Hospital;
 import model.Patient;
+import model.Role;
 import model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,9 @@ public class AuthenticationService implements IAuthenticationService {
 	
 	@Override
 	public User authenticate(String username, String password) {
+		User noAuth = new User();
+		noAuth.setRole(Role.DEFAULT);
+
 		try {
 			// First look for patient
 			Patient patient = this.patientRepo.findByUsernameAndPassword(username, Utils.computeHash(password));
@@ -57,9 +61,9 @@ public class AuthenticationService implements IAuthenticationService {
 			}
 			
 		} catch (NoSuchAlgorithmException e) {
-			return null;
+			return noAuth;
 		}
-		return null;
+		return noAuth;
 	}
 	
 }

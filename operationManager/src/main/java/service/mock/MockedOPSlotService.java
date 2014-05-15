@@ -10,6 +10,7 @@ import model.OPSlot;
 import model.OperationStatus;
 import model.OperationType;
 import model.Patient;
+import model.User;
 import model.dto.OPSlotFilter;
 
 import org.apache.wicket.extensions.markup.html.repeater.util.SortParam;
@@ -40,9 +41,9 @@ public class MockedOPSlotService {
 		third.add(getMockedOPSlot(OperationType.cardio, "LK-B", "Dr. Morks", "Gloria", "Geraus", OperationStatus.reserved));
 
 		//return different lists the first 3 calls, so the AjaxSelfUpdatingTimerBehavior can be tested
-		Mockito.when(mock.getOPSlots(Mockito.any(SortParam.class), Mockito.any(OPSlotFilter.class), Mockito.anyLong(), Mockito.anyLong())).thenReturn(first).thenReturn(second).thenReturn(third);
+		Mockito.when(mock.getOPSlots(Mockito.any(User.class), Mockito.any(SortParam.class), Mockito.any(OPSlotFilter.class), Mockito.anyLong(), Mockito.anyLong())).thenReturn(first).thenReturn(second).thenReturn(third);
 		
-		Mockito.when(mock.getOPSlotCount(Mockito.any(OPSlotFilter.class))).thenReturn(1L).thenReturn(2L).thenReturn(3L);
+		Mockito.when(mock.getOPSlotCount(Mockito.any(User.class), Mockito.any(OPSlotFilter.class))).thenReturn(1L).thenReturn(2L).thenReturn(3L);
 		
 		return mock;
 	}

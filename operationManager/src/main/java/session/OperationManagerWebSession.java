@@ -76,13 +76,14 @@ public class OperationManagerWebSession extends AuthenticatedWebSession {
 	
 	public void logout() {
 		this.roles.clear();
-		this.activeUser = null;
+		this.activeUser = new User();
+		this.activeUser.setRole(Role.DEFAULT);
 		this.activeRole = Role.DEFAULT;
 	}
 	
 	private void checkLogin(String username, String password) {
 		this.activeUser =  authenticationService.authenticate(username, password);
-		this.activeRole = (this.activeUser == null) ? Role.DEFAULT : this.activeUser.getRole();
+		this.activeRole = this.activeUser.getRole();
 	}
 
 }
