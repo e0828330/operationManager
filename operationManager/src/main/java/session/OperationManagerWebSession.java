@@ -41,6 +41,10 @@ public class OperationManagerWebSession extends AuthenticatedWebSession {
 	 * @return The current authenticated User.
 	 */	
 	public User getActiveUser() {
+		if (this.activeUser == null) {
+			this.activeUser = new User();
+			this.activeUser.setRole(Role.DEFAULT);
+		}
 		return this.activeUser;
 	}
 	
@@ -76,8 +80,7 @@ public class OperationManagerWebSession extends AuthenticatedWebSession {
 	
 	public void logout() {
 		this.roles.clear();
-		this.activeUser = new User();
-		this.activeUser.setRole(Role.DEFAULT);
+		this.activeUser = null;
 		this.activeRole = Role.DEFAULT;
 	}
 	
