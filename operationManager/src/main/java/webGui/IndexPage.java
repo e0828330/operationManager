@@ -3,6 +3,7 @@ package webGui;
 import model.Doctor;
 import model.Hospital;
 import model.Patient;
+import model.Role;
 
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
@@ -72,7 +73,7 @@ public class IndexPage extends WebPage {
 		
 		
 		// If logged in, hide login formular
-		if (session.getActiveUser() != null) {
+		if (!session.getActiveUser().getRole().equals(Role.DEFAULT)) {
 			loginForm.setVisible(false);
 			logoutForm.setVisible(true);
 			if (session.getActiveUser() instanceof Patient) {
@@ -83,7 +84,7 @@ public class IndexPage extends WebPage {
 				Doctor d = (Doctor) session.getActiveUser();
 				logoutForm.add(new Label("wloginrole", d.getFirstName() + " " + d.getLastName()));
 			}
-			else {
+			else if (session.getActiveUser() instanceof Hospital){
 				Hospital h = (Hospital) session.getActiveUser();
 				logoutForm.add(new Label("wloginrole", h.getName()));
 			}
