@@ -35,7 +35,6 @@ public class QueueServiceTest {
 	// TODO: Just for testing service in development
 	@Test
 	public void testJMSService() {
-		final boolean value = false;
 		IQueueListener listener = new GeoResolverListener();
 		service.registerListener(QueueService.GEORESOLVER_Q, listener);
 		service.sendToGeoResolver(slot);
