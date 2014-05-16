@@ -27,6 +27,9 @@ public class MockedAuthenticationService {
 			public User answer(InvocationOnMock invocation) throws Throwable {
 				String username = (String)invocation.getArguments()[0];
 
+				User noAuth = new User();
+				noAuth.setRole(Role.DEFAULT);
+				
 				if (username.equals("patient")) {
 					Patient p = new Patient();
 					p.setRole(Role.PATIENT);
@@ -50,7 +53,7 @@ public class MockedAuthenticationService {
 					h.setName("TestingHospital");
 					return h;
 				}
-				return null;
+				return noAuth;
 			}
 			
 		});
