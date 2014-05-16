@@ -17,7 +17,7 @@ import service.IPatientService;
 @Service
 public class MockedPatientService {
 	@Bean
-	static IPatientService getQueueService() {
+	static IPatientService getPatientServicee() {
 		IPatientService mock =  Mockito.mock(IPatientService.class);
 		
 		List<Patient> patients = new ArrayList<>();
@@ -76,6 +76,8 @@ public class MockedPatientService {
 			@Override
 			public List<Patient> answer(InvocationOnMock invocation) throws Throwable {
 				String keyword = (String)invocation.getArguments()[0];
+
+				keyword = keyword.toLowerCase();
 				List<Patient> result = new ArrayList<>();
 				for (Patient p : inputPatients) {
 					if (p.getFirstName().toLowerCase().contains(keyword) || p.getLastName().toLowerCase().contains(keyword)) {
