@@ -2,19 +2,18 @@ package model.dto;
 
 import java.util.Date;
 
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Setter;
 import model.OperationType;
 import model.Patient;
 
-import org.springframework.data.annotation.Id;
-
 @Data
-public class OPSlotDTO extends MessageDTO {
+@EqualsAndHashCode(callSuper=true)
+public class OPSlotDTO extends Message {
 
 	private static final long serialVersionUID = 1L;
-
-	@Id
-	private String id;
 	
 	private Date date;
 	private OperationType type;

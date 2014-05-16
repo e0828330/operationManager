@@ -1,6 +1,6 @@
 package service;
 
-import model.dto.MessageDTO;
+import model.dto.Message;
 
 public interface IQueueListener {
 	/**
@@ -8,5 +8,5 @@ public interface IQueueListener {
 	 * 
 	 * @param slot
 	 */
-	public void onMessage(MessageDTO slot);
+	public void handleMessage(Message m);
 }

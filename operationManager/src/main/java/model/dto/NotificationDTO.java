@@ -1,21 +1,14 @@
 package model.dto;
 
-import java.util.Date;
-
 import lombok.Data;
-import model.OperationType;
-import model.Patient;
-
-import org.springframework.data.annotation.Id;
+import lombok.EqualsAndHashCode;
+import model.Notification;
 
 @Data
-public class NotificationDTO extends MessageDTO {
+@EqualsAndHashCode(callSuper=true)
+public class NotificationDTO extends Message {
 
 	private static final long serialVersionUID = 1L;
-
-	@Id
-	private String id;
 	
-
-
+	private Notification notification;
 }
