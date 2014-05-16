@@ -4,7 +4,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import model.Hospital;
 import model.OPSlot;
+import model.Role;
 import model.User;
 import model.dto.OPSlotFilter;
 
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import service.IAuthenticationService;
 import service.IOPSlotService;
+import utils.Utils;
 
 @Controller
 public class OPSlotController {
@@ -75,8 +78,60 @@ public class OPSlotController {
 		filter.setPatient(patient);
 		filter.setDoctor(doctor);
 		filter.setHospital(hospital);
-		//TODO Remove based on user role
 		
 		return opSlotService.getOPSlots(user, new SortParam<String>("date", false), filter, 0, Integer.MAX_VALUE);
+	}
+
+	@RequestMapping("/rest/addSlot/")
+	/**
+	 * Adds an empty opSLot for the hospital who's credentials are given
+	 * 
+	 * The date has to be supplied in "dd.mm.yyyy" format while the times from and to
+	 * have to be in "HH:mm" format.
+	 * 
+	 * @param username
+	 * @param password
+	 * @param date
+	 * @param from
+	 * @param to
+	 * @return
+	 */
+	public @ResponseBody OPSlot addSlot(@RequestParam(value="username", required=false, defaultValue="") String username,
+									    @RequestParam(value="password", required=false, defaultValue="") String password,
+									    @RequestParam(value="date", required=false, defaultValue="") String date,
+									    @RequestParam(value="from", required=false, defaultValue="") String from,
+									    @RequestParam(value="to", required=false, defaultValue="") String to) {
+		
+		User user = authenticationService.authenticate(username, password);
+		if (!user.getRole().equals(Role.HOSPITAL)) {
+			return null; // Only hospital can add slots
+		}
+		
+		OPSlot slot = new OPSlot();
+		slot.setHospital((Hospital) user);
+		
+		SimpleDateFormat dateParser = new SimpleDateFormat("dd.MM.yyyy");
+		try {
+			slot.setDate(dateParser.parse(date));
+		} catch (ParseException e) {
+			// TODO: Pass exceptions?
+		}
+
+		dateParser = new SimpleDateFormat("HH:mm");
+		try {
+			slot.setFrom(Utils.adjustDayTime(slot.getDate(), dateParser.parse(from)));
+		} catch (ParseException e) {
+			// TODO: Pass exceptions?
+		}
+		
+		try {
+			slot.setTo(Utils.adjustDayTime(slot.getDate(), dateParser.parse(to)));
+		} catch (ParseException e) {
+			// TODO: Pass exceptions?
+		}
+		
+		opSlotService.saveOPSlot(slot);
+		
+		return slot;
 	}
 }
