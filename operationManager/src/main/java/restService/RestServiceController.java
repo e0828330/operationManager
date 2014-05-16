@@ -123,8 +123,8 @@ public class RestServiceController {
 	 * @param to
 	 * @return
 	 */
-	public @ResponseBody OPSlot addSlot(@RequestParam(value="username", required=false, defaultValue="") String username,
-									    @RequestParam(value="password", required=false, defaultValue="") String password,
+	public @ResponseBody OPSlot addSlot(@RequestParam(value="username", required=true, defaultValue="") String username,
+									    @RequestParam(value="password", required=true, defaultValue="") String password,
 									    @RequestParam(value="date", required=false, defaultValue="") String date,
 									    @RequestParam(value="from", required=false, defaultValue="") String from,
 									    @RequestParam(value="to", required=false, defaultValue="") String to) throws RestServiceException {
