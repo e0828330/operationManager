@@ -18,6 +18,8 @@ public class Notification implements Serializable {
 	private String id;
 
 	private OPSlot slot;
+	
+	private NotificationType type;
 
 	private User recipient;
 }
