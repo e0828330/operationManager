@@ -24,7 +24,7 @@ import service.IOPSlotService;
 import utils.Utils;
 
 @Controller
-public class OPSlotController {
+public class RestServiceController {
 
 	@Autowired
 	private IOPSlotService opSlotService;
