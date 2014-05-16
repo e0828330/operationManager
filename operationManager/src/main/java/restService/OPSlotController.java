@@ -9,10 +9,12 @@ import model.OPSlot;
 import model.Role;
 import model.User;
 import model.dto.OPSlotFilter;
+import model.dto.RestErrorDTO;
 
 import org.apache.wicket.extensions.markup.html.repeater.util.SortParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -28,7 +30,21 @@ public class OPSlotController {
 	private IOPSlotService opSlotService;
 	
 	@Autowired
-	IAuthenticationService authenticationService;
+	private IAuthenticationService authenticationService;
+	
+	@ExceptionHandler(RestServiceException.class)
+	/**
+	 * Handles exceptions for wrong service calls
+	 * 
+	 * @param exception
+	 * @return
+	 */
+	public @ResponseBody RestErrorDTO handleError(RestServiceException exception) {
+		RestErrorDTO dto = new RestErrorDTO();
+		dto.setError(exception.getMessage());
+		return dto;
+	}
+	
 	
 	@RequestMapping("/rest/getSlots/")
 	/**
@@ -56,8 +72,12 @@ public class OPSlotController {
 											   @RequestParam(value="to", required=false, defaultValue="") String to,
 											   @RequestParam(value="patient", required=false, defaultValue="") String patient,
 											   @RequestParam(value="doctor", required=false, defaultValue="") String doctor,
-											   @RequestParam(value="hospital", required=false, defaultValue="") String hospital) {
+											   @RequestParam(value="hospital", required=false, defaultValue="") String hospital) throws RestServiceException {
 		User user = authenticationService.authenticate(username, password);
+		
+		if (!username.equals("") && user.getRole().equals(Role.DEFAULT)) {
+			throw new RestServiceException("Invalid username or password!");
+		}
 		
 		OPSlotFilter filter = new OPSlotFilter();
 		
@@ -65,14 +85,21 @@ public class OPSlotController {
 		try {
 			filter.setDate(dateParser.parse(date));
 		} catch (ParseException e) {
-			// TODO: Pass exceptions?
+			throw new RestServiceException("Could not parse date .. probably wrong format.");
 		}
 		
 		dateParser = new SimpleDateFormat("HH:mm");
 		try {
 			filter.setFrom(dateParser.parse(from));
 		} catch (ParseException e) {
-			// TODO: Pass exceptions?
+			throw new RestServiceException("Could not parse date .. probably wrong format.");
+		}
+		
+		dateParser = new SimpleDateFormat("HH:mm");
+		try {
+			filter.setTo(dateParser.parse(to));
+		} catch (ParseException e) {
+			throw new RestServiceException("Could not to date .. probably wrong format.");
 		}
 
 		filter.setPatient(patient);
@@ -100,11 +127,16 @@ public class OPSlotController {
 									    @RequestParam(value="password", required=false, defaultValue="") String password,
 									    @RequestParam(value="date", required=false, defaultValue="") String date,
 									    @RequestParam(value="from", required=false, defaultValue="") String from,
-									    @RequestParam(value="to", required=false, defaultValue="") String to) {
+									    @RequestParam(value="to", required=false, defaultValue="") String to) throws RestServiceException {
 		
 		User user = authenticationService.authenticate(username, password);
 		if (!user.getRole().equals(Role.HOSPITAL)) {
-			return null; // Only hospital can add slots
+			if (user.getRole().equals(Role.DEFAULT)) {
+				throw new RestServiceException("Invalid username or password!");
+			}
+			else {
+				throw new RestServiceException("Only hospitals can add slots.");
+			}
 		}
 		
 		OPSlot slot = new OPSlot();
@@ -114,20 +146,20 @@ public class OPSlotController {
 		try {
 			slot.setDate(dateParser.parse(date));
 		} catch (ParseException e) {
-			// TODO: Pass exceptions?
+			throw new RestServiceException("Could not parse date .. probably wrong format.");
 		}
 
 		dateParser = new SimpleDateFormat("HH:mm");
 		try {
 			slot.setFrom(Utils.adjustDayTime(slot.getDate(), dateParser.parse(from)));
 		} catch (ParseException e) {
-			// TODO: Pass exceptions?
+			throw new RestServiceException("Could not parse from date .. probably wrong format.");
 		}
 		
 		try {
 			slot.setTo(Utils.adjustDayTime(slot.getDate(), dateParser.parse(to)));
 		} catch (ParseException e) {
-			// TODO: Pass exceptions?
+			throw new RestServiceException("Could not parse to date .. probably wrong format.");
 		}
 		
 		opSlotService.saveOPSlot(slot);
