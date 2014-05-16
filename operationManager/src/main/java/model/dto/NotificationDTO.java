@@ -16,6 +16,6 @@ public class NotificationDTO extends MessageDTO {
 	@Id
 	private String id;
 	
-	Notification notification;
+
 
 }
