@@ -32,8 +32,10 @@ public class QueueServiceTest {
 		slot.setId("1234");
 	}
 	
+	// TODO: Just for testing service in development
 	@Test
 	public void testJMSService() {
+		final boolean value = false;
 		IQueueListener listener = new GeoResolverListener();
 		service.registerListener(QueueService.GEORESOLVER_Q, listener);
 		service.sendToGeoResolver(slot);
