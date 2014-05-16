@@ -5,7 +5,10 @@ import java.util.Calendar;
 import java.util.List;
 
 import lombok.Data;
+import model.Doctor;
+import model.Hospital;
 import model.OPSlot;
+import model.Patient;
 import model.User;
 import model.dto.OPSlotFilter;
 
@@ -20,10 +23,10 @@ import service.IOPSlotService;
 
 @Service
 public class OPSlotService implements IOPSlotService {
-	
+
 	@Autowired
 	private OPSlotRepository repo;
-	
+
 	@Data
 	/**
 	 * Used to avoid having to duplicate the param parsing
@@ -37,7 +40,7 @@ public class OPSlotService implements IOPSlotService {
 
 		private String dateMin;
 		private String dateMax;
-		
+
 		private Integer fromMinute;
 		private Integer toMinute;
 
@@ -47,44 +50,41 @@ public class OPSlotService implements IOPSlotService {
 
 			if (filter.getPatient() == null) {
 				setPatient("");
-			}
-			else {
+			} else {
 				setPatient(filter.getPatient());
 			}
 
 			if (filter.getHospital() == null) {
 				setHospital("");
-			}
-			else {
+			} else {
 				setHospital(filter.getHospital());
 			}
 
 			if (filter.getDoctor() == null) {
 				setDoctor("");
-			}
-			else {
+			} else {
 				setDoctor(filter.getDoctor());
 			}
-			
+
 			if (filter.getStatus() != null) {
 				status = filter.getStatus().name();
 			}
 			if (filter.getType() != null) {
 				type = filter.getType().name();
 			}
-			
+
 			// Handle dates
 			Calendar cal = Calendar.getInstance();
-	       
+
 			if (filter.getDate() != null) {
 				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 				setDateMin(df.format(filter.getDate()));
 
 				cal.setTime(filter.getDate());
-			    cal.add(Calendar.DATE, 1); 
+				cal.add(Calendar.DATE, 1);
 				setDateMax(df.format(cal.getTime()));
 			}
-		
+
 			// Convert time to number of minutes
 			if (filter.getFrom() != null) {
 				cal.setTime(filter.getFrom());
@@ -98,38 +98,67 @@ public class OPSlotService implements IOPSlotService {
 			}
 		}
 	}
-	
-	@Override
-	public List<OPSlot> getOPSlots(User user, SortParam<String> sort, OPSlotFilter filter, long page, long itemsPerPage) {		
-		FilterParams filterParams = new FilterParams(filter);
 
-		// TODO: Handle user
+	@Override
+	public List<OPSlot> getOPSlots(User user, SortParam<String> sort, OPSlotFilter filter, long page, long itemsPerPage) {
+		FilterParams filterParams = new FilterParams(filter);
 
 		/* Sort and paging */
 		PageRequest pager;
 		if (sort != null) {
 			Sort sorter = new Sort(sort.isAscending() ? Sort.Direction.ASC : Sort.Direction.DESC, sort.getProperty());
-			pager = new PageRequest((int)page, (int)itemsPerPage, sorter);
-		}
-		else {
-			pager = new PageRequest((int)page, (int)itemsPerPage);
+			pager = new PageRequest((int) page, (int) itemsPerPage, sorter);
+		} else {
+			pager = new PageRequest((int) page, (int) itemsPerPage);
 		}
 
-		return (List<OPSlot>) repo.findByFilter(filterParams.getPatient(), filterParams.getHospital(), filterParams.getDoctor(),
-												filterParams.getStatus(), filterParams.getType(),
-												filterParams.getDateMin(), filterParams.getDateMax(),
-												filterParams.getFromMinute(), filterParams.getToMinute(),
-												pager);
+		List<OPSlot> result = null;
+
+		/* Call the correct method based on the user's role */
+		switch (user.getRole()) {
+		case DEFAULT:
+			result = (List<OPSlot>) repo.findByFilter(filterParams.getHospital(), filterParams.getDoctor(), filterParams.getStatus(), filterParams.getType(),
+					filterParams.getDateMin(), filterParams.getDateMax(), filterParams.getFromMinute(), filterParams.getToMinute(), pager);
+			break;
+		case PATIENT:
+			result = (List<OPSlot>) repo.findByFilterForPatient(((Patient) user).getId(), filterParams.getHospital(), filterParams.getDoctor(), filterParams.getStatus(), filterParams.getType(),
+							filterParams.getDateMin(), filterParams.getDateMax(), filterParams.getFromMinute(), filterParams.getToMinute(), pager);
+		case DOCTOR:
+			result = (List<OPSlot>) repo.findByFilterForDoctor(((Doctor) user).getId(), filter.getPatient(), filterParams.getHospital(), filterParams.getStatus(), filterParams.getType(),
+							filterParams.getDateMin(), filterParams.getDateMax(), filterParams.getFromMinute(), filterParams.getToMinute(), pager);
+			break;
+		case HOSPITAL:
+			result = (List<OPSlot>) repo.findByFilterForHospital(((Hospital) user).getId(), filter.getPatient(), filterParams.getDoctor(), filterParams.getStatus(), filterParams.getType(),
+					filterParams.getDateMin(), filterParams.getDateMax(), filterParams.getFromMinute(), filterParams.getToMinute(), pager);
+		}
+
+		return result;
 	}
 
 	@Override
 	public long getOPSlotCount(User user, OPSlotFilter filter) {
 		FilterParams filterParams = new FilterParams(filter);
-		// TODO: Handle user
-		return repo.countByFilter(filterParams.getPatient(), filterParams.getHospital(), filterParams.getDoctor(),
-								  filterParams.getStatus(), filterParams.getType(),
-								  filterParams.getDateMin(), filterParams.getDateMax(),
-								  filterParams.getFromMinute(), filterParams.getToMinute());
+		long result = 0;
+
+		/* Call the correct method based on the user's role */
+		switch (user.getRole()) {
+		case DEFAULT:
+			result = repo.countByFilter(filterParams.getHospital(), filterParams.getDoctor(), filterParams.getStatus(), filterParams.getType(),
+					filterParams.getDateMin(), filterParams.getDateMax(), filterParams.getFromMinute(), filterParams.getToMinute());
+			break;
+		case PATIENT:
+			result = repo.countByFilterForPatient(((Patient) user).getId(), filterParams.getHospital(), filterParams.getDoctor(), filterParams.getStatus(), filterParams.getType(),
+							filterParams.getDateMin(), filterParams.getDateMax(), filterParams.getFromMinute(), filterParams.getToMinute());
+		case DOCTOR:
+			result = repo.countByFilterForDoctor(((Doctor) user).getId(), filterParams.getPatient(), filterParams.getHospital(), filterParams.getStatus(), filterParams.getType(),
+							filterParams.getDateMin(), filterParams.getDateMax(), filterParams.getFromMinute(), filterParams.getToMinute());
+			break;
+		case HOSPITAL:
+			result = repo.countByFilterForHospital(((Hospital) user).getId(), filterParams.getPatient(), filterParams.getDoctor(), filterParams.getStatus(), filterParams.getType(),
+					filterParams.getDateMin(), filterParams.getDateMax(), filterParams.getFromMinute(), filterParams.getToMinute());		
+		}
+		
+		return result;
 	}
 
 	@Override
