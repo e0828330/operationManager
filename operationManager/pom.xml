@@ -36,11 +36,6 @@
 	<dependencies>
 
 		<!-- JMS dependecies -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-jms</artifactId>
-			<version>${spring-framework.version}</version>
-		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.amqp</groupId>
