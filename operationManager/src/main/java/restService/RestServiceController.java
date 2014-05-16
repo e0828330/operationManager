@@ -6,6 +6,7 @@ import java.util.List;
 
 import model.Hospital;
 import model.OPSlot;
+import model.Patient;
 import model.Role;
 import model.User;
 import model.dto.OPSlotFilter;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import service.IAuthenticationService;
 import service.IOPSlotService;
+import service.IPatientService;
 import utils.Utils;
 
 @Controller
@@ -31,6 +33,9 @@ public class RestServiceController {
 	
 	@Autowired
 	private IAuthenticationService authenticationService;
+	
+	@Autowired
+	private IPatientService patientService;
 	
 	@ExceptionHandler(RestServiceException.class)
 	/**
@@ -165,5 +170,35 @@ public class RestServiceController {
 		opSlotService.saveOPSlot(slot);
 		
 		return slot;
+	}
+
+	@RequestMapping("/rest/getPatients/")
+	/**
+	 * Returns a list of patients optionally filter by a keyword
+	 * 
+	 * @param username
+	 * @param password
+	 * @param keyword
+	 * @return
+	 * @throws RestServiceException
+	 */
+	public @ResponseBody List<Patient> getPatients(@RequestParam(value="username", required=true, defaultValue="") String username,
+												   @RequestParam(value="password", required=true, defaultValue="") String password,
+												   @RequestParam(value="keyword", required=false, defaultValue="") String keyword) throws RestServiceException {
+		
+		User user = authenticationService.authenticate(username, password);
+		if (user.getRole().equals(Role.DEFAULT)) {
+			throw new RestServiceException("Invalid username or password!");
+		}
+		
+		if (user.getRole().equals(Role.PATIENT)) {
+			throw new RestServiceException("Patients are not allowed to access the patient list");
+		}
+
+		if (keyword.isEmpty()) {
+			return patientService.getPatients();
+		}
+
+		return patientService.getPatients(keyword);
 	}
 }
