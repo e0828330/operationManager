@@ -128,8 +128,8 @@ public class RestServiceController {
 	 * @param to
 	 * @return
 	 */
-	public @ResponseBody OPSlot addSlot(@RequestParam(value="username", required=true, defaultValue="") String username,
-									    @RequestParam(value="password", required=true, defaultValue="") String password,
+	public @ResponseBody OPSlot addSlot(@RequestParam(value="username", required=true) String username,
+									    @RequestParam(value="password", required=true) String password,
 									    @RequestParam(value="date", required=false, defaultValue="") String date,
 									    @RequestParam(value="from", required=false, defaultValue="") String from,
 									    @RequestParam(value="to", required=false, defaultValue="") String to) throws RestServiceException {
@@ -182,8 +182,8 @@ public class RestServiceController {
 	 * @return
 	 * @throws RestServiceException
 	 */
-	public @ResponseBody List<Patient> getPatients(@RequestParam(value="username", required=true, defaultValue="") String username,
-												   @RequestParam(value="password", required=true, defaultValue="") String password,
+	public @ResponseBody List<Patient> getPatients(@RequestParam(value="username", required=true) String username,
+												   @RequestParam(value="password", required=true) String password,
 												   @RequestParam(value="keyword", required=false, defaultValue="") String keyword) throws RestServiceException {
 		
 		User user = authenticationService.authenticate(username, password);
