@@ -43,6 +43,7 @@ public class RestServiceController {
 	 * 
 	 * @param exception
 	 * @return
+	 * @throws RestServiceException
 	 */
 	public @ResponseBody RestErrorDTO handleError(RestServiceException exception) {
 		RestErrorDTO dto = new RestErrorDTO();
@@ -69,6 +70,7 @@ public class RestServiceController {
 	 * @param doctor
 	 * @param hospital
 	 * @return
+	 * @throws RestServiceException
 	 */
 	public @ResponseBody List<OPSlot> getSlots(@RequestParam(value="username", required=false, defaultValue="") String username,
 											   @RequestParam(value="password", required=false, defaultValue="") String password,
@@ -127,6 +129,7 @@ public class RestServiceController {
 	 * @param from
 	 * @param to
 	 * @return
+	 * @throws RestServiceException
 	 */
 	public @ResponseBody OPSlot addSlot(@RequestParam(value="username", required=true) String username,
 									    @RequestParam(value="password", required=true) String password,
