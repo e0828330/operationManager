@@ -12,7 +12,7 @@ public interface OPSlotRepository extends PagingAndSortingRepository<OPSlot, Str
 
 	/**
 	 * Returns all rows matching the given filter object and patientID
-	 * 
+	 *
 	 * @param firstName
 	 * @param hospital
 	 * @param doctor
@@ -51,7 +51,7 @@ public interface OPSlotRepository extends PagingAndSortingRepository<OPSlot, Str
 
 	/**
 	 * Count all rows matching the given filter object
-	 * 
+	 *
 	 * @param firstName
 	 * @param hospital
 	 * @param doctor
@@ -63,7 +63,7 @@ public interface OPSlotRepository extends PagingAndSortingRepository<OPSlot, Str
 	 * @param toMinute
 	 * @return
 	 */
-	@Query(value = 
+	@Query(value =
 			"{ $and : [ "
 					+ "{'hospital.name' : {$regex : ?0, $options: 'i'} }, "
 					+ "{ $or : [ {'doctor' : { $exists: false } }, "
@@ -86,10 +86,10 @@ public interface OPSlotRepository extends PagingAndSortingRepository<OPSlot, Str
 							  String dateMax,
 							  Integer fromMinute,
 							  Integer toMinute);
-	
+
 	/**
 	 * Returns all rows matching the given filter object
-	 * 
+	 *
 	 * @param patientId
 	 * @param hospital
 	 * @param doctor
@@ -128,10 +128,10 @@ public interface OPSlotRepository extends PagingAndSortingRepository<OPSlot, Str
 											   Integer toMinute,
 											   Pageable page);
 
-	
+
 	/**
 	 * Count all rows matching the given filter object and patientID
-	 * 
+	 *
 	 * @param firstName
 	 * @param hospital
 	 * @param doctor
@@ -167,10 +167,10 @@ public interface OPSlotRepository extends PagingAndSortingRepository<OPSlot, Str
 									    String dateMax,
 									    Integer fromMinute,
 									    Integer toMinute);
-	
+
 	/**
 	 * Returns all rows matching the given filter object and doctorId
-	 * 
+	 *
 	 * @param doctorId
 	 * @param firstName
 	 * @param hospital
@@ -210,10 +210,10 @@ public interface OPSlotRepository extends PagingAndSortingRepository<OPSlot, Str
 											  Integer toMinute,
 											  Pageable page);
 
-	
+
 	/**
 	 * Count all rows matching the given filter object and doctorId
-	 * 
+	 *
 	 * @param firstName
 	 * @param hospital
 	 * @param doctor
@@ -250,10 +250,10 @@ public interface OPSlotRepository extends PagingAndSortingRepository<OPSlot, Str
 									   String dateMax,
 									   Integer fromMinute,
 									   Integer toMinute);
-	
+
 	/**
 	 * Returns all rows matching the given filter object and hospitalId
-	 * 
+	 *
 	 * @param firstName
 	 * @param hospital
 	 * @param doctor
@@ -294,10 +294,10 @@ public interface OPSlotRepository extends PagingAndSortingRepository<OPSlot, Str
 												Integer fromMinute,
 												Integer toMinute,
 												Pageable page);
-	
+
 	/**
 	 * Count all rows matching  the given filter object and hospitalId
-	 * 
+	 *
 	 * @param firstName
 	 * @param hospital
 	 * @param doctor
@@ -337,5 +337,5 @@ public interface OPSlotRepository extends PagingAndSortingRepository<OPSlot, Str
 										 String dateMax,
 										 Integer fromMinute,
 										 Integer toMinute);
-	
+
 }
