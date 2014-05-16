@@ -6,6 +6,7 @@ import java.util.List;
 
 import model.Hospital;
 import model.OPSlot;
+import model.Patient;
 import model.Role;
 import model.User;
 import model.dto.OPSlotFilter;
@@ -21,16 +22,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import service.IAuthenticationService;
 import service.IOPSlotService;
+import service.IPatientService;
 import utils.Utils;
 
 @Controller
-public class OPSlotController {
+public class RestServiceController {
 
 	@Autowired
 	private IOPSlotService opSlotService;
 	
 	@Autowired
 	private IAuthenticationService authenticationService;
+	
+	@Autowired
+	private IPatientService patientService;
 	
 	@ExceptionHandler(RestServiceException.class)
 	/**
@@ -123,8 +128,8 @@ public class OPSlotController {
 	 * @param to
 	 * @return
 	 */
-	public @ResponseBody OPSlot addSlot(@RequestParam(value="username", required=false, defaultValue="") String username,
-									    @RequestParam(value="password", required=false, defaultValue="") String password,
+	public @ResponseBody OPSlot addSlot(@RequestParam(value="username", required=true) String username,
+									    @RequestParam(value="password", required=true) String password,
 									    @RequestParam(value="date", required=false, defaultValue="") String date,
 									    @RequestParam(value="from", required=false, defaultValue="") String from,
 									    @RequestParam(value="to", required=false, defaultValue="") String to) throws RestServiceException {
@@ -165,5 +170,35 @@ public class OPSlotController {
 		opSlotService.saveOPSlot(slot);
 		
 		return slot;
+	}
+
+	@RequestMapping("/rest/getPatients/")
+	/**
+	 * Returns a list of patients optionally filter by a keyword
+	 * 
+	 * @param username
+	 * @param password
+	 * @param keyword
+	 * @return
+	 * @throws RestServiceException
+	 */
+	public @ResponseBody List<Patient> getPatients(@RequestParam(value="username", required=true) String username,
+												   @RequestParam(value="password", required=true) String password,
+												   @RequestParam(value="keyword", required=false, defaultValue="") String keyword) throws RestServiceException {
+		
+		User user = authenticationService.authenticate(username, password);
+		if (user.getRole().equals(Role.DEFAULT)) {
+			throw new RestServiceException("Invalid username or password!");
+		}
+		
+		if (user.getRole().equals(Role.PATIENT)) {
+			throw new RestServiceException("Patients are not allowed to access the patient list");
+		}
+
+		if (keyword.isEmpty()) {
+			return patientService.getPatients();
+		}
+
+		return patientService.getPatients(keyword);
 	}
 }
