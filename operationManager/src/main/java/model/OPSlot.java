@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import lombok.Data;
@@ -8,7 +9,8 @@ import model.dto.Message;
 import org.springframework.data.annotation.Id;
 
 @Data
-public class OPSlot extends Message {
+public class OPSlot implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 
 	@Id

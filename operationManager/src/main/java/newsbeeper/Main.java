@@ -1,7 +1,7 @@
 package newsbeeper;
 
-import model.Notification;
 import model.dto.Message;
+import model.dto.NotificationDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -30,7 +30,7 @@ public class Main {
 			
 			@Override
 			public void handleMessage(Message m) {
-				Notification notification = (Notification) m;
+				NotificationDTO notification = (NotificationDTO) m;
 				
 			}
 		});			

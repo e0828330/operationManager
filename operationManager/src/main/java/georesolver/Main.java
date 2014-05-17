@@ -2,6 +2,7 @@ package georesolver;
 
 import model.OPSlot;
 import model.dto.Message;
+import model.dto.OPSlotDTO;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ public class Main implements InitializingBean {
 			
 			@Override
 			public void handleMessage(Message m) {
-				OPSlot slot = (OPSlot) m;
+				OPSlotDTO slot = (OPSlotDTO) m;
 			}
 		});		
 	}

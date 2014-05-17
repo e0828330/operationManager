@@ -2,15 +2,14 @@ package model;
 
 import java.io.Serializable;
 
+import lombok.Data;
+
 import org.springframework.data.annotation.Id;
 
-import lombok.Data;
-import model.dto.Message;
-
 @Data
-public class Notification extends Message {
+public class Notification implements Serializable {
 
-	private static final long serialVersionUID = 3605958261067049387L;
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	private String id;

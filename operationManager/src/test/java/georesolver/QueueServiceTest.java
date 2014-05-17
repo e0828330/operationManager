@@ -3,6 +3,7 @@ package georesolver;
 
 import model.OPSlot;
 import model.dto.Message;
+import model.dto.OPSlotDTO;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -38,7 +39,7 @@ public class QueueServiceTest {
 			
 			@Override
 			public void handleMessage(Message m) {
-				OPSlot slot = (OPSlot) m;
+				OPSlotDTO slot = (OPSlotDTO) m;
 				
 			}
 		});
