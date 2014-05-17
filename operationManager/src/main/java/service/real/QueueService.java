@@ -41,7 +41,7 @@ public class QueueService implements IQueueService {
 	}
 
 	@Override
-	public void registerListener(String queueName, final IQueueListener listener) {
+	public void registerListener(String queueName, IQueueListener listener) {
 		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(
 				connectionFactory);
 		container.setQueueNames(queueName);
