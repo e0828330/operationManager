@@ -4,9 +4,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.Calendar;
+import java.util.Date;
 
 import model.Doctor;
 import model.Hospital;
+import model.OPSlot;
+import model.OperationStatus;
+import model.OperationType;
 import model.Patient;
 import model.Role;
 
@@ -23,6 +28,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import repository.DoctorRepository;
 import repository.HospitalRepository;
+import repository.OPSlotRepository;
 import repository.PatientRepository;
 import utils.Utils;
 
@@ -34,6 +40,9 @@ public class TestData {
 	
 	@Autowired 
 	private HospitalRepository hsRepo;
+	
+	@Autowired 
+	private OPSlotRepository opSlotRepo;
 	
 	@Autowired 
 	private DoctorRepository doctorRepo;
@@ -48,12 +57,48 @@ public class TestData {
 		assertEquals(p.getLastName(), "Abesser");
 	}
 	
+	
+	private void fillinSlots(Hospital hospital) {
+		Calendar calDate = Calendar.getInstance();
+		calDate.setTime(new Date());
+		calDate.set(Calendar.HOUR_OF_DAY, 0);
+		calDate.set(Calendar.MINUTE, 0);
+		calDate.add(Calendar.DATE, 45);
+
+		
+		for (int i = 0; i < 7; i ++) {
+			Calendar calFrom = Calendar.getInstance();
+			calFrom.setTime(calDate.getTime());
+				
+			Calendar calTo = Calendar.getInstance();
+			calTo.setTime(calDate.getTime());
+			
+			for (int j = 8; j <= 20; j+=2) {
+				calFrom.add(Calendar.HOUR_OF_DAY, j);
+				calTo.add(Calendar.HOUR_OF_DAY, j + 2);
+				OPSlot slot = new OPSlot();
+				slot.setDate(calDate.getTime());
+				slot.setFrom(calFrom.getTime());
+				slot.setTo(calTo.getTime());
+				slot.setHospital(hospital);
+				slot.setStatus(OperationStatus.free);
+				slot.setType(OperationType.values()[i * j % OperationType.values().length]);
+				opSlotRepo.save(slot);
+			}
+			
+			calDate.add(Calendar.DATE, 1);
+		}
+		
+	}
+	
 	@Before
 	public void generateTestDB() throws NoSuchAlgorithmException {
 		
 		mongoTemplate.remove(new Query(), "patient");
 		mongoTemplate.remove(new Query(), "hospital");
 		mongoTemplate.remove(new Query(), "doctor");
+		mongoTemplate.remove(new Query(), "oPSlot");
+		mongoTemplate.remove(new Query(), "opSlot");
 		
 		// Patients
 		Patient p = new Patient();
@@ -144,6 +189,8 @@ public class TestData {
 		h.setRole(Role.HOSPITAL);
 		h.setPosition(new Point(48.219218, 16.464200));
 		hsRepo.save(h);
+		fillinSlots(h);
+		
 		
 		h = new Hospital();
 		h.setName("LKH Krems");
@@ -152,6 +199,7 @@ public class TestData {
 		h.setRole(Role.HOSPITAL);
 		h.setPosition(new Point(48.412252, 15.614987));
 		hsRepo.save(h);
+		fillinSlots(h);
 	
 		h = new Hospital();
 		h.setName("LKH Baden");
@@ -160,6 +208,7 @@ public class TestData {
 		h.setRole(Role.HOSPITAL);
 		h.setPosition(new Point(48.000463, 16.254158));
 		hsRepo.save(h);
+		fillinSlots(h);
 		
 		h = new Hospital();
 		h.setName("Rudolfinerhaus");
@@ -168,13 +217,13 @@ public class TestData {
 		h.setRole(Role.HOSPITAL);
 		h.setPosition(new Point(48.243323, 16.347580));
 		hsRepo.save(h);
-				
+		fillinSlots(h);
 	}
 	
 	@After
 	public void cleanDataBase() {
-		mongoTemplate.remove(new Query(), "patient");
-		mongoTemplate.remove(new Query(), "hospital");
-		mongoTemplate.remove(new Query(), "doctor");
+		//mongoTemplate.remove(new Query(), "patient");
+		//mongoTemplate.remove(new Query(), "hospital");
+		//mongoTemplate.remove(new Query(), "doctor");
 	}
 }
