@@ -4,13 +4,14 @@ import model.Doctor;
 import model.Hospital;
 import model.Patient;
 import model.Role;
+import model.User;
 
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.model.Model;
+import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.protocol.http.WebSession;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
@@ -39,20 +40,18 @@ public class IndexPage extends WebPage {
 		}
 
 		// Login form
-		final TextField<String> username = new TextField<String>("wusername", Model.of(""));
-		final TextField<String> password = new PasswordTextField("wpassword", Model.of(""));
-		Form<?> loginForm = new Form<Void>(TemplateConstants.LOGIN_FORM) {
+		CompoundPropertyModel<User> loginModel = new CompoundPropertyModel<User>(new User());
+		Form<User> loginForm = new Form<User>(TemplateConstants.LOGIN_FORM, loginModel) {
 			private static final long serialVersionUID = 1L;
 			protected void onSubmit() {
-				String username_value = username.getModelObject();
-				String password_value = password.getModelObject();
+				User user = getModelObject();
 				PageParameters pageParameters = new PageParameters();
-				pageParameters.add("authenticated", !session.authenticate(username_value, password_value) ? "failure" : "success");
+				pageParameters.add("authenticated", !session.authenticate(user.getUsername(), user.getPassword()) ? "failure" : "success");
 				setResponsePage(StartPage.class, pageParameters);
 			};
 		};
-		loginForm.add(username);
-		loginForm.add(password);
+		loginForm.add(new TextField<String>("username"));
+		loginForm.add( new PasswordTextField("password"));
 		
 		// Logout form
 		Form<?> logoutForm = new Form<Void>(TemplateConstants.LOGOUT_FORM) {
