@@ -26,4 +26,12 @@ public interface IQueueService {
 	 * @param listener
 	 */
 	public void registerListener(String queueName, IQueueListener listener);
+	
+	/**
+	 * Unregisters an async listener which receives messages from the queue
+	 * 
+	 * @param queueName
+	 * @param listener
+	 */
+	public void unregisterListener(String queueName, IQueueListener listener);	
 }

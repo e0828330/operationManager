@@ -46,6 +46,17 @@ public class QueueService implements IQueueService {
 		container.setQueueNames(queueName);
 		container.setMessageListener(new MessageListenerAdapter(listener));
 		container.start();
+		this.listener.put(listener, container);
 	}
+
+	@Override
+	public void unregisterListener(String queueName, IQueueListener listener) {
+		if (this.listener.containsKey(listener)) {
+			this.listener.get(listener).stop();
+			this.listener.remove(listener);
+		}
+	}
+	
+	
 
 }
