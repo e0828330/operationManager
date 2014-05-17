@@ -11,6 +11,10 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMQConfig {
+	
+
+	public static final String GEORESOLVER_Q = "geoResolverQueue";
+	public static final String NEWSBEEPER_Q = "newsBeeperQueue";
 
 	@Bean
 	public ConnectionFactory connectionFactory() {
@@ -32,12 +36,12 @@ public class RabbitMQConfig {
 
 	@Bean
 	public Queue geoResolverQueue() {
-		return new Queue("geoResolverQueue", true);
+		return new Queue(GEORESOLVER_Q, true);
 	}
 
 	@Bean
 	public Queue newsBeeperQueue() {
-		return new Queue("newsBeeperQueue", true);
+		return new Queue(NEWSBEEPER_Q, true);
 	}
 	
 }

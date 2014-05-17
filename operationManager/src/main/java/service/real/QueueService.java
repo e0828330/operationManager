@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import service.IQueueListener;
 import service.IQueueService;
+import config.RabbitMQConfig;
 
 @Service
 public class QueueService implements IQueueService {
@@ -26,17 +27,15 @@ public class QueueService implements IQueueService {
 
 	private HashMap<IQueueListener, SimpleMessageListenerContainer> listener = new HashMap<>();
 
-	public static final String GEORESOLVER_Q = "geoResolverQueue";
-	public static final String NEWSBEEPER_Q = "newsBeeperQueue";
 
 	@Override
 	public void sendToGeoResolver(OPSlot slot) {
-		rabbitTemplate.convertAndSend(GEORESOLVER_Q, slot);
+		rabbitTemplate.convertAndSend(RabbitMQConfig.GEORESOLVER_Q, slot);
 	}
 
 	@Override
 	public void sendToNewsBeeper(Notification notification) {
-		rabbitTemplate.convertAndSend(NEWSBEEPER_Q, notification);
+		rabbitTemplate.convertAndSend(RabbitMQConfig.NEWSBEEPER_Q, notification);
 
 	}
 

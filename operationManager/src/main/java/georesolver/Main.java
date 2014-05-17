@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import service.IOPSlotService;
 import service.IQueueListener;
 import service.IQueueService;
-import service.real.QueueService;
+import config.RabbitMQConfig;
 
 @Component
 public class Main implements InitializingBean {
@@ -42,7 +42,7 @@ public class Main implements InitializingBean {
 	
 	private void registerListener() {
 		// Register georesolver async listener
-		queueService.registerListener(QueueService.GEORESOLVER_Q, new IQueueListener() {
+		queueService.registerListener(RabbitMQConfig.GEORESOLVER_Q, new IQueueListener() {
 			
 			@Override
 			public void handleMessage(Message m) {

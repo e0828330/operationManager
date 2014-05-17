@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 import service.IQueueListener;
 import service.IQueueService;
-import service.real.QueueService;
+import config.RabbitMQConfig;
 
 @Component
 public class Main {
@@ -26,7 +26,7 @@ public class Main {
 	
 	private void registerListener() {
 		// Register newsbeep async listener
-		queueService.registerListener(QueueService.NEWSBEEPER_Q, new IQueueListener() {
+		queueService.registerListener(RabbitMQConfig.NEWSBEEPER_Q, new IQueueListener() {
 			
 			@Override
 			public void handleMessage(Message m) {

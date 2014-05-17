@@ -1,7 +1,6 @@
 package georesolver;
 
 
-import static org.junit.Assert.*;
 import model.OPSlot;
 import model.dto.Message;
 
@@ -14,7 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import service.IQueueListener;
 import service.IQueueService;
-import service.real.QueueService;
+import config.RabbitMQConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/spring/application-config.xml" })
@@ -35,7 +34,7 @@ public class QueueServiceTest {
 	@Test
 	public void testService() {
 		final int worked = 0;
-		service.registerListener(QueueService.GEORESOLVER_Q, new IQueueListener() {
+		service.registerListener(RabbitMQConfig.GEORESOLVER_Q, new IQueueListener() {
 			
 			@Override
 			public void handleMessage(Message m) {
