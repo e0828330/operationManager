@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 import lombok.Data;
-import model.dto.Message;
 
 import org.springframework.data.annotation.Id;
 

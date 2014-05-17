@@ -3,7 +3,6 @@ package model.dto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import model.NotificationType;
-import model.OPSlot;
 
 @Data
 @EqualsAndHashCode(callSuper=true)
