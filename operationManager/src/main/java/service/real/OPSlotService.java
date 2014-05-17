@@ -124,13 +124,14 @@ public class OPSlotService implements IOPSlotService {
 			result = (List<OPSlot>) repo.findByFilterForPatient(((Patient) user).getId(), filterParams.getHospital(), filterParams.getDoctor(), filterParams.getStatus(), filterParams.getType(),
 							filterParams.getDateMin(), filterParams.getDateMax(), filterParams.getFromMinute(), filterParams.getToMinute(), pager);
 		case DOCTOR:
-			result = (List<OPSlot>) repo.findByFilterForDoctor(((Doctor) user).getId(), filter.getPatient(), filterParams.getHospital(), filterParams.getStatus(), filterParams.getType(),
+			result = (List<OPSlot>) repo.findByFilterForDoctor(((Doctor) user).getId(), filterParams.getPatient(), filterParams.getHospital(), filterParams.getStatus(), filterParams.getType(),
 							filterParams.getDateMin(), filterParams.getDateMax(), filterParams.getFromMinute(), filterParams.getToMinute(), pager);
 			break;
 		case HOSPITAL:
-			result = (List<OPSlot>) repo.findByFilterForHospital(((Hospital) user).getId(), filter.getPatient(), filterParams.getDoctor(), filterParams.getStatus(), filterParams.getType(),
+			result = (List<OPSlot>) repo.findByFilterForHospital(((Hospital) user).getId(), filterParams.getPatient(), filterParams.getDoctor(), filterParams.getStatus(), filterParams.getType(),
 					filterParams.getDateMin(), filterParams.getDateMax(), filterParams.getFromMinute(), filterParams.getToMinute(), pager);
 		}
+		
 
 		return result;
 	}

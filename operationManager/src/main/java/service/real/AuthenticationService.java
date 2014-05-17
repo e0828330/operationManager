@@ -45,19 +45,20 @@ public class AuthenticationService implements IAuthenticationService {
 			// First look for patient
 			Patient patient = this.patientRepo.findByUsernameAndPassword(username, Utils.computeHash(password));
 			if (patient != null && patient.getRole() != null) {
-				return patient;
+				return (User)patient;
 			}
 			
 			// Look for doctor
 			Doctor doctor = this.doctorRepo.findByUsernameAndPassword(username, Utils.computeHash(password));
 			if (doctor != null && doctor.getRole() != null) {
-				return doctor;
+				return (User)doctor;
 			}
 			
 			// Look for hospital
 			Hospital hospital = this.hsRepo.findByUsernameAndPassword(username, Utils.computeHash(password));
 			if (hospital != null && hospital.getRole() != null) {
-				return hospital;
+				hospital.setPosition(null);
+				return (User)hospital;
 			}
 			
 		} catch (NoSuchAlgorithmException e) {

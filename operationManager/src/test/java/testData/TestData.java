@@ -15,14 +15,11 @@ import model.OperationType;
 import model.Patient;
 import model.Role;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.geo.Point;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -47,9 +44,7 @@ public class TestData {
 	@Autowired 
 	private DoctorRepository doctorRepo;
 	
-	@Autowired 
-	private MongoTemplate mongoTemplate;
-	
+
 	@Test
 	public void testPatientLogin() throws NoSuchAlgorithmException {
 		Patient p = patientRepo.findByUsernameAndPassword("abesser", Utils.computeHash("test01"));
@@ -58,6 +53,11 @@ public class TestData {
 	}
 	
 	
+	/**
+	 * Adds some empty slots for a given hospital
+	 * 
+	 * @param hospital
+	 */
 	private void fillinSlots(Hospital hospital) {
 		Calendar calDate = Calendar.getInstance();
 		calDate.setTime(new Date());
@@ -93,12 +93,7 @@ public class TestData {
 	
 	@Before
 	public void generateTestDB() throws NoSuchAlgorithmException {
-		
-		mongoTemplate.remove(new Query(), "patient");
-		mongoTemplate.remove(new Query(), "hospital");
-		mongoTemplate.remove(new Query(), "doctor");
-		mongoTemplate.remove(new Query(), "oPSlot");
-		mongoTemplate.remove(new Query(), "opSlot");
+		cleanDataBase();
 		
 		// Patients
 		Patient p = new Patient();
@@ -108,6 +103,8 @@ public class TestData {
 		p.setPassword(Utils.computeHash("test01"));
 		p.setRole(Role.PATIENT);
 		patientRepo.save(p);
+		
+		System.err.println(patientRepo.findOne(p.getId()));
 
 		p = new Patient();
 		p.setFirstName("Peter");
@@ -220,10 +217,10 @@ public class TestData {
 		fillinSlots(h);
 	}
 	
-	@After
 	public void cleanDataBase() {
-		//mongoTemplate.remove(new Query(), "patient");
-		//mongoTemplate.remove(new Query(), "hospital");
-		//mongoTemplate.remove(new Query(), "doctor");
+		patientRepo.deleteAll();
+		doctorRepo.deleteAll();
+		hsRepo.deleteAll();
+		opSlotRepo.deleteAll();
 	}
 }

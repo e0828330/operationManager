@@ -103,7 +103,7 @@ public interface OPSlotRepository extends PagingAndSortingRepository<OPSlot, Str
 	 * @return
 	 */
 	@Query("{ $and : [ "
-			+ "{ 'patient.id' : ?0 }, "
+			+ "{ 'patient._id' : {$oid: ?0} }, "
 			+ "{'hospital.name' : {$regex : ?1, $options: 'i'} }, "
 			+ "{ $or : [ {'doctor' : { $exists: false } }, "
 			+ "	{'doctor.firstName' : {$regex : ?0, $options: 'i'} }, "
@@ -144,7 +144,7 @@ public interface OPSlotRepository extends PagingAndSortingRepository<OPSlot, Str
 	 * @return
 	 */
 	@Query(value="{ $and : [ "
-			+ "{ 'patient.id' : ?0 }, "
+			+ "{ 'patient._id' : {$oid: ?0} }, "
 			+ "{'hospital.name' : {$regex : ?1, $options: 'i'} }, "
 			+ "{ $or : [ {'doctor' : { $exists: false } }, "
 			+ "	{'doctor.firstName' : {$regex : ?0, $options: 'i'} }, "
@@ -185,7 +185,7 @@ public interface OPSlotRepository extends PagingAndSortingRepository<OPSlot, Str
 	 * @return
 	 */
 	@Query("{ $and : [ "
-			+ "{ 'doctor.id' : ?0 }, "
+			+ "{ 'doctor._id' : {$oid: ?0} }, "
 			+ "{ $or : [ {'patient' : { $exists: false } }, "
 			+ "	{'patient.firstName' : {$regex : ?1, $options: 'i'} }, "
 			+ "	{'patient.lastName' : {$regex : ?1, $options: 'i'} } ]"
@@ -227,7 +227,7 @@ public interface OPSlotRepository extends PagingAndSortingRepository<OPSlot, Str
 	 * @return
 	 */
 	@Query(value="{ $and : [ "
-			+ "{ 'doctor.id' : ?0 }, "
+			+ "{ 'doctor._id' : {$oid: ?0} }, "
 			+ "{ $or : [ {'patient' : { $exists: false } }, "
 			+ "	{'patient.firstName' : {$regex : ?1, $options: 'i'} }, "
 			+ "	{'patient.lastName' : {$regex : ?1, $options: 'i'} } ]"
@@ -267,7 +267,7 @@ public interface OPSlotRepository extends PagingAndSortingRepository<OPSlot, Str
 	 * @return
 	 */
 	@Query("{ $and : [ "
-			+ "{ 'hospital.id' : ?0 }, "
+			+ "{ 'hospital._id' : {$oid: ?0} }, "
 			+ "{ $or : [ {'patient' : { $exists: false } }, "
 			+ "	{'patient.firstName' : {$regex : ?1, $options: 'i'} }, "
 			+ "	{'patient.lastName' : {$regex : ?1, $options: 'i'} } ]"
@@ -311,7 +311,7 @@ public interface OPSlotRepository extends PagingAndSortingRepository<OPSlot, Str
 	 * @return
 	 */
 	@Query(value="{ $and : [ "
-			+ "{ 'hospital.id' : ?0 }, "
+			+ "{ 'hospital._id' : {$oid: ?0} }, "
 			+ "{ $or : [ {'patient' : { $exists: false } }, "
 			+ "	{'patient.firstName' : {$regex : ?1, $options: 'i'} }, "
 			+ "	{'patient.lastName' : {$regex : ?1, $options: 'i'} } ]"
