@@ -14,5 +14,5 @@ public class NotificationDTO extends Message {
 	
 	private NotificationType type;
 
-	private String userID;
+	private String recipientID;
 }
