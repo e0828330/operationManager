@@ -11,7 +11,7 @@ public class NotificationDTO extends Message {
 
 	private static final long serialVersionUID = 1L;
 
-	private OPSlot slot;
+	private String opSlotID;
 	
 	private NotificationType type;
 
