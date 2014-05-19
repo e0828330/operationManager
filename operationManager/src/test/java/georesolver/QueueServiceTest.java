@@ -56,25 +56,18 @@ public class QueueServiceTest {
 	
 	@Test (timeout = 2000)
 	public void testService() {
-		
+		OPSlotDTO dto = new OPSlotDTO();
 		s = new Semaphore(0);
+		service.sendToGeoResolver(dto);
 
 		service.registerListener(RabbitMQConfig.GEORESOLVER_Q, new IQueueListener() {
 			@Override
 			public void handleMessage(Message m) {
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					fail(e.getMessage());
-				}
 				value = true;
 				s.release();
 			}
 		});
 		
-		OPSlotDTO dto = new OPSlotDTO();
-
-		service.sendToGeoResolver(dto);
 		try {
 			s.acquire();
 		} catch (InterruptedException e) {

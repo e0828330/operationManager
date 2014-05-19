@@ -19,4 +19,6 @@ public class Notification implements Serializable {
 	private NotificationType type;
 
 	private User recipient;
+	
+	private String message;
 }
