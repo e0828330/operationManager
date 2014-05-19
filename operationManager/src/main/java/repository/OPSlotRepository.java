@@ -7,8 +7,10 @@ import model.OPSlot;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.stereotype.Repository;
 
-public interface OPSlotRepository extends PagingAndSortingRepository<OPSlot, String>{
+@Repository
+public interface OPSlotRepository extends OPSlotRepositoryCustom, PagingAndSortingRepository<OPSlot, String>{
 
 	/**
 	 * Returns all rows matching the given filter object and patientID

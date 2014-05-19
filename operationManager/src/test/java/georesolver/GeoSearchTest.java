@@ -2,61 +2,44 @@ package georesolver;
 
 import static org.junit.Assert.*;
 
-import java.util.List;
+import java.util.Calendar;
+import java.util.Date;
 
-import model.Hospital;
+import model.OperationType;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.geo.Distance;
 import org.springframework.data.mongodb.core.geo.Metrics;
 import org.springframework.data.mongodb.core.geo.Point;
-import org.springframework.data.mongodb.core.index.GeospatialIndex;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import repository.HospitalRepository;
+import repository.OPSlotRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/spring/application-config.xml" })
 public class GeoSearchTest {
-	@Autowired
-	private HospitalRepository repo;
 
 	@Autowired
-	MongoTemplate template;
-
-	private Hospital hospital;
-
-	@Before
-	public void setUp() {
-		template.indexOps(Hospital.class).ensureIndex(new GeospatialIndex("position"));
-		hospital = new Hospital();
-		hospital.setName("SMZ Ost");
-		hospital.setPosition(new Point(48.219011, 16.464193));
-		repo.save(hospital);
-	}
-
-	@After
-	public void tearDown() {
-		repo.delete(hospital);
-	}
+	private OPSlotRepository repo;
 
 	@Test
 	public void findNearShouldHit() {
-		// Wien - Mitte
-		List<Hospital> result = repo.findByPositionNear(new Point(48.2065, 16.384821), new Distance(10, Metrics.KILOMETERS));
-		assertTrue(result.contains(hospital));
+		// Wien - Mitte -  (48.2065, 16.384821)
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		cal.add(Calendar.YEAR, 1);
+		assertNotNull(repo.findBestInRange(new Point(48.2065, 16.384821), new Distance(10, Metrics.KILOMETERS), OperationType.cardio, new Date(), cal.getTime()));
 	}
 
 	@Test
 	public void findNearShouldNotHit() {
-		// St. Poelten
-		List<Hospital> result = repo.findByPositionNear(new Point(48.203609, 15.637509), new Distance(10, Metrics.KILOMETERS));
-		assertFalse(result.contains(hospital));
+		// Rom -- (41.865586, 12.476183)
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		cal.add(Calendar.YEAR, 1);
+		assertNull(repo.findBestInRange(new Point(41.865586, 12.476183), new Distance(10, Metrics.KILOMETERS), OperationType.cardio, new Date(), cal.getTime()));
 	}
 }

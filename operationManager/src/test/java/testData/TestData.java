@@ -19,7 +19,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.geo.Point;
+import org.springframework.data.mongodb.core.index.GeospatialIndex;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -43,6 +45,10 @@ public class TestData {
 	
 	@Autowired 
 	private DoctorRepository doctorRepo;
+	
+	@Autowired
+	private MongoTemplate template;
+
 	
 
 	@Test
@@ -215,6 +221,9 @@ public class TestData {
 		h.setPosition(new Point(48.243323, 16.347580));
 		hsRepo.save(h);
 		fillinSlots(h);
+		
+		template.indexOps(Hospital.class).ensureIndex(new GeospatialIndex("position"));
+		template.indexOps(OPSlot.class).ensureIndex(new GeospatialIndex("hospital.position"));
 	}
 	
 	public void cleanDataBase() {
