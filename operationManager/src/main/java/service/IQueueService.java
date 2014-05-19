@@ -1,7 +1,7 @@
 package service;
 
-import model.Notification;
-import model.OPSlot;
+import model.dto.NotificationDTO;
+import model.dto.OPSlotDTO;
 
 public interface IQueueService {
 
@@ -10,14 +10,14 @@ public interface IQueueService {
 	 * 
 	 * @param slot
 	 */
-	public void sendToGeoResolver(OPSlot slot);
+	public void sendToGeoResolver(OPSlotDTO slot);
 
 	/**
 	 * Sends the resulting opslot to the newsbeeper queue
 	 * 
 	 * @param slot
 	 */
-	public void sendToNewsBeeper(Notification notification);
+	public void sendToNewsBeeper(NotificationDTO notification);
 
 	/**
 	 * Registers an async listener which receives messages from the queue

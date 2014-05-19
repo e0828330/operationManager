@@ -2,8 +2,8 @@ package service.real;
 
 import java.util.HashMap;
 
-import model.Notification;
-import model.OPSlot;
+import model.dto.NotificationDTO;
+import model.dto.OPSlotDTO;
 
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -29,12 +29,12 @@ public class QueueService implements IQueueService {
 
 
 	@Override
-	public void sendToGeoResolver(OPSlot slot) {
+	public void sendToGeoResolver(OPSlotDTO slot) {
 		rabbitTemplate.convertAndSend(RabbitMQConfig.GEORESOLVER_Q, slot);
 	}
 
 	@Override
-	public void sendToNewsBeeper(Notification notification) {
+	public void sendToNewsBeeper(NotificationDTO notification) {
 		rabbitTemplate.convertAndSend(RabbitMQConfig.NEWSBEEPER_Q, notification);
 
 	}
