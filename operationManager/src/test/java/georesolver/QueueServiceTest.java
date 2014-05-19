@@ -71,7 +71,9 @@ public class QueueServiceTest {
 				s.release();
 			}
 		});
-		OPSlotDTO dto = new OPSlotDTO(slot, 40);
+		
+		OPSlotDTO dto = new OPSlotDTO();
+
 		service.sendToGeoResolver(dto);
 		try {
 			s.acquire();
