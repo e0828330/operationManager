@@ -4,7 +4,6 @@ import java.util.Date;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import model.OPSlot;
 import model.OperationType;
 
 @Data

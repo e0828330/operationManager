@@ -2,10 +2,11 @@ package service.real;
 
 import java.util.List;
 
+import model.Patient;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import model.Patient;
 import repository.PatientRepository;
 import service.IPatientService;
 
@@ -23,6 +24,11 @@ public class PatientService implements IPatientService {
 	@Override
 	public List<Patient> getPatients(String keyword) {
 		return patientRepo.findByKeyword(keyword);
+	}
+
+	@Override
+	public Patient getById(String id) {
+		return patientRepo.findOne(id);
 	}
 
 }

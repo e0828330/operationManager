@@ -5,9 +5,18 @@ import java.util.List;
 import model.Patient;
 
 public interface IPatientService {
+
+	/**
+	 * Returns the patient with the given id
+	 *
+	 * @param id
+	 * @return
+	 */
+	public Patient getById(String id);
+
 	/**
 	 * Returns the list of patients
-	 * 
+	 *
 	 * @return
 	 */
 	public List<Patient> getPatients();
