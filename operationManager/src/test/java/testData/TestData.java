@@ -45,11 +45,11 @@ public class TestData {
 	
 	@Autowired 
 	private DoctorRepository doctorRepo;
-	
+
 	@Autowired
 	private MongoTemplate template;
 
-	
+
 
 	@Test
 	public void testPatientLogin() throws NoSuchAlgorithmException {
@@ -221,11 +221,11 @@ public class TestData {
 		h.setPosition(new Point(48.243323, 16.347580));
 		hsRepo.save(h);
 		fillinSlots(h);
-		
+
 		template.indexOps(Hospital.class).ensureIndex(new GeospatialIndex("position"));
 		template.indexOps(OPSlot.class).ensureIndex(new GeospatialIndex("hospital.position"));
 	}
-	
+
 	public void cleanDataBase() {
 		patientRepo.deleteAll();
 		doctorRepo.deleteAll();

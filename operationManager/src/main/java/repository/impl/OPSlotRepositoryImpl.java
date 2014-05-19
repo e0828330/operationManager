@@ -36,7 +36,7 @@ public class OPSlotRepositoryImpl implements OPSlotRepositoryCustom {
 															Criteria.where("status").is(OperationStatus.values()[OperationStatus.free.ordinal()]),
 															Criteria.where("date").gte(from).lt(to));
 		query.addCriteria(queryCriteria);
-		
+
 
 		/* Do the geo query */
 		NearQuery nearQuery = NearQuery.near(point).spherical(true).maxDistance(distance).query(query);
@@ -46,7 +46,7 @@ public class OPSlotRepositoryImpl implements OPSlotRepositoryCustom {
 		if (rawResults.getContent().size() == 0) {
 			return null;
 		}
-		
+
 		/* Sort results by date if they have the same distance */
 		List<GeoResult<OPSlot>> results = new ArrayList<>(rawResults.getContent());
 		Collections.sort(results, new Comparator<GeoResult<OPSlot>>() {

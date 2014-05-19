@@ -20,7 +20,7 @@ public class MongoConfig extends AbstractMongoConfiguration {
 
 	@Override
 	public Mongo mongo() throws Exception {
-		
+
 
 		// Workaround for enum bug
 		// See: https://jira.mongodb.org/browse/JAVA-268
@@ -31,7 +31,7 @@ public class MongoConfig extends AbstractMongoConfiguration {
 				return o.toString();
 			}
 		});
-		
+
 		return new MongoClient();
 	}
 

@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.core.geo.Point;
 public interface OPSlotRepositoryCustom {
 	/**
 	 * Returns the best (as in nearest in time and position) for the given parameters
-	 * 
+	 *
 	 * @param point
 	 * @param distance
 	 * @param from
