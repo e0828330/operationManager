@@ -39,7 +39,7 @@ public class Main implements InitializingBean {
 	}
 	
 	public static void main(String[] args) {
-		context = new ClassPathXmlApplicationContext("/spring/test-config.xml");
+		context = new ClassPathXmlApplicationContext("/spring/application-config.xml");
 		Main prog = new Main();
 		AutowireCapableBeanFactory factory = context.getAutowireCapableBeanFactory();
 		factory.autowireBeanProperties(prog, AutowireCapableBeanFactory.AUTOWIRE_BY_NAME, false);
