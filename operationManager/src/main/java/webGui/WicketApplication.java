@@ -72,7 +72,7 @@ public class WicketApplication extends AuthenticatedWebApplication {
 		getResourceSettings().setResourceStreamLocator(new CustomResourceStreamLocator());
 		
 		//mount pages
-		mountPage("/", StartPage.class);
+		//mountPage("/", StartPage.class);
 		mountPage("/notifications", NotificationsPage.class);
 	}
 

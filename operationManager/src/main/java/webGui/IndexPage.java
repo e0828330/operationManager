@@ -11,12 +11,14 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.protocol.http.WebSession;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import session.OperationManagerWebSession;
 import utils.TemplateConstants;
+import webGui.notification.NotificationsPage;
 
 public class IndexPage extends WebPage {
 	
@@ -80,11 +82,13 @@ public class IndexPage extends WebPage {
 				Hospital h = (Hospital) session.getActiveUser();
 				logoutForm.add(new Label("wloginrole", h.getName()));
 			}
+			logoutForm.add(new BookmarkablePageLink<>("notificationsLink", NotificationsPage.class));
+			logoutForm.add(new BookmarkablePageLink<>("startPageLink", StartPage.class));
 			
 		}
 		else {
 			loginForm.setVisible(true);
-			logoutForm.setVisible(false);			
+			logoutForm.setVisible(false);
 		}
 		
 		add(new Label(TemplateConstants.PAGE_TITLE, this.defaultTitle));
