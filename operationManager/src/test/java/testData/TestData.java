@@ -1,7 +1,7 @@
 package testData;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
@@ -19,9 +19,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.geo.Point;
-import org.springframework.data.mongodb.core.index.GeospatialIndex;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -46,18 +44,13 @@ public class TestData {
 	@Autowired 
 	private DoctorRepository doctorRepo;
 
-	@Autowired
-	private MongoTemplate template;
-
-
 
 	@Test
 	public void testPatientLogin() throws NoSuchAlgorithmException {
 		Patient p = patientRepo.findByUsernameAndPassword("abesser", Utils.computeHash("test01"));
-		assertTrue(p != null);
+		assertNotNull(p);
 		assertEquals(p.getLastName(), "Abesser");
 	}
-	
 	
 	/**
 	 * Adds some empty slots for a given hospital
@@ -109,8 +102,6 @@ public class TestData {
 		p.setPassword(Utils.computeHash("test01"));
 		p.setRole(Role.PATIENT);
 		patientRepo.save(p);
-		
-		System.err.println(patientRepo.findOne(p.getId()));
 
 		p = new Patient();
 		p.setFirstName("Peter");
@@ -221,9 +212,6 @@ public class TestData {
 		h.setPosition(new Point(48.243323, 16.347580));
 		hsRepo.save(h);
 		fillinSlots(h);
-
-		template.indexOps(Hospital.class).ensureIndex(new GeospatialIndex("position"));
-		template.indexOps(OPSlot.class).ensureIndex(new GeospatialIndex("hospital.position"));
 	}
 
 	public void cleanDataBase() {

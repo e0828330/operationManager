@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.geo.Point;
+import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 
 @Data
 @EqualsAndHashCode(callSuper=true)
@@ -18,5 +19,6 @@ public class Hospital extends User implements Serializable {
 
 	private String name;
 	
+	@GeoSpatialIndexed
 	private Point position;
 }
