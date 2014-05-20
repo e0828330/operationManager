@@ -9,6 +9,7 @@ import model.NotificationType;
 import model.Role;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.core.util.lang.PropertyResolver;
@@ -68,8 +69,13 @@ public class NotificationsPage extends IndexPage {
 			
 		};
 		
-		add(new WebMarkupContainer("emptyListContainer").setVisible(notificationsModel.getObject().isEmpty()));
+		MarkupContainer container = new WebMarkupContainer("emptyListContainer");
 		
+		add(container.setVisible(notificationsModel.getObject().isEmpty()));
+		
+		if (container.isVisible() == false) {
+			add(new WebMarkupContainer("notificationListHeader"));
+		}
 
 		
 		add(new ListView<Notification>("notificationList", notificationsModel) {

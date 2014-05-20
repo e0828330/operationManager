@@ -5,8 +5,15 @@
 	<body>
 		<wicket:extend>
 			<div wicket:id="emptyListContainer"><wicket:message key="emptyList" /></div>
+			<div wicket:id="notificationListHeader" style="background-color: #ddd; color: black; font-weight: 700; margin-top: 20px;">
+				<div style="width: 96%; min-height: 20px; line-height: 20px; border-bottom: 1px dashed #c0c0c0; padding: 0 2% 0 2%;">
+					<div style="width: 20%; float: left;">Datum</div>
+					<div style="width: 60%; float: left;">Nachricht</div>
+					<div style="width: 20%; float: left;">Status</div>
+				</div>
+			</div>			
 			<div wicket:id="notificationList">
-				<div style="width: 96%; min-height: 10px; border-bottom: 1px dashed #c0c0c0; padding: 2%;">
+				<div style="width: 96%; min-height: 20px; border-bottom: 1px dashed #c0c0c0; padding: 0 2% 0 2%">
 					<div wicket:id="timestamp" style="width: 20%; float: left;" />
 					<div wicket:id="message" style="width: 60%; float: left;" />
 					<div wicket:id="type" style="width: 20%; float: left;" />
