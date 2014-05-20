@@ -10,9 +10,13 @@ public class StartPage extends IndexPage {
 	
 	public StartPage(final PageParameters parameters) {
 		super(parameters);
-		add(new OverviewPanel("overview"));
-
 	}
 	
+	@Override
+	protected void onInitialize() {
+		super.onInitialize();
+
+		add(new OverviewPanel("overview"));
+	}
 
 }

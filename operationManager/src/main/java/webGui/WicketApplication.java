@@ -16,6 +16,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import session.OperationManagerWebSession;
+import webGui.notification.NotificationsPage;
 
 @Configuration
 @ComponentScan
@@ -69,6 +70,10 @@ public class WicketApplication extends AuthenticatedWebApplication {
 		this.getMarkupSettings().setStripWicketTags(true);
 		getComponentInstantiationListeners().add(new SpringComponentInjector(this));
 		getResourceSettings().setResourceStreamLocator(new CustomResourceStreamLocator());
+		
+		//mount pages
+		//mountPage("/", StartPage.class);
+		mountPage("/notifications", NotificationsPage.class);
 	}
 
 	@Override

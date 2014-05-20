@@ -50,11 +50,14 @@
 
 				</div>
 			</form>
+			
 			<form wicket:id="logoutForm">
-				<div style="display: table; margin: 15px 2% 0 0; float: right;">
+				<div style="display: table; margin: 15px 2% 0 0; float: right; font-size: 0.8em;">
 
-					<div style="display: table-cell;">
-						<span wicket:id="wloginrole" style="margin-right: 10px;"></span>
+					<div style="display: table-cell; text-align: left; width: 80%;">
+						Account von <span wicket:id="wloginrole" style="margin-right: 10px;"></span> |
+						<a href="#" wicket:id="startPageLink" style="margin: 0 10px 0 10px;">Listen</a> |
+						<a href="#" wicket:id="notificationsLink" style="margin: 0 10px 0 10px;">Notifications</a>
 					</div>
 					<div style="display: table-cell;">
 						<input type="submit" class="login" value="Logout" />
