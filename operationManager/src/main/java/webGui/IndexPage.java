@@ -27,7 +27,7 @@ public class IndexPage extends WebPage {
 	public IndexPage(final PageParameters parameters) {		
 		final OperationManagerWebSession session = (OperationManagerWebSession) WebSession.get();
 		
-		if (parameters != null && !parameters.isEmpty() &&  parameters.get("authenticated") != null) {	
+		if (parameters != null && !parameters.isEmpty() && !parameters.get("authenticated").isEmpty()) {	
 			if (parameters.get("authenticated").toString().equals("success")) {
 				add(new Label("authentication_failure").setVisible(false));
 			}

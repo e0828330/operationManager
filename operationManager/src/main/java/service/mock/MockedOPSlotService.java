@@ -48,7 +48,7 @@ public class MockedOPSlotService {
 		return mock;
 	}
 	
-	private static OPSlot getMockedOPSlot(OperationType type, String hospitalName, String doctorName, String patientFirstName, String patientLastName, OperationStatus status) {
+	public static OPSlot getMockedOPSlot(OperationType type, String hospitalName, String doctorName, String patientFirstName, String patientLastName, OperationStatus status) {
 		Hospital hospital = null;
 		Doctor doctor = null;
 		Patient patient = null;
