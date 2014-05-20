@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import model.Hospital;
+import model.Notification;
 import model.OPSlot;
 import model.Patient;
 import model.Role;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import service.IAuthenticationService;
+import service.INotificationService;
 import service.IOPSlotService;
 import service.IPatientService;
 import utils.Utils;
@@ -36,6 +38,10 @@ public class RestServiceController {
 	
 	@Autowired
 	private IPatientService patientService;
+	
+	@Autowired 
+	private INotificationService notificationService;
+	
 	
 	@ExceptionHandler(RestServiceException.class)
 	/**
@@ -203,5 +209,24 @@ public class RestServiceController {
 		}
 
 		return patientService.getPatients(keyword);
+	}
+	
+	@RequestMapping("/rest/listNotifications/")
+	/**
+	 * Returns a list of notifications for the user who's credentials are given
+	 * 
+	 * @param username
+	 * @param password
+	 * @return
+	 * @throws RestServiceException
+	 */
+	public @ResponseBody List<Notification> listNotifications(@RequestParam(value="username", required=true) String username,
+			   												  @RequestParam(value="password", required=true) String password) throws RestServiceException {
+		User user = authenticationService.authenticate(username, password);
+		if (user.getRole().equals(Role.DEFAULT)) {
+			throw new RestServiceException("Invalid username or password!");
+		}
+		
+		return notificationService.getForUser(user);
 	}
 }
