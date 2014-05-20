@@ -44,10 +44,10 @@ public class Main implements InitializingBean {
 		AutowireCapableBeanFactory factory = context.getAutowireCapableBeanFactory();
 		factory.autowireBeanProperties(prog, AutowireCapableBeanFactory.AUTOWIRE_BY_NAME, false);
 		factory.initializeBean(prog, "georesolver");
-		prog.run();
+		prog.listenOnQueue();
 	}
 
-	private void registerListener() {
+	private void listenOnQueue() {
 		queueService.registerListener(RabbitMQConfig.GEORESOLVER_Q, new IQueueListener() {
 			@Override
 			public void handleMessage(Message m) {
@@ -70,9 +70,5 @@ public class Main implements InitializingBean {
 				queueService.sendToNewsBeeper(notification);
 			}
 		});
-	}
-
-	void run() {
-		registerListener();
 	}
 }
