@@ -20,5 +20,5 @@ public class Hospital extends User implements Serializable {
 	private String name;
 	
 	@GeoSpatialIndexed
-	private Point position;
+	private transient Point position;
 }

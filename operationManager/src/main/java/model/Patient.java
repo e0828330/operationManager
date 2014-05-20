@@ -22,5 +22,5 @@ public class Patient extends User implements Serializable {
 	private String firstName;
 	private String lastName;
 	
-	private Point position;
+	private transient Point position;
 }
