@@ -1,21 +1,32 @@
 package webGui.notification;
 
+import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
 import model.Notification;
+import model.NotificationType;
 import model.Role;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.core.util.lang.PropertyResolver;
 import org.apache.wicket.datetime.PatternDateConverter;
 import org.apache.wicket.datetime.markup.html.basic.DateLabel;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.EnumLabel;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.EnumChoiceRenderer;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.protocol.http.WebSession;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -59,6 +70,8 @@ public class NotificationsPage extends IndexPage {
 		
 		add(new WebMarkupContainer("emptyListContainer").setVisible(notificationsModel.getObject().isEmpty()));
 		
+
+		
 		add(new ListView<Notification>("notificationList", notificationsModel) {
 			private static final long serialVersionUID = 1L;
 			
@@ -72,10 +85,13 @@ public class NotificationsPage extends IndexPage {
 			@Override
 			protected void populateItem(ListItem<Notification> item) {
 				item.add(new DateLabel("timestamp", new PatternDateConverter("dd.MM.YY HH:mm:ss", true)));
-				item.add(new Label("text"));
+				item.add(new Label("message"));
+				item.add((new Label("type", new ResourceModel(item.getModelObject().getType().name()))).setEscapeModelStrings(false));
+	
+				
 			}
-			
 		});
 	}
-
+		
 }
+
