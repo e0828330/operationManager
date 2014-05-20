@@ -37,7 +37,6 @@ public class OPSlotRepositoryImpl implements OPSlotRepositoryCustom {
 															Criteria.where("date").gte(from).lt(to));
 		query.addCriteria(queryCriteria);
 
-
 		/* Do the geo query */
 		NearQuery nearQuery = NearQuery.near(point).spherical(true).maxDistance(distance).query(query);
 		GeoResults<OPSlot> rawResults = ((MongoOperations) template).geoNear(nearQuery, OPSlot.class);
