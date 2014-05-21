@@ -24,6 +24,9 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataT
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.ISortableDataProvider;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
+import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.MarkupStream;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.EnumLabel;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
@@ -31,12 +34,14 @@ import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.EnumChoiceRenderer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.time.Duration;
 
@@ -94,7 +99,7 @@ public class OverviewPanel extends Panel {
 		add(table);
 	}
 
-	private List<IColumn<OPSlot, String>> getColumns(OperationManagerWebSession session) {
+	private List<IColumn<OPSlot, String>> getColumns(final OperationManagerWebSession session) {
 		List<IColumn<OPSlot, String>> columns = new ArrayList<IColumn<OPSlot, String>>();
 
 		//Date
@@ -246,6 +251,66 @@ public class OverviewPanel extends Panel {
 				protected String getColumnPropertyName() {
 					return "status";
 				}
+			});
+		}
+		//remove link
+		if (session.getActiveRole() == Role.DOCTOR || session.getActiveRole() == Role.HOSPITAL) {
+			columns.add(new IColumn<OPSlot, String>() {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public void populateItem(Item<ICellPopulator<OPSlot>> cellItem,
+						String componentId, final IModel<OPSlot> rowModel) {
+					cellItem.add(new Link(componentId) {
+						private static final long serialVersionUID = 1L;
+						
+						@Override
+						protected void onComponentTag(ComponentTag tag) {
+							//cellItem is usually a div, so we change it to a link
+							tag.setName("a");
+							super.onComponentTag(tag);
+						}
+						
+						@Override
+						public IModel<?> getBody() {
+							return new StringResourceModel(session.getActiveRole() == Role.DOCTOR ? "storno" : "delete", OverviewPanel.this, null, (Object[]) null);
+						}
+						
+						@Override
+						public void onComponentTagBody(
+								MarkupStream markupStream, ComponentTag openTag) {
+							super.onComponentTagBody(markupStream, openTag);
+						}
+
+						@Override
+						public void onClick() {
+							//delete OPSlot or reservation (use rowModel.getObject())
+						}
+						
+					});
+				}
+
+				@Override
+				public void detach() {
+					
+				}
+
+				@Override
+				public Component getHeader(String componentId) {
+					//add invisible dummy container
+					return new WebMarkupContainer(componentId).setVisible(false);
+				}
+
+				@Override
+				public String getSortProperty() {
+					return null;
+				}
+
+				@Override
+				public boolean isSortable() {
+					return false;
+				}
+				
 			});
 		}
 		
