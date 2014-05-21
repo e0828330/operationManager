@@ -34,22 +34,30 @@
 							<td><wicket:message key="type" /></td>
 							<td><select wicket:id="type" /></td>
 						</tr>
-						<tr>
-							<td><wicket:message key="hospital" /></td>
-							<td><input type="text" wicket:id="hospital" /></td>
-						</tr>
-						<tr>
-							<td><wicket:message key="doctor" /></td>
-							<td><input type="text" wicket:id="doctor" /></td>
-						</tr>
-						<tr>
-							<td><wicket:message key="patient" /></td>
-							<td><input type="text" wicket:id="patient" /></td>
-						</tr>
-						<tr>
-							<td><wicket:message key="status" /></td>
-							<td><select wicket:id="status" /></td>
-						</tr>
+						<wicket:enclosure>
+							<tr>
+								<td><wicket:message key="hospital" /></td>
+								<td><input type="text" wicket:id="hospital" /></td>
+							</tr>
+						</wicket:enclosure>
+						<wicket:enclosure>
+							<tr>
+								<td><wicket:message key="doctor" /></td>
+								<td><input type="text" wicket:id="doctor" /></td>
+							</tr>
+						</wicket:enclosure>
+						<wicket:enclosure>
+							<tr>
+								<td><wicket:message key="patient" /></td>
+								<td><input type="text" wicket:id="patient" /></td>
+							</tr>
+						</wicket:enclosure>
+						<wicket:enclosure>
+							<tr>
+								<td><wicket:message key="status" /></td>
+								<td><select wicket:id="status" /></td>
+							</tr>
+						</wicket:enclosure>
 						<tr>
 							<td colspan="2"><input type="submit"
 								wicket:id="filterButton" style="float: right;" /></td>

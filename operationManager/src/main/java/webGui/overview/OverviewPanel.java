@@ -66,6 +66,7 @@ public class OverviewPanel extends Panel {
 	@Override
 	protected void onInitialize() {
 		super.onInitialize();
+		OperationManagerWebSession session = (OperationManagerWebSession) getSession();
 		
 		Form<OPSlotFilter> filterForm = new Form<OPSlotFilter>("filterForm", filterModel);
 		
@@ -75,28 +76,28 @@ public class OverviewPanel extends Panel {
 		filterForm.add(new DatePicker("date", Locale.GERMAN));
 		filterForm.add(new TimePicker("from", Locale.GERMAN));
 		filterForm.add(new TimePicker("to", Locale.GERMAN));
-		filterForm.add(new TextField<String>("patient"));
-		filterForm.add(new TextField<String>("hospital"));
-		filterForm.add(new TextField<String>("doctor"));
+		filterForm.add(new TextField<String>("patient").setVisible(isPatientShown(session)));
+		filterForm.add(new TextField<String>("hospital").setVisible(isHospitalShown(session)));
+		filterForm.add(new TextField<String>("doctor").setVisible(isDoctorShown(session)));
 		filterForm.add(new DropDownChoice<OperationType>("type", Arrays.asList(OperationType.values()),
 				new EnumChoiceRenderer<OperationType>(OverviewPanel.this)));
 		filterForm.add(new DropDownChoice<OperationStatus>("status", Arrays.asList(OperationStatus.values()),
-				new EnumChoiceRenderer<OperationStatus>(OverviewPanel.this)));
+				new EnumChoiceRenderer<OperationStatus>(OverviewPanel.this)).setVisible(isStatusShown(session)));
 		
 		filterForm.add(new Button("filterButton", new ResourceModel("filterButton")));
 		
 		add(filterForm);
 		
-		table = new DefaultDataTable<OPSlot, String>("overviewTable", getColumns(), getDataProvider(), 10);
+		table = new DefaultDataTable<OPSlot, String>("overviewTable", getColumns(session), getDataProvider(), 10);
 		table.add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(5)));
 
 		add(table);
 	}
 
-	private List<IColumn<OPSlot, String>> getColumns() {
+	private List<IColumn<OPSlot, String>> getColumns(OperationManagerWebSession session) {
 		List<IColumn<OPSlot, String>> columns = new ArrayList<IColumn<OPSlot, String>>();
-		OperationManagerWebSession session = (OperationManagerWebSession) getSession();
 
+		//Date
 		columns.add(new OPSlotColumn() {
 			private static final long serialVersionUID = 1L;
 
@@ -114,6 +115,7 @@ public class OverviewPanel extends Panel {
 			}
 			
 		});
+		//From
 		columns.add(new OPSlotColumn() {
 			private static final long serialVersionUID = 1L;
 
@@ -131,6 +133,7 @@ public class OverviewPanel extends Panel {
 			}
 			
 		});
+		//To
 		columns.add(new OPSlotColumn() {
 			private static final long serialVersionUID = 1L;
 
@@ -148,6 +151,7 @@ public class OverviewPanel extends Panel {
 			}
 			
 		});
+		//Type
 		columns.add(new OPSlotColumn() {
 			private static final long serialVersionUID = 1L;
 
@@ -165,7 +169,8 @@ public class OverviewPanel extends Panel {
 			}
 			
 		});
-		if (session.getActiveRole() != Role.HOSPITAL) {
+		//Hospital
+		if (isHospitalShown(session)) {
 			columns.add(new OPSlotColumn() {
 				private static final long serialVersionUID = 1L;
 	
@@ -184,7 +189,8 @@ public class OverviewPanel extends Panel {
 				
 			});
 		}
-		if (session.getActiveRole() != Role.DOCTOR) {
+		//Doctor
+		if (isDoctorShown(session)) {
 			columns.add(new OPSlotColumn() {
 				private static final long serialVersionUID = 1L;
 	
@@ -203,7 +209,8 @@ public class OverviewPanel extends Panel {
 				
 			});
 		}
-		if (session.getActiveRole() == Role.DOCTOR || session.getActiveRole() == Role.HOSPITAL) {
+		//Patient
+		if (isPatientShown(session)) {
 			columns.add(new OPSlotColumn() {
 				private static final long serialVersionUID = 1L;
 	
@@ -222,7 +229,8 @@ public class OverviewPanel extends Panel {
 				
 			});
 		}
-		if (session.getActiveRole() == Role.DEFAULT) {
+		//Status
+		if (isStatusShown(session)) {
 			columns.add(new OPSlotColumn() {
 				private static final long serialVersionUID = 1L;
 	
@@ -242,6 +250,22 @@ public class OverviewPanel extends Panel {
 		}
 		
 		return columns;
+	}
+	
+	private boolean isHospitalShown(OperationManagerWebSession session) {
+		return session.getActiveRole() != Role.HOSPITAL;
+	}
+	
+	private boolean isDoctorShown(OperationManagerWebSession session) {
+		return session.getActiveRole() != Role.DOCTOR;
+	}
+	
+	private boolean isPatientShown(OperationManagerWebSession session) {
+		return session.getActiveRole() == Role.DOCTOR || session.getActiveRole() == Role.HOSPITAL;
+	}
+	
+	private boolean isStatusShown(OperationManagerWebSession session) {
+		return session.getActiveRole() == Role.DEFAULT;
 	}
 	
 	private ISortableDataProvider<OPSlot, String> getDataProvider() {
