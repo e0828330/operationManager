@@ -78,6 +78,7 @@ public class CreateOPSlotPage extends IndexPage {
 		form.add(new SubmitLink("save"));
 		
 		form.add(new AbstractFormValidator() {
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public FormComponent<?>[] getDependentFormComponents() {
