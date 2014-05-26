@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.3-strict.dtd"
+	xml:lang="en" lang="en">
+	<body>
+		<wicket:extend>
+		<div wicket:id="feedback" />
+			<form wicket:id="form">
+				<table>
+					<tr>
+						<td><wicket:message key="date" /></td>
+						<td><input type="text" wicket:id="date" /></td>
+					</tr>
+					<tr>
+						<td><wicket:message key="from" /></td>
+						<td><input type="text" wicket:id="from" /></td>
+					</tr>
+					<tr>
+						<td><wicket:message key="to" /></td>
+						<td><input type="text" wicket:id="to" /></td>
+					</tr>
+					<tr>
+						<td colspan="2"><input type="submit" wicket:id="save" wicket:message="value:save" /></td>
+					</tr>
+				</table>
+			</form>
+		</wicket:extend>
+	</body>
+</html>
