@@ -215,7 +215,11 @@
 			<artifactId>spring-service-connector</artifactId>
 			<version>0.9.5</version>
 		</dependency>
-
+		<dependency>
+		  <groupId>org.cloudfoundry</groupId>
+		  <artifactId>cloudfoundry-runtime</artifactId>
+		  <version>0.8.5</version>
+		</dependency>
 	</dependencies>
 
 	<repositories>
@@ -231,6 +235,10 @@
 			<id>org.springframework.maven.milestone</id>
 			<name>Spring Maven Milestone Repository</name>
 			<url>http://repo.spring.io/milestone</url>
+		</repository>
+		<repository>
+			<id>opencast-public</id>
+			<url>http://repository.opencastproject.org/nexus/content/repositories/public/</url>
 		</repository>
 	</repositories>
 
