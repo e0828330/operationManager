@@ -1,11 +1,17 @@
 package webGui;
 
+import java.util.Arrays;
 import java.util.Locale;
 
+import model.Hospital;
 import model.OPSlot;
+import model.OperationStatus;
+import model.OperationType;
 import model.Role;
 
 import org.apache.wicket.RestartResponseException;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.EnumChoiceRenderer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.SubmitLink;
@@ -49,7 +55,14 @@ public class CreateOPSlotPage extends IndexPage {
 
 			@Override
 			protected OPSlot load() {
+				OperationManagerWebSession session = (OperationManagerWebSession) WebSession.get();
+				Hospital hospital = (Hospital) session.getActiveUser();
+				
 				OPSlot slot = new OPSlot();
+				
+				//set fixed values
+				slot.setHospital(hospital);
+				slot.setStatus(OperationStatus.free);
 				
 				return slot;
 			}
@@ -72,6 +85,9 @@ public class CreateOPSlotPage extends IndexPage {
 		final TimePicker from = new TimePicker("from", Locale.GERMAN);
 		final TimePicker to = new TimePicker("to", Locale.GERMAN);
 
+
+		form.add(new DropDownChoice<OperationType>("type", Arrays.asList(OperationType.values()),
+				new EnumChoiceRenderer<OperationType>(CreateOPSlotPage.this)));
 		form.add(new DatePicker("date", Locale.GERMAN).setRequired(true));
 		form.add(from.setRequired(true));
 		form.add(to.setRequired(true));
