@@ -21,12 +21,16 @@ import org.springframework.stereotype.Service;
 
 import repository.OPSlotRepository;
 import service.IOPSlotService;
+import service.IQueueService;
 
 @Service
 public class OPSlotService implements IOPSlotService {
 
 	@Autowired
 	private OPSlotRepository repo;
+	
+	@Autowired
+	private IQueueService queueService;
 
 	@Data
 	/**
@@ -170,6 +174,6 @@ public class OPSlotService implements IOPSlotService {
 
 	@Override
 	public void reserveOPSlot(OPSlotDTO slot) {
-		// TODO Auto-generated method stub
+		queueService.sendToGeoResolver(slot);
 	}
 }
