@@ -54,20 +54,32 @@ public class Main implements InitializingBean {
 				OPSlotDTO slotDTO = (OPSlotDTO) m;
 				OPSlot opSlot = geoResolverService.findSlot(slotDTO);
 
-				NotificationDTO notification = new NotificationDTO();
+				/* We need to send a notification to both patient and doctor */
+				NotificationDTO notificationDoc = new NotificationDTO();
+				NotificationDTO notificationPat = new NotificationDTO();
+				
 
 				if (opSlot != null) {
 					opSlotService.saveOPSlot(opSlot);
-					notification.setMessage("Registrierung erfolgreich!"); // TODO: Better message
-					notification.setType(NotificationType.RESERVATION_SUCESSFULL);
 
+					notificationDoc.setMessage("Registrierung erfolgreich!");
+					notificationDoc.setType(NotificationType.RESERVATION_SUCESSFULL);
+					notificationPat.setMessage("Registrierung erfolgreich!");
+					notificationPat.setType(NotificationType.RESERVATION_SUCESSFULL);
+					
 				}
 				else {
-					notification.setMessage("Registrierung fehlgeschlagen!"); // TODO: Better message
-					notification.setType(NotificationType.RESERVATION_FAILED);
+					notificationDoc.setMessage("Registrierung fehlgeschlagen!");
+					notificationDoc.setType(NotificationType.RESERVATION_FAILED);
+					notificationPat.setMessage("Registrierung fehlgeschlagen!");
+					notificationPat.setType(NotificationType.RESERVATION_FAILED);
 				}
-
-				queueService.sendToNewsBeeper(notification);
+				
+				notificationDoc.setRecipientID(slotDTO.getDoctorID());
+				notificationPat.setRecipientID(slotDTO.getPatientID());
+				
+				queueService.sendToNewsBeeper(notificationDoc);
+				queueService.sendToNewsBeeper(notificationPat);
 			}
 		});
 	}
