@@ -1,12 +1,11 @@
 package webGui;
 
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DataTable;
-import org.apache.wicket.util.tester.WicketTester;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.junit.Test;
 
-public class TestSimplePage {
+public class TestStartPage extends AbstractBaseTest {
 
 	
 	public static void main(String[] args) throws Exception {
@@ -25,13 +24,10 @@ public class TestSimplePage {
 	
 	@Test
 	public void should_render_table() {
-		WicketTester tester = new WicketTester();
-		
 		tester.startPage(SimplePage.class);
 		
 		tester.assertRenderedPage(SimplePage.class);
 		
 		tester.assertComponent("overviewTable", DataTable.class);
 	}
-
 }
