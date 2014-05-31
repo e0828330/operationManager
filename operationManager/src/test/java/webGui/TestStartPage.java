@@ -24,10 +24,10 @@ public class TestStartPage extends AbstractBaseTest {
 	
 	@Test
 	public void should_render_table() {
-		tester.startPage(SimplePage.class);
+		tester.startPage(StartPage.class);
 		
-		tester.assertRenderedPage(SimplePage.class);
+		tester.assertRenderedPage(StartPage.class);
 		
-		tester.assertComponent("overviewTable", DataTable.class);
+		tester.assertComponent("overview:overviewTable", DataTable.class);
 	}
 }
