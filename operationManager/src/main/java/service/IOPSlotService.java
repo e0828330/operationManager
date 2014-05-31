@@ -45,5 +45,11 @@ public interface IOPSlotService {
 	 * @param slot
 	 */
 	public void reserveOPSlot(OPSlotDTO slot);
+
+	/**
+	 * Deletes the given slot from the database
+	 * @param slot
+	 */
+	public void deleteOPSlot(OPSlot slot);
 	
 }

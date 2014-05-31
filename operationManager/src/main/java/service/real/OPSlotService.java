@@ -176,4 +176,9 @@ public class OPSlotService implements IOPSlotService {
 	public void reserveOPSlot(OPSlotDTO slot) {
 		queueService.sendToGeoResolver(slot);
 	}
+
+	@Override
+	public void deleteOPSlot(OPSlot slot) {
+		repo.delete(slot);
+	}
 }
