@@ -346,4 +346,49 @@ public class RestServiceController {
 		
 		return result;
 	}
+
+	@RequestMapping("/rest/cancelReservation/")
+	/**
+	 * Deletes a slot from the database
+	 * 
+	 * @param username
+	 * @param password
+	 * @param slotId
+	 * @return
+	 * @throws RestServiceException
+	 */
+	public @ResponseBody RestMessageDTO cancelReservation(@RequestParam(value="username", required=true) String username,
+														  @RequestParam(value="password", required=true) String password,
+														  @RequestParam(value="slotId", required=true) String slotId) throws RestServiceException {
+		
+		User user = authenticationService.authenticate(username, password);
+		if (user.getRole().equals(Role.DEFAULT)) {
+			throw new RestServiceException("Invalid username or password!");
+		}
+		
+		/* Only doctors can cancel slots */
+		if (!user.getRole().equals(Role.DOCTOR)) {
+			throw new RestServiceException("Only doctors can cancel slots!");
+		}
+		
+		OPSlot slot = opSlotService.getById(slotId);
+
+		/* Validate slot */
+		if (slot == null) {
+			throw new RestServiceException("Invalid slot id!");
+		}
+		if (slot.getDoctor().getId() != null && !slot.getDoctor().getId().equals(user.getId())) {
+			throw new RestServiceException("This slot does not belong to you!");
+		}
+		if (slot.getStatus().equals(OperationStatus.free)) {
+			throw new RestServiceException("This slot is already free!");
+		}
+		
+		opSlotService.cancelReservation(slot);
+		
+		RestMessageDTO result = new RestMessageDTO();
+		result.setMessage("The slot has been canceled!");
+		
+		return result;
+	}
 }
