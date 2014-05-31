@@ -190,4 +190,9 @@ public class OPSlotService implements IOPSlotService {
 		slot.setStatus(OperationStatus.free);
 		repo.save(slot);
 	}
+
+	@Override
+	public OPSlot getById(String id) {
+		return repo.findOne(id);
+	}
 }

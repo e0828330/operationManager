@@ -50,7 +50,7 @@ public class MockedNotificationService {
 		
 		notification.setTimestamp(new Date());
 		notification.setRecipient(user);
-		notification.setSlot(MockedOPSlotService.getMockedOPSlot(OperationType.eye, "SMZ", "Dr. Augfehler", "Adelheid", "Abesser", OperationStatus.reserved));
+		notification.setSlot(MockedOPSlotService.getMockedOPSlot("1", OperationType.eye, "SMZ", "Dr. Augfehler", "Adelheid", "Abesser", OperationStatus.reserved));
 		notification.setMessage("notification text");
 		notification.setType(type);
 		

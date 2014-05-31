@@ -8,6 +8,7 @@ import model.Doctor;
 import model.Hospital;
 import model.Notification;
 import model.OPSlot;
+import model.OperationStatus;
 import model.OperationType;
 import model.Patient;
 import model.Role;
@@ -256,6 +257,9 @@ public class RestServiceController {
 													  @RequestParam(value="distance", defaultValue="12") Integer distance) throws RestServiceException {
 		/* Only doctors can reserve slots */
 		User user = authenticationService.authenticate(username, password);
+		if (user.getRole().equals(Role.DEFAULT)) {
+			throw new RestServiceException("Invalid username or password!");
+		}
 		if (!user.getRole().equals(Role.DOCTOR)) {
 			throw new RestServiceException("Invalid username or password!");
 		}
@@ -293,6 +297,52 @@ public class RestServiceController {
 		
 		RestMessageDTO result = new RestMessageDTO();
 		result.setMessage("Reservation request sent!");
+		
+		return result;
+	}
+
+	
+	@RequestMapping("/rest/deleteOPSlot/")
+	/**
+	 * Deletes a slot from the database
+	 * 
+	 * @param username
+	 * @param password
+	 * @param slotId
+	 * @return
+	 * @throws RestServiceException
+	 */
+	public @ResponseBody RestMessageDTO deleteOPSlot(@RequestParam(value="username", required=true) String username,
+													 @RequestParam(value="password", required=true) String password,
+													 @RequestParam(value="slotId", required=true) String slotId) throws RestServiceException {
+		
+		User user = authenticationService.authenticate(username, password);
+		if (user.getRole().equals(Role.DEFAULT)) {
+			throw new RestServiceException("Invalid username or password!");
+		}
+		
+		/* Only hospitals can delete slots */
+		if (!user.getRole().equals(Role.HOSPITAL)) {
+			throw new RestServiceException("Only hospitals can delete slots!");
+		}
+		
+		OPSlot slot = opSlotService.getById(slotId);
+
+		/* Validate slot */
+		if (slot == null) {
+			throw new RestServiceException("Invalid slot id!");
+		}
+		if (slot.getHospital().getId() != null && !slot.getHospital().getId().equals(user.getId())) {
+			throw new RestServiceException("This slot does not belong to you!");
+		}
+		if (slot.getStatus().equals(OperationStatus.reserved)) {
+			throw new RestServiceException("This slot is already reserved, cancel first!");
+		}
+		
+		opSlotService.deleteOPSlot(slot);
+		
+		RestMessageDTO result = new RestMessageDTO();
+		result.setMessage("The slot has been deleted!");
 		
 		return result;
 	}

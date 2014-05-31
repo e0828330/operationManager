@@ -51,13 +51,19 @@ public interface IOPSlotService {
 	 * @param slot
 	 */
 	public void deleteOPSlot(OPSlot slot);
-	
 
 	/**
-	 * Cancels the given slot reservation
+	 * Cancels a reservation for the given slot
 	 * 
 	 * @param slot
 	 */
 	public void cancelReservation(OPSlot slot);
 	
+	/**
+	 * Returns a slot that has the given id
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public OPSlot getById(String id);
 }
