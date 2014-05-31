@@ -18,12 +18,16 @@ public class WicketApplication extends AuthenticatedWebApplication {
 	public Class<StartPage> getHomePage() {
 		return StartPage.class;
 	}
+	
+	protected void setUpInjector() {
+		getComponentInstantiationListeners().add(new SpringComponentInjector(this));
+	}
 
 	@Override
 	protected void init() {
 		super.init();
 		this.getMarkupSettings().setStripWicketTags(true);
-		getComponentInstantiationListeners().add(new SpringComponentInjector(this));
+		setUpInjector();
 		
 		//mount pages
 		//mountPage("/", StartPage.class);
