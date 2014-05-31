@@ -4,14 +4,18 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import model.Doctor;
 import model.Hospital;
 import model.Notification;
 import model.OPSlot;
+import model.OperationType;
 import model.Patient;
 import model.Role;
 import model.User;
+import model.dto.OPSlotDTO;
 import model.dto.OPSlotFilter;
 import model.dto.RestErrorDTO;
+import model.dto.RestMessageDTO;
 
 import org.apache.wicket.extensions.markup.html.repeater.util.SortParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -228,5 +232,68 @@ public class RestServiceController {
 		}
 		
 		return notificationService.getForUser(user);
+	}
+	
+	@RequestMapping("/rest/reserveOPSlot/")
+	/**
+	 * 
+	 * @param username
+	 * @param password
+	 * @param patientId
+	 * @param operationType
+	 * @param from
+	 * @param to
+	 * @param distance
+	 * @return
+	 * @throws RestServiceException
+	 */
+	public @ResponseBody RestMessageDTO reserveOPSlot(@RequestParam(value="username", required=true) String username,
+													  @RequestParam(value="password", required=true) String password,
+													  @RequestParam(value="patientId", required=true) String patientId,
+													  @RequestParam(value="operationType", required=true) String operationType,
+													  @RequestParam(value="from", required=true) String from,
+													  @RequestParam(value="to", required=true) String to,
+													  @RequestParam(value="distance", defaultValue="12") Integer distance) throws RestServiceException {
+		/* Only doctors can reserve slots */
+		User user = authenticationService.authenticate(username, password);
+		if (!user.getRole().equals(Role.DOCTOR)) {
+			throw new RestServiceException("Invalid username or password!");
+		}
+		
+		/* Is the patient id valid ?*/
+		if (patientService.getById(patientId) == null) {
+			throw new RestServiceException("Invalid patient id!");
+		}
+		
+		OPSlotDTO slot = new OPSlotDTO();
+		slot.setDoctorID(((Doctor)user).getId());
+		slot.setPatientID(patientId);
+		slot.setDistance(distance);
+		try {
+			slot.setType(OperationType.valueOf(operationType));
+		}
+		catch(IllegalArgumentException e) {
+			throw new RestServiceException("Invalid operation type"); 
+		}
+		
+		/* Parse date values */
+		SimpleDateFormat dateParser = new SimpleDateFormat("dd.MM.yyyy");
+		try {
+			slot.setFrom(dateParser.parse(from));
+		} catch (ParseException e) {
+			throw new RestServiceException("Could not parse from date .. probably wrong format.");
+		}
+		try {
+			slot.setFrom(dateParser.parse(to));
+		} catch (ParseException e) {
+			throw new RestServiceException("Could not parse to date .. probably wrong format.");
+		}
+		
+		opSlotService.reserveOPSlot(slot);
+		
+		RestMessageDTO result = new RestMessageDTO();
+		result.setMessage("Reservation request sent!");
+		
+		return result;
 	}
 }

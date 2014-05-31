@@ -87,6 +87,18 @@ public class MockedPatientService {
 				return result;
 			}
 		});
+		Mockito.when(mock.getById(Mockito.anyString())).thenAnswer(new Answer<Patient>() {
+			@Override
+			public Patient answer(InvocationOnMock invocation) throws Throwable {
+				String id = (String)invocation.getArguments()[0];
+				for (Patient p : inputPatients) {
+					if (p.getId().equals(id)) {
+						return p;
+					}
+				}
+				return null;
+			}
+		});
 		return mock;
 	}
 }

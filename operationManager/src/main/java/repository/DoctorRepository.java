@@ -1,7 +1,6 @@
 package repository;
 
 import model.Doctor;
-import model.Patient;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
