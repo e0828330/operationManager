@@ -64,7 +64,7 @@ public class ReservationPage extends IndexPage {
 		
 		OPSlotDTO slot = new OPSlotDTO();
 		
-		//set fixed values
+		//set fixed/standard values
 		slot.setDoctorID(doctor.getId());
 		slot.setDistance(12);
 		

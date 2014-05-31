@@ -87,7 +87,7 @@ public class CreateOPSlotPage extends IndexPage {
 
 
 		form.add(new DropDownChoice<OperationType>("type", Arrays.asList(OperationType.values()),
-				new EnumChoiceRenderer<OperationType>(CreateOPSlotPage.this)));
+				new EnumChoiceRenderer<OperationType>(CreateOPSlotPage.this)).setRequired(true));
 		form.add(new DatePicker("date", Locale.GERMAN).setRequired(true));
 		form.add(from.setRequired(true));
 		form.add(to.setRequired(true));

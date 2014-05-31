@@ -16,6 +16,7 @@ import model.dto.OPSlotFilter;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.datetime.PatternDateConverter;
 import org.apache.wicket.datetime.markup.html.basic.DateLabel;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
@@ -47,6 +48,8 @@ import org.apache.wicket.util.time.Duration;
 
 import service.IOPSlotService;
 import session.OperationManagerWebSession;
+import webGui.CreateOPSlotPage;
+import webGui.ReservationPage;
 
 import com.googlecode.wicket.kendo.ui.form.datetime.DatePicker;
 import com.googlecode.wicket.kendo.ui.form.datetime.TimePicker;
@@ -71,7 +74,7 @@ public class OverviewPanel extends Panel {
 	@Override
 	protected void onInitialize() {
 		super.onInitialize();
-		OperationManagerWebSession session = (OperationManagerWebSession) getSession();
+		final OperationManagerWebSession session = (OperationManagerWebSession) getSession();
 		
 		Form<OPSlotFilter> filterForm = new Form<OPSlotFilter>("filterForm", filterModel);
 		
@@ -97,6 +100,27 @@ public class OverviewPanel extends Panel {
 		table.add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(5)));
 
 		add(table);
+		
+		String buttonResource = session.getActiveRole().equals(Role.DOCTOR) ? "buttonTextDoctor" : "buttonTextHospital";
+		
+		add(new Link<Void>("opSlotButton") {
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			public boolean isVisible() {
+				return session.getActiveRole().equals(Role.DOCTOR) || session.getActiveRole().equals(Role.HOSPITAL);
+			}
+			
+			@Override
+			public void onClick() {
+				if (session.getActiveRole().equals(Role.DOCTOR)) {
+					setResponsePage(ReservationPage.class);
+				}
+				if (session.getActiveRole().equals(Role.HOSPITAL)) {
+					setResponsePage(CreateOPSlotPage.class);
+				}
+			}
+		}.add(new AttributeAppender("value", Model.of(getString(buttonResource)))));
 	}
 
 	private List<IColumn<OPSlot, String>> getColumns(final OperationManagerWebSession session) {
@@ -261,7 +285,7 @@ public class OverviewPanel extends Panel {
 				@Override
 				public void populateItem(Item<ICellPopulator<OPSlot>> cellItem,
 						String componentId, final IModel<OPSlot> rowModel) {
-					cellItem.add(new Link(componentId) {
+					cellItem.add(new Link<Void>(componentId) {
 						private static final long serialVersionUID = 1L;
 						
 						@Override
@@ -284,7 +308,12 @@ public class OverviewPanel extends Panel {
 
 						@Override
 						public void onClick() {
-							//delete OPSlot or reservation (use rowModel.getObject())
+							if (session.getActiveRole().equals(Role.DOCTOR)) {
+								opSlotService.cancelReservation(rowModel.getObject());
+							}
+							else if (session.getActiveRole().equals(Role.HOSPITAL)) {
+								opSlotService.deleteOPSlot(rowModel.getObject());
+							}
 						}
 						
 					});
