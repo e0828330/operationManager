@@ -10,6 +10,7 @@ import model.Hospital;
 import model.OPSlot;
 import model.Patient;
 import model.User;
+import model.dto.OPSlotDTO;
 import model.dto.OPSlotFilter;
 
 import org.apache.wicket.extensions.markup.html.repeater.util.SortParam;
@@ -168,7 +169,7 @@ public class OPSlotService implements IOPSlotService {
 	}
 
 	@Override
-	public void reserveOPSlot(OPSlot slot) {
+	public void reserveOPSlot(OPSlotDTO slot) {
 		// TODO Auto-generated method stub
 	}
 }

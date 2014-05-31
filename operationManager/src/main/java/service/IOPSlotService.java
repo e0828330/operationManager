@@ -4,6 +4,7 @@ import java.util.List;
 
 import model.OPSlot;
 import model.User;
+import model.dto.OPSlotDTO;
 import model.dto.OPSlotFilter;
 
 import org.apache.wicket.extensions.markup.html.repeater.util.SortParam;
@@ -43,6 +44,6 @@ public interface IOPSlotService {
 	 * 
 	 * @param slot
 	 */
-	public void reserveOPSlot(OPSlot slot);
+	public void reserveOPSlot(OPSlotDTO slot);
 	
 }

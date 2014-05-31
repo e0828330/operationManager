@@ -12,6 +12,7 @@ public class OPSlotDTO extends Message {
 
 	private static final long serialVersionUID = 1L;
 	
+	private String doctorID;
 	private String patientID;
 	private Date from;
 	private Date to;

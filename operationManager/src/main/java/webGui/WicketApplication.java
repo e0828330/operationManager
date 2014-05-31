@@ -75,6 +75,7 @@ public class WicketApplication extends AuthenticatedWebApplication {
 		//mountPage("/", StartPage.class);
 		mountPage("/notifications", NotificationsPage.class);
 		mountPage("/create", CreateOPSlotPage.class);
+		mountPage("/reservation", ReservationPage.class);
 	}
 
 	@Override
