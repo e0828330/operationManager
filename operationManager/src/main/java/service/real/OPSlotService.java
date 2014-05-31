@@ -8,6 +8,7 @@ import lombok.Data;
 import model.Doctor;
 import model.Hospital;
 import model.OPSlot;
+import model.OperationStatus;
 import model.Patient;
 import model.User;
 import model.dto.OPSlotDTO;
@@ -180,5 +181,13 @@ public class OPSlotService implements IOPSlotService {
 	@Override
 	public void deleteOPSlot(OPSlot slot) {
 		repo.delete(slot);
+	}
+
+	@Override
+	public void cancelReservation(OPSlot slot) {
+		slot.setDoctor(null);
+		slot.setPatient(null);
+		slot.setStatus(OperationStatus.free);
+		repo.save(slot);
 	}
 }

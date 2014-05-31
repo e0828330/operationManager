@@ -52,4 +52,12 @@ public interface IOPSlotService {
 	 */
 	public void deleteOPSlot(OPSlot slot);
 	
+
+	/**
+	 * Cancels the given slot reservation
+	 * 
+	 * @param slot
+	 */
+	public void cancelReservation(OPSlot slot);
+	
 }
