@@ -5,11 +5,13 @@
 	<body>
 		<wicket:extend>
 		<div wicket:id="feedback" />
+		<h1>Reservierung vornehmen</h1>
+			<div style="width: 400px; margin: 0 auto;">
 			<form wicket:id="form">
-				<table>
+				<table style="width: 100%;" id="reservation">
 					<tr>
-						<td><wicket:message key="patient" /></td>
-						<td><select wicket:id="patient" /></td>
+						<td style="width: 70%;"><wicket:message key="patient" /></td>
+						<td style="width: 30%;"><select wicket:id="patient" /></td>
 					</tr>
 					<tr>
 						<td><wicket:message key="type" /></td>
@@ -28,10 +30,11 @@
 						<td><input type="text" wicket:id="distance" /></td>
 					</tr>
 					<tr>
-						<td colspan="2"><input type="submit" wicket:id="save" wicket:message="value:save" /></td>
+						<td colspan="2"><input type="submit" wicket:id="save" wicket:message="value:save" style="float: right;" /></td>
 					</tr>
 				</table>
 			</form>
+			</div>
 		</wicket:extend>
 	</body>
 </html>
