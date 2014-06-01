@@ -294,7 +294,7 @@ public class RestServiceController {
 			throw new RestServiceException("Could not parse from date .. probably wrong format.");
 		}
 		try {
-			slot.setFrom(dateParser.parse(to));
+			slot.setTo(dateParser.parse(to));
 		} catch (ParseException e) {
 			throw new RestServiceException("Could not parse to date .. probably wrong format.");
 		}
