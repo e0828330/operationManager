@@ -1,4 +1,4 @@
-package georesolver;
+package queue;
 
 
 import static org.junit.Assert.*;
