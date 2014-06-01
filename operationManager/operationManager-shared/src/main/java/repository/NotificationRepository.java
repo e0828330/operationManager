@@ -9,6 +9,6 @@ import org.springframework.data.mongodb.repository.Query;
 
 public interface NotificationRepository extends MongoRepository<Notification, String> {
 
-		@Query("{ 'recipent.id' : ?0 }")
+		@Query("{ 'recipient._id' : {$oid: ?0} }")
 		public List<Notification> findByUserId(String id);
 }
