@@ -28,7 +28,7 @@ public class PatientService implements IPatientService {
 
 	@Override
 	public Patient getById(String id) {
-		return patientRepo.findOne(id);
+		return id == null ? null: patientRepo.findOne(id);
 	}
 
 }
