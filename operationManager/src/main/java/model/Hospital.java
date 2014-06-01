@@ -5,7 +5,6 @@ import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import org.springframework.data.mongodb.core.geo.Point;
 import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 
 @Data

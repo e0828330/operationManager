@@ -8,6 +8,7 @@ import java.util.concurrent.Semaphore;
 
 import model.OPSlot;
 import model.Patient;
+import model.Point;
 import model.dto.Message;
 import model.dto.OPSlotDTO;
 
@@ -16,7 +17,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.geo.Point;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 

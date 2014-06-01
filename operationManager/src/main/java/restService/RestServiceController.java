@@ -100,24 +100,30 @@ public class RestServiceController {
 		OPSlotFilter filter = new OPSlotFilter();
 		
 		SimpleDateFormat dateParser = new SimpleDateFormat("dd.MM.yyyy");
-		try {
-			filter.setDate(dateParser.parse(date));
-		} catch (ParseException e) {
-			throw new RestServiceException("Could not parse date .. probably wrong format.");
+		if (!date.isEmpty()) {
+			try {
+				filter.setDate(dateParser.parse(date));
+			} catch (ParseException e) {
+				throw new RestServiceException("Could not parse date .. probably wrong format.");
+			}
 		}
 		
-		dateParser = new SimpleDateFormat("HH:mm");
-		try {
-			filter.setFrom(dateParser.parse(from));
-		} catch (ParseException e) {
-			throw new RestServiceException("Could not parse date .. probably wrong format.");
+		if (!from.isEmpty()) {
+			dateParser = new SimpleDateFormat("HH:mm");
+			try {
+				filter.setFrom(dateParser.parse(from));
+			} catch (ParseException e) {
+				throw new RestServiceException("Could not parse date .. probably wrong format.");
+			}
 		}
 		
-		dateParser = new SimpleDateFormat("HH:mm");
-		try {
-			filter.setTo(dateParser.parse(to));
-		} catch (ParseException e) {
-			throw new RestServiceException("Could not to date .. probably wrong format.");
+		if (!to.isEmpty()) {
+			dateParser = new SimpleDateFormat("HH:mm");
+			try {
+				filter.setTo(dateParser.parse(to));
+			} catch (ParseException e) {
+				throw new RestServiceException("Could not to date .. probably wrong format.");
+			}
 		}
 
 		filter.setPatient(patient);
