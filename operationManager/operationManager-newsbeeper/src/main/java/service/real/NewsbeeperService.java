@@ -1,4 +1,4 @@
-package newsbeeper.service;
+package service.real;
 
 import model.Doctor;
 
@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import repository.DoctorRepository;
+import service.INewsbeeperService;
 
 @Service
 public class NewsbeeperService implements INewsbeeperService {

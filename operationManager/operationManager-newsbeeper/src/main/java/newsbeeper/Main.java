@@ -11,7 +11,6 @@ import model.Patient;
 import model.User;
 import model.dto.Message;
 import model.dto.NotificationDTO;
-import newsbeeper.service.INewsbeeperService;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
@@ -21,6 +20,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
+import service.INewsbeeperService;
 import service.INotificationService;
 import service.IOPSlotService;
 import service.IPatientService;
