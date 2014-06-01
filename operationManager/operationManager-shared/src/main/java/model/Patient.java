@@ -2,16 +2,13 @@ package model;
 
 import java.io.Serializable;
 
-import org.springframework.data.geo.Point;
-import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import org.springframework.data.geo.Point;
+
 
 @Data
-@Document
 @EqualsAndHashCode(callSuper=true)
 public class Patient extends User implements Serializable {
 	/**
@@ -22,6 +19,5 @@ public class Patient extends User implements Serializable {
 	private String firstName;
 	private String lastName;
 	
-	@GeoSpatialIndexed
 	private Point position;
 }
