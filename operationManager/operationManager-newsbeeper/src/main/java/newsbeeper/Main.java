@@ -1,11 +1,19 @@
 package newsbeeper;
 
+import groovy.util.logging.Log;
+
+import java.util.Date;
+
+import model.Doctor;
 import model.Notification;
+import model.OPSlot;
 import model.Patient;
 import model.User;
 import model.dto.Message;
 import model.dto.NotificationDTO;
+import newsbeeper.service.INewsbeeperService;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
@@ -25,15 +33,20 @@ public class Main implements InitializingBean {
 
 	@Autowired
 	private IQueueService queueService;
+	
+	@Autowired
+	private INewsbeeperService newsbeeperService;
 
 	@Autowired
 	private IPatientService patientService;
-	
+		
 	@Autowired
 	private IOPSlotService opSlotService;
 	
 	@Autowired
 	private INotificationService notificationService;
+	
+	private Logger log = Logger.getLogger(this.getClass());
 	
 	
 	private static ApplicationContext context;
@@ -54,13 +67,32 @@ public class Main implements InitializingBean {
 				NotificationDTO notificationDTO = (NotificationDTO) m;
 				Notification notification = new Notification();
 				notification.setMessage(notificationDTO.getMessage());
-				
+				notification.setType(notificationDTO.getType());
+			
 				Patient patient = patientService.getById(notificationDTO.getRecipientID());
+				OPSlot slot = opSlotService.getById(notificationDTO.getOpSlotID());
 				
-				// TODO: Check if patient is null etc.
-				notification.setRecipient((User)patient);
-				// TODO: Implement opSlotService.getById() use and set 
-				//notification.setSlot(slot);
+				if (patient != null) {
+					notification.setRecipient((User)patient);
+				}
+				else {
+					Doctor doctor = newsbeeperService.getDoctorById(notificationDTO.getRecipientID());
+					if (doctor != null) {
+						notification.setRecipient((User)doctor);
+					}
+					else {
+						log.info("No User found with id = " + notificationDTO.getRecipientID());
+						return;
+					}
+				}
+				
+				if (slot == null) {
+					log.info("No slot found.");
+				}
+
+				
+				notification.setSlot(slot);
+				notification.setTimestamp(new Date());
 				
 				notificationService.save(notification);
 			}
