@@ -3,10 +3,8 @@ package webGui.notification;
 import java.util.List;
 
 import model.Notification;
-import model.Role;
 
 import org.apache.wicket.MarkupContainer;
-import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.datetime.PatternDateConverter;
 import org.apache.wicket.datetime.markup.html.basic.DateLabel;
@@ -25,7 +23,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import service.INotificationService;
 import session.OperationManagerWebSession;
 import webGui.IndexPage;
-import webGui.StartPage;
+
 @AuthorizeInstantiation(value = {"HOSPITAL", "DOCTOR", "PATIENT"})
 public class NotificationsPage extends IndexPage {
 	private static final long serialVersionUID = 1L;
@@ -35,13 +33,6 @@ public class NotificationsPage extends IndexPage {
 
 	public NotificationsPage(PageParameters parameters) {
 		super(parameters);
-		
-		OperationManagerWebSession session = (OperationManagerWebSession) WebSession.get();
-		
-		//Only registered users may view the notifications page
-		if (session.getActiveUser().getRole().equals(Role.DEFAULT)) {
-			throw new RestartResponseException(StartPage.class);
-		}
 	}
 	
 	@Override

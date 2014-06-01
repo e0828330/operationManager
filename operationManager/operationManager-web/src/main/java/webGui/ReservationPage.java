@@ -8,10 +8,9 @@ import java.util.Locale;
 import model.Doctor;
 import model.OperationType;
 import model.Patient;
-import model.Role;
 import model.dto.OPSlotDTO;
 
-import org.apache.wicket.RestartResponseException;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.EnumChoiceRenderer;
 import org.apache.wicket.markup.html.form.Form;
@@ -35,6 +34,7 @@ import session.OperationManagerWebSession;
 
 import com.googlecode.wicket.kendo.ui.form.datetime.DatePicker;
 
+@AuthorizeInstantiation(value = {"DOCTOR"})
 public class ReservationPage extends IndexPage {
 	private static final long serialVersionUID = 1L;
 	
@@ -46,13 +46,6 @@ public class ReservationPage extends IndexPage {
 
 	public ReservationPage(PageParameters parameters) {
 		super(parameters);
-		
-		OperationManagerWebSession session = (OperationManagerWebSession) WebSession.get();
-		
-		//Only hospital users may create op slots
-		if (!session.getActiveUser().getRole().equals(Role.DOCTOR)) {
-			throw new RestartResponseException(StartPage.class);
-		}
 	}
 	
 	@Override
