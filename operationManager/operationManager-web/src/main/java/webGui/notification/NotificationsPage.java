@@ -63,10 +63,7 @@ public class NotificationsPage extends IndexPage {
 		
 		add(container.setVisible(notificationsModel.getObject().isEmpty()));
 		
-		if (container.isVisible() == false) {
-			add(new WebMarkupContainer("notificationListHeader"));
-		}
-
+		add(new WebMarkupContainer("notificationListHeader").setVisible(!notificationsModel.getObject().isEmpty()));
 		
 		add(new ListView<Notification>("notificationList", notificationsModel) {
 			private static final long serialVersionUID = 1L;
