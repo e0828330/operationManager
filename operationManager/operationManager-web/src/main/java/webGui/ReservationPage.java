@@ -1,7 +1,7 @@
 package webGui;
 
 import java.util.Arrays;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -148,7 +148,12 @@ public class ReservationPage extends IndexPage {
 				if (to.getConvertedInput().before(from.getConvertedInput())) {
 					form.error(getString("timeValidationError"));
 				}
-				if (from.getConvertedInput().before(new Date()) || to.getConvertedInput().before(new Date())) {
+				Calendar today = Calendar.getInstance();
+				today.set(Calendar.HOUR_OF_DAY, 0);
+				today.set(Calendar.MINUTE, 0);
+				today.set(Calendar.SECOND, 0);
+				today.set(Calendar.MILLISECOND, 0);
+				if (from.getConvertedInput().before(today.getTime()) || to.getConvertedInput().before(today.getTime())) {
 					form.error(getString("pastTimeValidationError"));
 				}
 			}
