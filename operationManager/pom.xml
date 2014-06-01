@@ -276,7 +276,6 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
-
 			<plugin>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
@@ -285,14 +284,6 @@
 					<webApp>
 						<contextPath>/test</contextPath>
 					</webApp>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>2.4</version>
-				<configuration>
-					<packagingExcludes>*/classes/georesolver/,*/classes/newsbeeper/,*/classes/service/mock/,*/classes/service/IGeoResolverService.class,*/classes/service/real/GeoResolverService.class</packagingExcludes>
 				</configuration>
 			</plugin>
 		</plugins>
