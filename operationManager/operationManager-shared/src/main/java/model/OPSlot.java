@@ -6,8 +6,11 @@ import java.util.Date;
 import lombok.Data;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
+@Document
 public class OPSlot implements Serializable {
 
 	private static final long serialVersionUID = 1L;

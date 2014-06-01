@@ -54,6 +54,7 @@ public class Main implements InitializingBean {
 			public void handleMessage(Message m) {
 				OPSlotDTO slotDTO = (OPSlotDTO) m;
 	
+				System.err.println("got request:" + m);
 				/* We need to send a notification to both patient and doctor */
 				NotificationDTO notificationDoc = new NotificationDTO();
 				NotificationDTO notificationPat = new NotificationDTO();
@@ -78,8 +79,7 @@ public class Main implements InitializingBean {
 					
 					notificationPat.setOpSlotID(opSlot.getId());
 					notificationPat.setMessage("Registrierung erfolgreich!");
-					notificationPat.setType(NotificationType.RESERVATION_SUCESSFULL);
-					
+					notificationPat.setType(NotificationType.RESERVATION_SUCESSFULL);					
 				}
 				else {
 					notificationDoc.setMessage("Registrierung fehlgeschlagen!");

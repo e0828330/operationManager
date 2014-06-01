@@ -2,11 +2,13 @@ package repository;
 
 import java.util.Date;
 
+import org.springframework.data.geo.Distance;
+import org.springframework.data.geo.Point;
+
 import model.OPSlot;
 import model.OperationType;
 
-import org.springframework.data.mongodb.core.geo.Distance;
-import org.springframework.data.mongodb.core.geo.Point;
+
 
 public interface OPSlotRepositoryCustom {
 	/**
