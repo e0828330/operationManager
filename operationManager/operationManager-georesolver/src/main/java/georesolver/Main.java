@@ -72,8 +72,11 @@ public class Main implements InitializingBean {
 				if (opSlot != null) {
 					opSlotService.saveOPSlot(opSlot);
 
+					notificationDoc.setOpSlotID(opSlot.getId());
 					notificationDoc.setMessage("Registrierung erfolgreich!");
 					notificationDoc.setType(NotificationType.RESERVATION_SUCESSFULL);
+					
+					notificationPat.setOpSlotID(opSlot.getId());
 					notificationPat.setMessage("Registrierung erfolgreich!");
 					notificationPat.setType(NotificationType.RESERVATION_SUCESSFULL);
 					
