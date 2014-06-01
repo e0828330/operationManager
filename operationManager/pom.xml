@@ -1,10 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.springframework.samples.service.service</groupId>
+	<groupId>operationManager</groupId>
 	<artifactId>operationManager</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>pom</packaging>
 
 	<properties>
 
@@ -287,8 +287,22 @@
 					</webApp>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<packagingExcludes>*/classes/georesolver/,*/classes/newsbeeper/,*/classes/service/mock/,*/classes/service/IGeoResolverService.class,*/classes/service/real/GeoResolverService.class</packagingExcludes>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
 
+	<modules>
+		<module>operationManager-shared</module>
+		<module>operationManager-georesolver</module>
+		<module>operationManager-web</module>
+		<module>operationManager-newsbeeper</module>
+	</modules>
 </project>
