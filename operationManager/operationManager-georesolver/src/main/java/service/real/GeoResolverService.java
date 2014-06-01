@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import repository.DoctorRepository;
 import repository.OPSlotRepository;
 import service.IGeoResolverService;
+import service.exceptions.ServiceException;
 
 @Service
 public class GeoResolverService implements IGeoResolverService {
@@ -27,17 +28,17 @@ public class GeoResolverService implements IGeoResolverService {
 	private PatientService patientService;
 
 	@Override
-	public OPSlot findSlot(OPSlotDTO params) {
+	public OPSlot findSlot(OPSlotDTO params) throws ServiceException {
 		Patient patient = patientService.getById(params.getPatientID());
 
 		if (patient == null) {
-			return null; // TODO: Throw exception for notification
+			throw new ServiceException("Invalid patient!");
 		}
 
 		Doctor doctor = doctorRepository.findOne(params.getDoctorID());
 		
 		if (doctor == null) {
-			return null; // TODO: Throw exception for notification
+			throw new ServiceException("Invalid doctor!");
 		}
 		
 		OPSlot slot = repo.findBestInRange(patient.getPosition(), new Distance(params.getDistance(), Metrics.KILOMETERS), params.getType(), params.getFrom(), params.getTo());

@@ -1,5 +1,6 @@
 package service;
 
+import service.exceptions.ServiceException;
 import model.OPSlot;
 import model.dto.OPSlotDTO;
 
@@ -10,6 +11,7 @@ public interface IGeoResolverService {
 	 *
 	 * @param params
 	 * @return
+	 * @throws ServiceException
 	 */
-	public OPSlot findSlot(OPSlotDTO params);
+	public OPSlot findSlot(OPSlotDTO params) throws ServiceException;
 }

@@ -17,6 +17,7 @@ import service.IGeoResolverService;
 import service.IOPSlotService;
 import service.IQueueListener;
 import service.IQueueService;
+import service.exceptions.ServiceException;
 import config.RabbitMQConfig;
 
 @Component
@@ -52,12 +53,21 @@ public class Main implements InitializingBean {
 			@Override
 			public void handleMessage(Message m) {
 				OPSlotDTO slotDTO = (OPSlotDTO) m;
-				OPSlot opSlot = geoResolverService.findSlot(slotDTO);
-
+	
 				/* We need to send a notification to both patient and doctor */
 				NotificationDTO notificationDoc = new NotificationDTO();
 				NotificationDTO notificationPat = new NotificationDTO();
+	
+				OPSlot opSlot = null;
 				
+				try {
+					opSlot = geoResolverService.findSlot(slotDTO);
+				} catch (ServiceException e) {
+					notificationDoc.setMessage("Registrierung fehlgeschlagen!");
+					notificationDoc.setType(NotificationType.RESERVATION_FAILED);
+					notificationPat.setMessage("Registrierung fehlgeschlagen!");
+					notificationPat.setType(NotificationType.RESERVATION_FAILED);
+				}		
 
 				if (opSlot != null) {
 					opSlotService.saveOPSlot(opSlot);

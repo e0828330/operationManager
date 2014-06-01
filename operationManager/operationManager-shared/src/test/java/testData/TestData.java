@@ -101,6 +101,7 @@ public class TestData {
 		p.setUsername("abesser");
 		p.setPassword(Utils.computeHash("test01"));
 		p.setRole(Role.PATIENT);
+		p.setPosition(new Point(48.2065, 16.384821));
 		patientRepo.save(p);
 
 		p = new Patient();
@@ -109,6 +110,7 @@ public class TestData {
 		p.setUsername("berger");
 		p.setPassword(Utils.computeHash("test02"));
 		p.setRole(Role.PATIENT);
+		p.setPosition(new Point(48.2065, 16.384821));
 		patientRepo.save(p);
 		
 		p = new Patient();
@@ -117,6 +119,7 @@ public class TestData {
 		p.setUsername("bauer");
 		p.setPassword(Utils.computeHash("test03"));
 		p.setRole(Role.PATIENT);
+		p.setPosition(new Point(48.2065, 16.384821));
 		patientRepo.save(p);
 
 		p = new Patient();
@@ -124,6 +127,8 @@ public class TestData {
 		p.setLastName("Fiedler");
 		p.setUsername("franz");
 		p.setPassword(Utils.computeHash("test04"));
+		p.setRole(Role.PATIENT);
+		p.setPosition(new Point(48.2065, 16.384821));
 		patientRepo.save(p);
 		
 		p = new Patient();
@@ -132,6 +137,7 @@ public class TestData {
 		p.setUsername("geraus");
 		p.setPassword(Utils.computeHash("test05"));
 		p.setRole(Role.PATIENT);
+		p.setPosition(new Point(48.2065, 16.384821));
 		patientRepo.save(p);
 		
 		p = new Patient();
@@ -140,6 +146,7 @@ public class TestData {
 		p.setUsername("takacs");
 		p.setPassword(Utils.computeHash("test06"));
 		p.setRole(Role.PATIENT);
+		p.setPosition(new Point(48.2065, 16.384821));
 		patientRepo.save(p);
 
 		// Doctors
