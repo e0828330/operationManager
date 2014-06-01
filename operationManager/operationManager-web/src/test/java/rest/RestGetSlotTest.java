@@ -41,7 +41,7 @@ public class RestGetSlotTest {
 	 */
 	public void test_getSlots_shouldFindAllFree() throws JsonParseException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();  
-		String json = get("operationManager/rest/getSlots/").asString();
+		String json = get("operationManager-web/rest/getSlots/").asString();
 		List<OPSlot> result = mapper.readValue(json, new TypeReference<List<OPSlot>>() {});
 		
 		int numFree = 0;
@@ -65,7 +65,7 @@ public class RestGetSlotTest {
 	 */
 	public void test_getSlots_wrongUser() throws JsonParseException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();  
-		String json = given().param("username", "wrong").param("password", "wrong").get("operationManager/rest/getSlots/").asString();
+		String json = given().param("username", "wrong").param("password", "wrong").get("operationManager-web/rest/getSlots/").asString();
 		RestErrorDTO dto = mapper.readValue(json, RestErrorDTO.class);
 		assertEquals("Invalid username or password!", dto.getError());
 	}
@@ -80,7 +80,7 @@ public class RestGetSlotTest {
 	 */
 	public void test_getSlots_correctUser() throws JsonParseException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();  
-		String json = given().param("username", "abesser").param("password", "test01").get("operationManager/rest/getSlots/").asString();
+		String json = given().param("username", "abesser").param("password", "test01").get("operationManager-web/rest/getSlots/").asString();
 		mapper.readValue(json, RestErrorDTO.class);
 	}
 }
