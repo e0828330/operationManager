@@ -55,7 +55,8 @@ public class Main implements InitializingBean {
 				Notification notification = new Notification();
 				notification.setMessage(notificationDTO.getMessage());
 				
-				Patient patient = patientService.getById(notification.getId());
+				Patient patient = patientService.getById(notificationDTO.getRecipientID());
+				
 				// TODO: Check if patient is null etc.
 				notification.setRecipient((User)patient);
 				// TODO: Implement opSlotService.getById() use and set 
