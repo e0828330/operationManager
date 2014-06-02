@@ -15,4 +15,29 @@
   	</dependency>
   </dependencies>
   <packaging>war</packaging>
+  <build>
+		<plugins>
+			<plugin>
+				<groupId>org.cloudfoundry</groupId>
+				<artifactId>cf-maven-plugin</artifactId>
+				<version>1.0.2</version>
+				<configuration>
+					<server>operationManager</server>
+					<target>https://api.run.pivotal.io</target>
+					<org>operationManager</org>
+					<space>development</space>
+					<appname>operationManager-web</appname>
+					<memory>512</memory>
+					<services>
+						<service>
+							<name>DB</name>
+						</service>
+						<service>
+							<name>MoM</name>
+						</service>
+					</services>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
