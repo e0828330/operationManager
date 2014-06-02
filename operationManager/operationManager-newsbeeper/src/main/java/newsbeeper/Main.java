@@ -1,5 +1,6 @@
 package newsbeeper;
 
+
 import java.util.Date;
 
 import model.Doctor;
@@ -10,7 +11,8 @@ import model.User;
 import model.dto.Message;
 import model.dto.NotificationDTO;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
@@ -29,6 +31,8 @@ import config.RabbitMQConfig;
 @Component
 public class Main implements InitializingBean {
 
+	private Logger logger = LoggerFactory.getLogger(Main.class); 
+	
 	@Autowired
 	private IQueueService queueService;
 	
@@ -42,10 +46,7 @@ public class Main implements InitializingBean {
 	private IOPSlotService opSlotService;
 	
 	@Autowired
-	private INotificationService notificationService;
-	
-	private Logger log = Logger.getLogger(this.getClass());
-	
+	private INotificationService notificationService;	
 	
 	private static ApplicationContext context;
 		
@@ -65,7 +66,7 @@ public class Main implements InitializingBean {
 				notification.setMessage(notificationDTO.getMessage());
 				notification.setType(notificationDTO.getType());
 			
-				System.err.println("got : " + notificationDTO);
+				logger.info("Got request: " + notificationDTO);
 				
 				Patient patient = patientService.getById(notificationDTO.getRecipientID());
 				OPSlot slot = opSlotService.getById(notificationDTO.getOpSlotID());
@@ -79,13 +80,13 @@ public class Main implements InitializingBean {
 						notification.setRecipient((User)doctor);
 					}
 					else {
-						log.info("No User found with id = " + notificationDTO.getRecipientID());
+						logger.info("No User found with id = " + notificationDTO.getRecipientID());
 						return;
 					}
 				}
 				
 				if (slot == null) {
-					log.info("No slot found.");
+					logger.info("No slot found.");
 				}
 
 				notification.setSlot(slot);
@@ -98,6 +99,7 @@ public class Main implements InitializingBean {
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
+		logger.info("Started listening");
 		listenOnQueue();
 	}
 }

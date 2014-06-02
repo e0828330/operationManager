@@ -6,6 +6,8 @@ import model.dto.Message;
 import model.dto.NotificationDTO;
 import model.dto.OPSlotDTO;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
@@ -23,6 +25,7 @@ import config.RabbitMQConfig;
 @Component
 public class Main implements InitializingBean {
 
+	private Logger logger = LoggerFactory.getLogger(Main.class); 
 
 	@Autowired
 	private IQueueService queueService;
@@ -37,6 +40,7 @@ public class Main implements InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {		
+		logger.info("Started listening");
 		listenOnQueue();
 	}
 	
@@ -53,7 +57,7 @@ public class Main implements InitializingBean {
 			public void handleMessage(Message m) {
 				OPSlotDTO slotDTO = (OPSlotDTO) m;
 	
-				System.err.println("got request:" + m);
+				logger.info("Got request: " + m);
 				/* We need to send a notification to both patient and doctor */
 				NotificationDTO notificationDoc = new NotificationDTO();
 				NotificationDTO notificationPat = new NotificationDTO();
