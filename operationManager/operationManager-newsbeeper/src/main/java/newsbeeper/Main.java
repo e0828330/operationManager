@@ -1,7 +1,5 @@
 package newsbeeper;
 
-import groovy.util.logging.Log;
-
 import java.util.Date;
 
 import model.Doctor;
@@ -56,8 +54,6 @@ public class Main implements InitializingBean {
 		Main prog = new Main();
 		AutowireCapableBeanFactory factory = context.getAutowireCapableBeanFactory();
 		factory.autowireBeanProperties(prog, AutowireCapableBeanFactory.AUTOWIRE_BY_NAME, false);
-		factory.initializeBean(prog, "newsbeeper");
-		prog.listenOnQueue();
 	}	
 	
 	private void listenOnQueue() {
@@ -69,6 +65,8 @@ public class Main implements InitializingBean {
 				notification.setMessage(notificationDTO.getMessage());
 				notification.setType(notificationDTO.getType());
 			
+				System.err.println("got : " + notificationDTO);
+				
 				Patient patient = patientService.getById(notificationDTO.getRecipientID());
 				OPSlot slot = opSlotService.getById(notificationDTO.getOpSlotID());
 				
@@ -100,6 +98,6 @@ public class Main implements InitializingBean {
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		
+		listenOnQueue();
 	}
 }
