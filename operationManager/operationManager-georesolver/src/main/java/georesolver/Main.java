@@ -37,6 +37,7 @@ public class Main implements InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {		
+		listenOnQueue();
 	}
 	
 	public static void main(String[] args) {
@@ -44,8 +45,6 @@ public class Main implements InitializingBean {
 		Main prog = new Main();
 		AutowireCapableBeanFactory factory = context.getAutowireCapableBeanFactory();
 		factory.autowireBeanProperties(prog, AutowireCapableBeanFactory.AUTOWIRE_BY_NAME, false);
-		factory.initializeBean(prog, "georesolver");
-		prog.listenOnQueue();
 	}
 
 	private void listenOnQueue() {
