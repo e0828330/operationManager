@@ -2,22 +2,26 @@ package config;
 
 import org.bson.BSON;
 import org.bson.Transformer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import com.mongodb.Mongo;
-import com.mongodb.MongoClient;
 
 @Configuration
 @EnableMongoRepositories
 public class MongoConfig extends AbstractMongoConfiguration {
 
+	@Autowired
+	private MongoDbFactory mongoFactory;
+	
 	@Override
 	protected String getDatabaseName() {
-		return "operations-db";
+		return mongoFactory.getDb().getName();
 	}
-
+	
 	@Override
 	public Mongo mongo() throws Exception {
 
@@ -32,7 +36,8 @@ public class MongoConfig extends AbstractMongoConfiguration {
 			}
 		});
 
-		return new MongoClient();
+		
+		return mongoFactory.getDb().getMongo();
 	}
 
 }
