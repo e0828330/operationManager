@@ -69,7 +69,7 @@ public class Main implements InitializingBean {
 				logger.info("Got request: " + notificationDTO);
 				
 				Patient patient = patientService.getById(notificationDTO.getRecipientID());
-				OPSlot slot = opSlotService.getById(notificationDTO.getOpSlotID());
+				OPSlot slot = notificationDTO.getOpSlotID() == null ? null :opSlotService.getById(notificationDTO.getOpSlotID());
 				
 				if (patient != null) {
 					notification.setRecipient((User)patient);
