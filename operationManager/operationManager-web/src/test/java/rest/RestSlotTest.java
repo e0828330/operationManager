@@ -3,6 +3,7 @@ package rest;
 import static com.jayway.restassured.RestAssured.get;
 import static com.jayway.restassured.RestAssured.given;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.io.IOException;
@@ -27,7 +28,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/spring/application-config.xml" })
-public class RestGetSlotTest {
+public class RestSlotTest {
 	
 	@Autowired
 	private OPSlotRepository slotRepo;
@@ -95,6 +96,71 @@ public class RestGetSlotTest {
 		ObjectMapper mapper = new ObjectMapper();  
 		String json = given().param("username", "abesser").param("password", "test01").get("operationManager-web/rest/getSlots/").asString();
 		mapper.readValue(json, RestErrorDTO.class);
+	}
+
+	@Test
+	/**
+	 * Tests the addSlot request, should successfully add a slot
+	 * 
+	 * @throws JsonParseException
+	 * @throws JsonMappingException
+	 * @throws IOException
+	 */
+	public void test_addSlot_shouldSucceed() throws JsonParseException, JsonMappingException, IOException  {
+		ObjectMapper mapper = new ObjectMapper();  
+		String json = given().param("username", "lkhbaden").
+					  param("password", "test12").
+					  param("date", "01.01.2015").
+					  param("from", "08:00").
+					  param("to", "12:00").
+					  post("operationManager-web/rest/addSlot/").asString();
+
+		RestOPSlotDTO slot = mapper.readValue(json, RestOPSlotDTO.class);
+		assertNotNull(slot);
+		assertNotNull(slot.getId());
+		slotRepo.delete(slot.getId());
+	}
+
+	@Test
+	/**
+	 * Tests the addSlot request, should fail because of wrong login
+	 * 
+	 * @throws JsonParseException
+	 * @throws JsonMappingException
+	 * @throws IOException
+	 */
+	public void test_addSlot_shouldFail() throws JsonParseException, JsonMappingException, IOException  {
+		ObjectMapper mapper = new ObjectMapper();  
+		String json = given().param("username", "lkhbaden").
+					  param("password", "wrong").
+					  param("date", "01.01.2015").
+					  param("from", "08:00").
+					  param("to", "12:00").
+					  post("operationManager-web/rest/addSlot/").asString();
+
+		RestErrorDTO dto = mapper.readValue(json, RestErrorDTO.class);
+		assertEquals("Invalid username or password!", dto.getError());
+	}
+
+	@Test
+	/**
+	 * Tests the addSlot request, should fail because of of insufficient permission
+	 * 
+	 * @throws JsonParseException
+	 * @throws JsonMappingException
+	 * @throws IOException
+	 */
+	public void test_addSlot_shouldFail_permission() throws JsonParseException, JsonMappingException, IOException  {
+		ObjectMapper mapper = new ObjectMapper();  
+		String json = given().param("username", "franz").
+					  param("password", "test04").
+					  param("date", "01.01.2015").
+					  param("from", "08:00").
+					  param("to", "12:00").
+					  post("operationManager-web/rest/addSlot/").asString();
+
+		RestErrorDTO dto = mapper.readValue(json, RestErrorDTO.class);
+		assertEquals("Only hospitals can add slots.", dto.getError());
 	}
 }
 	

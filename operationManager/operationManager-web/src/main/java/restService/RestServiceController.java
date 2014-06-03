@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -149,7 +150,7 @@ public class RestServiceController {
 		return results;
 	}
 
-	@RequestMapping("/rest/addSlot/")
+	@RequestMapping(value = "/rest/addSlot/", method = RequestMethod.POST)
 	/**
 	 * Adds an empty opSLot for the hospital who's credentials are given
 	 * 
@@ -164,11 +165,11 @@ public class RestServiceController {
 	 * @return
 	 * @throws RestServiceException
 	 */
-	public @ResponseBody OPSlot addSlot(@RequestParam(value="username", required=true) String username,
-									    @RequestParam(value="password", required=true) String password,
-									    @RequestParam(value="date", required=false, defaultValue="") String date,
-									    @RequestParam(value="from", required=false, defaultValue="") String from,
-									    @RequestParam(value="to", required=false, defaultValue="") String to) throws RestServiceException {
+	public @ResponseBody RestOPSlotDTO addSlot(@RequestParam(value="username", required=true) String username,
+											   @RequestParam(value="password", required=true) String password,
+											   @RequestParam(value="date", required=true) String date,
+											   @RequestParam(value="from", required=true) String from,
+											   @RequestParam(value="to", required=true) String to) throws RestServiceException {
 		
 		User user = authenticationService.authenticate(username, password);
 		if (!user.getRole().equals(Role.HOSPITAL)) {
@@ -206,7 +207,7 @@ public class RestServiceController {
 		slot.setStatus(OperationStatus.free);
 		opSlotService.saveOPSlot(slot);
 		
-		return slot;
+		return new RestOPSlotDTO(slot);
 	}
 
 	@RequestMapping("/rest/getPatients/")
@@ -275,7 +276,7 @@ public class RestServiceController {
 		return results;
 	}
 	
-	@RequestMapping("/rest/reserveOPSlot/")
+	@RequestMapping(value = "/rest/reserveOPSlot/", method = RequestMethod.POST)
 	/**
 	 * 
 	 * @param username
@@ -342,7 +343,7 @@ public class RestServiceController {
 	}
 
 	
-	@RequestMapping("/rest/deleteOPSlot/")
+	@RequestMapping(value = "/rest/deleteOPSlot/", method = RequestMethod.POST)
 	/**
 	 * Deletes a slot from the database
 	 * 
@@ -387,7 +388,7 @@ public class RestServiceController {
 		return result;
 	}
 
-	@RequestMapping("/rest/cancelReservation/")
+	@RequestMapping(value = "/rest/cancelReservation/", method = RequestMethod.POST)
 	/**
 	 * Deletes a slot from the database
 	 * 
