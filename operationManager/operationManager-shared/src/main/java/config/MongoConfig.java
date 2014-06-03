@@ -36,3 +36,4 @@ public class MongoConfig extends AbstractMongoConfiguration {
 	}
 
 }
+

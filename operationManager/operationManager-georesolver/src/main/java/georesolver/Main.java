@@ -2,10 +2,13 @@ package georesolver;
 
 import model.NotificationType;
 import model.OPSlot;
+import model.OperationStatus;
 import model.dto.Message;
 import model.dto.NotificationDTO;
 import model.dto.OPSlotDTO;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
@@ -23,6 +26,7 @@ import config.RabbitMQConfig;
 @Component
 public class Main implements InitializingBean {
 
+	private Logger logger = LoggerFactory.getLogger(Main.class); 
 
 	@Autowired
 	private IQueueService queueService;
@@ -37,6 +41,8 @@ public class Main implements InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {		
+		logger.info("Started listening");
+		listenOnQueue();
 	}
 	
 	public static void main(String[] args) {
@@ -44,8 +50,6 @@ public class Main implements InitializingBean {
 		Main prog = new Main();
 		AutowireCapableBeanFactory factory = context.getAutowireCapableBeanFactory();
 		factory.autowireBeanProperties(prog, AutowireCapableBeanFactory.AUTOWIRE_BY_NAME, false);
-		factory.initializeBean(prog, "georesolver");
-		prog.listenOnQueue();
 	}
 
 	private void listenOnQueue() {
@@ -54,10 +58,11 @@ public class Main implements InitializingBean {
 			public void handleMessage(Message m) {
 				OPSlotDTO slotDTO = (OPSlotDTO) m;
 	
-				System.err.println("got request:" + m);
-				/* We need to send a notification to both patient and doctor */
+				logger.info("Got request: " + m);
+				/* We need to send a notification to patient, doctor and hospital */
 				NotificationDTO notificationDoc = new NotificationDTO();
 				NotificationDTO notificationPat = new NotificationDTO();
+				NotificationDTO notificationHos = new NotificationDTO();
 	
 				OPSlot opSlot = null;
 				
@@ -71,6 +76,7 @@ public class Main implements InitializingBean {
 				}		
 
 				if (opSlot != null) {
+					opSlot.setStatus(OperationStatus.reserved);
 					opSlotService.saveOPSlot(opSlot);
 
 					notificationDoc.setOpSlotID(opSlot.getId());
@@ -79,7 +85,14 @@ public class Main implements InitializingBean {
 					
 					notificationPat.setOpSlotID(opSlot.getId());
 					notificationPat.setMessage("Registrierung erfolgreich!");
-					notificationPat.setType(NotificationType.RESERVATION_SUCESSFULL);					
+					notificationPat.setType(NotificationType.RESERVATION_SUCESSFULL);	
+
+					notificationHos.setOpSlotID(opSlot.getId());
+					notificationHos.setMessage("Registrierung erfolgreich!");
+					notificationHos.setType(NotificationType.RESERVATION_SUCESSFULL);	
+					notificationHos.setRecipientID(opSlot.getHospital().getId());
+
+					queueService.sendToNewsBeeper(notificationHos);
 				}
 				else {
 					notificationDoc.setMessage("Registrierung fehlgeschlagen!");

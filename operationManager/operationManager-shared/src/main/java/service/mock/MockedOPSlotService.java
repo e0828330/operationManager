@@ -25,6 +25,7 @@ import service.IOPSlotService;
 @Service
 public class MockedOPSlotService {
 
+	@SuppressWarnings("unchecked")
 	@Bean
 	static IOPSlotService getOPSlotService() {
 		IOPSlotService mock = Mockito.mock(IOPSlotService.class);

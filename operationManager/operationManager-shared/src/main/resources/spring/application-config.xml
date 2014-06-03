@@ -18,8 +18,8 @@
 	<context:component-scan base-package="restService" />
 	<context:component-scan base-package="model" />
 
-	<context:component-scan base-package="service.jms" />
-
+	<context:component-scan base-package="georesolver" />
+	<context:component-scan base-package="newsbeeper" />
 
 	<context:annotation-config />
 
