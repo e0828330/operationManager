@@ -1,4 +1,4 @@
-package config;
+package cloudConfig;
 
 import org.springframework.cloud.config.java.AbstractCloudConfig;
 import org.springframework.cloud.config.java.ServiceScan;

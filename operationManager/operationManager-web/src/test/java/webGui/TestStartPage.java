@@ -9,10 +9,13 @@ import org.apache.wicket.util.tester.FormTester;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.googlecode.wicket.kendo.ui.form.datetime.DatePicker;
 import com.googlecode.wicket.kendo.ui.form.datetime.TimePicker;
 
+@RunWith(SpringJUnit4ClassRunner.class)
 public class TestStartPage extends AbstractBaseTest {
 
 	
