@@ -2,6 +2,7 @@ package georesolver;
 
 import model.NotificationType;
 import model.OPSlot;
+import model.OperationStatus;
 import model.dto.Message;
 import model.dto.NotificationDTO;
 import model.dto.OPSlotDTO;
@@ -74,6 +75,7 @@ public class Main implements InitializingBean {
 				}		
 
 				if (opSlot != null) {
+					opSlot.setStatus(OperationStatus.reserved);
 					opSlotService.saveOPSlot(opSlot);
 
 					notificationDoc.setOpSlotID(opSlot.getId());
