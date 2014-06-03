@@ -4,6 +4,7 @@ package newsbeeper;
 import java.util.Date;
 
 import model.Doctor;
+import model.Hospital;
 import model.Notification;
 import model.OPSlot;
 import model.Patient;
@@ -80,8 +81,14 @@ public class Main implements InitializingBean {
 						notification.setRecipient((User)doctor);
 					}
 					else {
-						logger.info("No User found with id = " + notificationDTO.getRecipientID());
-						return;
+						Hospital hospital = newsbeeperService.getHospitalById(notificationDTO.getRecipientID());
+						if (hospital != null) {
+							notification.setRecipient((User)hospital);
+						}
+						else {
+							logger.info("No User found with id = " + notificationDTO.getRecipientID());
+							return;
+						}
 					}
 				}
 				
