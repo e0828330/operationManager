@@ -59,9 +59,10 @@ public class Main implements InitializingBean {
 				OPSlotDTO slotDTO = (OPSlotDTO) m;
 	
 				logger.info("Got request: " + m);
-				/* We need to send a notification to both patient and doctor */
+				/* We need to send a notification to patient, doctor and hospital */
 				NotificationDTO notificationDoc = new NotificationDTO();
 				NotificationDTO notificationPat = new NotificationDTO();
+				NotificationDTO notificationHos = new NotificationDTO();
 	
 				OPSlot opSlot = null;
 				
@@ -84,7 +85,14 @@ public class Main implements InitializingBean {
 					
 					notificationPat.setOpSlotID(opSlot.getId());
 					notificationPat.setMessage("Registrierung erfolgreich!");
-					notificationPat.setType(NotificationType.RESERVATION_SUCESSFULL);					
+					notificationPat.setType(NotificationType.RESERVATION_SUCESSFULL);	
+
+					notificationHos.setOpSlotID(opSlot.getId());
+					notificationHos.setMessage("Registrierung erfolgreich!");
+					notificationHos.setType(NotificationType.RESERVATION_SUCESSFULL);	
+					notificationHos.setRecipientID(opSlot.getHospital().getId());
+
+					queueService.sendToNewsBeeper(notificationHos);
 				}
 				else {
 					notificationDoc.setMessage("Registrierung fehlgeschlagen!");
