@@ -7,10 +7,12 @@ import java.util.List;
 import lombok.Data;
 import model.Doctor;
 import model.Hospital;
+import model.NotificationType;
 import model.OPSlot;
 import model.OperationStatus;
 import model.Patient;
 import model.User;
+import model.dto.NotificationDTO;
 import model.dto.OPSlotDTO;
 import model.dto.OPSlotFilter;
 
@@ -187,6 +189,19 @@ public class OPSlotService implements IOPSlotService {
 
 	@Override
 	public void cancelReservation(OPSlot slot) {
+		NotificationDTO notification = new NotificationDTO();
+		notification.setOpSlotID(slot.getId());
+		notification.setRecipientID(slot.getDoctor().getId());
+		notification.setType(NotificationType.RESERVATION_DELETED);
+		notification.setMessage("Reservierung stoniert");
+		queueService.sendToNewsBeeper(notification);
+		
+		notification.setRecipientID(slot.getPatient().getId());
+		queueService.sendToNewsBeeper(notification);
+		
+		notification.setRecipientID(slot.getHospital().getId());
+		queueService.sendToNewsBeeper(notification);	
+		
 		slot.setDoctor(null);
 		slot.setPatient(null);
 		slot.setStatus(OperationStatus.free);
