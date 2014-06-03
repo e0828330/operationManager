@@ -2,6 +2,7 @@ package restService;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import model.Doctor;
@@ -17,6 +18,9 @@ import model.dto.OPSlotDTO;
 import model.dto.OPSlotFilter;
 import model.dto.RestErrorDTO;
 import model.dto.RestMessageDTO;
+import model.dto.RestNotificationDTO;
+import model.dto.RestOPSlotDTO;
+import model.dto.RestPatientDTO;
 
 import org.apache.wicket.extensions.markup.html.repeater.util.SortParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,14 +87,14 @@ public class RestServiceController {
 	 * @return
 	 * @throws RestServiceException
 	 */
-	public @ResponseBody List<OPSlot> getSlots(@RequestParam(value="username", required=false, defaultValue="") String username,
-											   @RequestParam(value="password", required=false, defaultValue="") String password,
-											   @RequestParam(value="date", required=false, defaultValue="") String date,
-											   @RequestParam(value="from", required=false, defaultValue="") String from,
-											   @RequestParam(value="to", required=false, defaultValue="") String to,
-											   @RequestParam(value="patient", required=false, defaultValue="") String patient,
-											   @RequestParam(value="doctor", required=false, defaultValue="") String doctor,
-											   @RequestParam(value="hospital", required=false, defaultValue="") String hospital) throws RestServiceException {
+	public @ResponseBody List<RestOPSlotDTO> getSlots(@RequestParam(value="username", required=false, defaultValue="") String username,
+													  @RequestParam(value="password", required=false, defaultValue="") String password,
+													  @RequestParam(value="date", required=false, defaultValue="") String date,
+													  @RequestParam(value="from", required=false, defaultValue="") String from,
+													  @RequestParam(value="to", required=false, defaultValue="") String to,
+													  @RequestParam(value="patient", required=false, defaultValue="") String patient,
+													  @RequestParam(value="doctor", required=false, defaultValue="") String doctor,
+													  @RequestParam(value="hospital", required=false, defaultValue="") String hospital) throws RestServiceException {
 		User user = authenticationService.authenticate(username, password);
 		
 		if (!username.equals("") && user.getRole().equals(Role.DEFAULT)) {
@@ -130,7 +134,19 @@ public class RestServiceController {
 		filter.setDoctor(doctor);
 		filter.setHospital(hospital);
 		
-		return opSlotService.getOPSlots(user, new SortParam<String>("date", false), filter, 0, Integer.MAX_VALUE);
+		List<OPSlot> list = opSlotService.getOPSlots(user, new SortParam<String>("date", false), filter, 0, Integer.MAX_VALUE);
+		
+		List<RestOPSlotDTO> results = new ArrayList<>(list.size());
+		
+		for(OPSlot slot : list) {
+			RestOPSlotDTO dto = new RestOPSlotDTO(slot);
+			if (user.getRole().equals(Role.DEFAULT)) {
+				dto.setPatient(null);
+			}
+			results.add(dto);
+		}
+		
+		return results;
 	}
 
 	@RequestMapping("/rest/addSlot/")
@@ -186,7 +202,8 @@ public class RestServiceController {
 		} catch (ParseException e) {
 			throw new RestServiceException("Could not parse to date .. probably wrong format.");
 		}
-		
+
+		slot.setStatus(OperationStatus.free);
 		opSlotService.saveOPSlot(slot);
 		
 		return slot;
@@ -202,9 +219,9 @@ public class RestServiceController {
 	 * @return
 	 * @throws RestServiceException
 	 */
-	public @ResponseBody List<Patient> getPatients(@RequestParam(value="username", required=true) String username,
-												   @RequestParam(value="password", required=true) String password,
-												   @RequestParam(value="keyword", required=false, defaultValue="") String keyword) throws RestServiceException {
+	public @ResponseBody List<RestPatientDTO> getPatients(@RequestParam(value="username", required=true) String username,
+												   		  @RequestParam(value="password", required=true) String password,
+												   		  @RequestParam(value="keyword", required=false, defaultValue="") String keyword) throws RestServiceException {
 		
 		User user = authenticationService.authenticate(username, password);
 		if (user.getRole().equals(Role.DEFAULT)) {
@@ -215,11 +232,21 @@ public class RestServiceController {
 			throw new RestServiceException("Patients are not allowed to access the patient list");
 		}
 
+		List<Patient> list;
+		
 		if (keyword.isEmpty()) {
-			return patientService.getPatients();
+			list = patientService.getPatients();
 		}
-
-		return patientService.getPatients(keyword);
+		else {
+			list = patientService.getPatients(keyword);
+		}
+		
+		List<RestPatientDTO> results = new ArrayList<>(list.size());
+		for(Patient patient : list) {
+			results.add(new RestPatientDTO(patient));
+		}
+		
+		return results;
 	}
 	
 	@RequestMapping("/rest/listNotifications/")
@@ -231,14 +258,21 @@ public class RestServiceController {
 	 * @return
 	 * @throws RestServiceException
 	 */
-	public @ResponseBody List<Notification> listNotifications(@RequestParam(value="username", required=true) String username,
-			   												  @RequestParam(value="password", required=true) String password) throws RestServiceException {
+	public @ResponseBody List<RestNotificationDTO> listNotifications(@RequestParam(value="username", required=true) String username,
+			   												  		 @RequestParam(value="password", required=true) String password) throws RestServiceException {
 		User user = authenticationService.authenticate(username, password);
 		if (user.getRole().equals(Role.DEFAULT)) {
 			throw new RestServiceException("Invalid username or password!");
 		}
 		
-		return notificationService.getForUser(user);
+		List<Notification> list = notificationService.getForUser(user);
+		List<RestNotificationDTO> results = new ArrayList<>(list.size());
+
+		for (Notification notification : list) {
+			results.add(new RestNotificationDTO(notification));
+		}
+		
+		return results;
 	}
 	
 	@RequestMapping("/rest/reserveOPSlot/")

@@ -3,13 +3,14 @@ package rest;
 import static com.jayway.restassured.RestAssured.get;
 import static com.jayway.restassured.RestAssured.given;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.io.IOException;
 import java.util.List;
 
 import model.OPSlot;
-import model.OperationStatus;
 import model.dto.RestErrorDTO;
+import model.dto.RestOPSlotDTO;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,26 +34,38 @@ public class RestGetSlotTest {
 	
 	@Test
 	/**
-	 * Tests  whether the rest service returns all free slots when called without a user
+	 * Tests  whether the rest service returns no patients when called without a user
 	 * 
 	 * @throws JsonParseException
 	 * @throws JsonMappingException
 	 * @throws IOException
 	 */
-	public void test_getSlots_shouldFindAllFree() throws JsonParseException, JsonMappingException, IOException {
+	public void test_getSlots_shouldContainNoPatient() throws JsonParseException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();  
 		String json = get("operationManager-web/rest/getSlots/").asString();
-		List<OPSlot> result = mapper.readValue(json, new TypeReference<List<OPSlot>>() {});
+		List<RestOPSlotDTO> result = mapper.readValue(json, new TypeReference<List<RestOPSlotDTO>>() {});
 		
-		int numFree = 0;
-		List<OPSlot> dbSlots = (List<OPSlot>) slotRepo.findAll();
-		for (OPSlot slot : dbSlots) {
-			if (slot.getStatus().equals(OperationStatus.free)) {
-				numFree++;
-			}
+		for(RestOPSlotDTO dto : result) {
+			assertNull(dto.getPatient());
 		}
-
-		assertEquals(numFree, result.size());
+		
+	}
+	
+	@Test
+	/**
+	 * Tests  whether the rest service returns all slots when called without a user
+	 * 
+	 * @throws JsonParseException
+	 * @throws JsonMappingException
+	 * @throws IOException
+	 */
+	public void test_getSlots_shouldFindAll() throws JsonParseException, JsonMappingException, IOException {
+		ObjectMapper mapper = new ObjectMapper();  
+		String json = get("operationManager-web/rest/getSlots/").asString();
+		List<RestOPSlotDTO> result = mapper.readValue(json, new TypeReference<List<RestOPSlotDTO>>() {});
+		List<OPSlot> dbSlots = (List<OPSlot>) slotRepo.findAll();
+		
+		assertEquals(dbSlots.size(), result.size());
 	}
 
 	@Test
