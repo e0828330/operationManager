@@ -36,6 +36,7 @@
 					<space>development</space>
 					<appname>operationManager-georesolver</appname>
 					<memory>512</memory>
+					<instances>2</instances>
 					<services>
 						<service>
 							<name>DB</name>
