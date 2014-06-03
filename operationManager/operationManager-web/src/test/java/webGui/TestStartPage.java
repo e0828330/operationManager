@@ -1,5 +1,6 @@
 package webGui;
 
+import org.apache.wicket.datetime.markup.html.basic.DateLabel;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
@@ -59,7 +60,7 @@ public class TestStartPage extends AbstractBaseTest {
 	}
 	
 	@Test
-	public void all_filter_components_render_role_default() {
+	public void all_components_render_role_default() {
 		page_renders();
 		
 		tester.assertComponent("overview:filterForm", Form.class);
@@ -72,10 +73,12 @@ public class TestStartPage extends AbstractBaseTest {
 		tester.assertComponent("overview:filterForm:doctor", TextField.class);
 		tester.assertComponent("overview:filterForm:type", DropDownChoice.class);
 		tester.assertComponent("overview:filterForm:status", DropDownChoice.class);
+		
+		tester.assertComponent("overView:overviewTable:body:rows:1:cells:1:cell", DateLabel.class);
 	}
 	
 	@Test
-	public void all_filter_components_render_role_patient() {
+	public void all_components_render_role_patient() {
 		page_renders();
 		login("patient");
 		
@@ -92,7 +95,7 @@ public class TestStartPage extends AbstractBaseTest {
 	}
 	
 	@Test
-	public void all_filter_components_render_role_hospital() {
+	public void all_components_render_role_hospital() {
 		page_renders();
 		login("hospital");
 		
@@ -109,7 +112,7 @@ public class TestStartPage extends AbstractBaseTest {
 	}
 	
 	@Test
-	public void all_filter_components_render_role_doctor() {
+	public void all_components_render_role_doctor() {
 		page_renders();
 		login("doctor");
 		
