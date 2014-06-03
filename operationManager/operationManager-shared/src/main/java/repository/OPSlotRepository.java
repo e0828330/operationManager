@@ -37,7 +37,8 @@ public interface OPSlotRepository extends OPSlotRepositoryCustom, PagingAndSorti
 			+ "{'type' : {$regex : ?3, $options: 'i'} } "
 			+ "], "
 			// Date and time handling
-			+ "$where : '(?4 == null || this.date > new Date(?4) && this.date < new Date(?5)) &&"
+			+ "$where : '(this.from > new Date()) &&"
+			+ "			 (?4 == null || this.date > new Date(?4) && this.date < new Date(?5)) &&"
 			+ "          (?6 == null || this.from.getHours()*60+this.from.getMinutes() >= ?6) &&"
 			+ "          (?7 == null || this.to.getHours()*60+this.to.getMinutes() <= ?7)'"
 			+ "} }")
@@ -76,7 +77,8 @@ public interface OPSlotRepository extends OPSlotRepositoryCustom, PagingAndSorti
 					+ "{'type' : {$regex : ?3, $options: 'i'} } "
 					+ "], "
 					// Date and time handling
-					+ "$where : '(?4 == null || this.date > new Date(?4) && this.date < new Date(?5)) &&"
+					+ "$where : '(this.from > new Date()) &&"
+					+ "			 (?4 == null || this.date > new Date(?4) && this.date < new Date(?5)) &&"
 					+ "          (?6 == null || this.from.getHours()*60+this.from.getMinutes() >= ?6) &&"
 					+ "          (?7 == null || this.to.getHours()*60+this.to.getMinutes() <= ?7)'"
 					+ "} }", count = true)
@@ -115,7 +117,8 @@ public interface OPSlotRepository extends OPSlotRepositoryCustom, PagingAndSorti
 			+ "{'type' : {$regex : ?4, $options: 'i'} } "
 			+ "], "
 			// Date and time handling
-			+ "$where : '(?5 == null || this.date > new Date(?5) && this.date < new Date(?6)) &&"
+			+ "$where : '(this.from > new Date()) &&"
+			+ "			 (?5 == null || this.date > new Date(?5) && this.date < new Date(?6)) &&"
 			+ "          (?7 == null || this.from.getHours()*60+this.from.getMinutes() >= ?7) &&"
 			+ "          (?8 == null || this.to.getHours()*60+this.to.getMinutes() <= ?8)'"
 			+ "} }")
@@ -156,7 +159,8 @@ public interface OPSlotRepository extends OPSlotRepositoryCustom, PagingAndSorti
 			+ "{'type' : {$regex : ?4, $options: 'i'} } "
 			+ "], "
 			// Date and time handling
-			+ "$where : '(?5 == null || this.date > new Date(?5) && this.date < new Date(?6)) &&"
+			+ "$where : '(this.from > new Date()) &&"
+			+ "			 (?5 == null || this.date > new Date(?5) && this.date < new Date(?6)) &&"
 			+ "          (?7 == null || this.from.getHours()*60+this.from.getMinutes() >= ?7) &&"
 			+ "          (?8 == null || this.to.getHours()*60+this.to.getMinutes() <= ?8)'"
 			+ "} }", count=true)
@@ -197,7 +201,8 @@ public interface OPSlotRepository extends OPSlotRepositoryCustom, PagingAndSorti
 			+ "{'type' : {$regex : ?4, $options: 'i'} } "
 			+ "], "
 			// Date and time handling
-			+ "$where : '(?5 == null || this.date > new Date(?5) && this.date < new Date(?6)) &&"
+			+ "$where : '(this.from > new Date()) &&"
+			+ "			 (?5 == null || this.date > new Date(?5) && this.date < new Date(?6)) &&"
 			+ "          (?7 == null || this.from.getHours()*60+this.from.getMinutes() >= ?7) &&"
 			+ "          (?8 == null || this.to.getHours()*60+this.to.getMinutes() <= ?8)'"
 			+ "} }")
@@ -239,7 +244,8 @@ public interface OPSlotRepository extends OPSlotRepositoryCustom, PagingAndSorti
 			+ "{'type' : {$regex : ?4, $options: 'i'} } "
 			+ "], "
 			// Date and time handling
-			+ "$where : '(?5 == null || this.date > new Date(?5) && this.date < new Date(?6)) &&"
+			+ "$where : '(this.from > new Date()) &&"
+			+ "			 (?5 == null || this.date > new Date(?5) && this.date < new Date(?6)) &&"
 			+ "          (?7 == null || this.from.getHours()*60+this.from.getMinutes() >= ?7) &&"
 			+ "          (?8 == null || this.to.getHours()*60+this.to.getMinutes() <= ?8)'"
 			+ "} }", count=true)
@@ -282,7 +288,8 @@ public interface OPSlotRepository extends OPSlotRepositoryCustom, PagingAndSorti
 			+ "{'type' : {$regex : ?4, $options: 'i'} } "
 			+ "], "
 			// Date and time handling
-			+ "$where : '(?5 == null || this.date > new Date(?5) && this.date < new Date(?6)) &&"
+			+ "$where : '(this.from > new Date()) &&"
+			+ "			 (?5 == null || this.date > new Date(?5) && this.date < new Date(?6)) &&"
 			+ "          (?7 == null || this.from.getHours()*60+this.from.getMinutes() >= ?7) &&"
 			+ "          (?8 == null || this.to.getHours()*60+this.to.getMinutes() <= ?8)'"
 			+ "} }")
@@ -326,7 +333,8 @@ public interface OPSlotRepository extends OPSlotRepositoryCustom, PagingAndSorti
 			+ "{'type' : {$regex : ?4, $options: 'i'} } "
 			+ "], "
 			// Date and time handling
-			+ "$where : '(?5 == null || this.date > new Date(?5) && this.date < new Date(?6)) &&"
+			+ "$where : '(this.from > new Date()) &&"
+			+ "			 (?5 == null || this.date > new Date(?5) && this.date < new Date(?6)) &&"
 			+ "          (?7 == null || this.from.getHours()*60+this.from.getMinutes() >= ?7) &&"
 			+ "          (?8 == null || this.to.getHours()*60+this.to.getMinutes() <= ?8)'"
 			+ "} }", count=true)
