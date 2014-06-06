@@ -31,6 +31,7 @@ public class LoadTest {
 		return result;
 	}
 	
+
 	private class ReservationWorker implements Runnable {
 
 		private String patientId;
@@ -42,23 +43,32 @@ public class LoadTest {
 		}
 		
 		@Override
+		/***
+		 * Worker thread, sends the request 
+		 */
 		public void run() {
+			// TODO: Target cloud instead of localhost
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-			String result = given().param("username", "maria").
-								param("password", "test09").
-								param("patientId", patientId).
-								param("operationType", operationType).
-								param("from", dateFormat.format(new Date())).
-								param("to", "01.01.2016").
-								param("distance", new Integer((int) (Math.random() * 150)).toString()).
-						    post("/operationManager-web/rest/reserveOPSlot/").asString();
-
-			// FIXME: Do something useful with the result?
-			System.err.println(result);
+			given().param("username", "maria").
+				param("password", "test09").
+				param("patientId", patientId).
+				param("operationType", operationType).
+				param("from", dateFormat.format(new Date())).
+				param("to", "01.01.2016").
+				param("distance", "150").
+		    post("/operationManager-web/rest/reserveOPSlot/");
 		}
 	}
 	
 	@Test
+	/**
+	 * Flood rest service with reservation requests
+	 * 
+	 * @throws JsonParseException
+	 * @throws JsonMappingException
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
 	public void loadTest() throws JsonParseException, JsonMappingException, IOException, InterruptedException {
 		ExecutorService executor = Executors.newCachedThreadPool();
 		List<RestPatientDTO> patients = getPatients();

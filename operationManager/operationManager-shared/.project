@@ -3,6 +3,7 @@
 	<name>operationManager-shared</name>
 	<comment></comment>
 	<projects>
+		<project>operationManager</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
