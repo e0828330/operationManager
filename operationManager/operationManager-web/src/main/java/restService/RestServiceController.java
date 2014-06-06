@@ -22,8 +22,8 @@ import model.dto.RestNotificationDTO;
 import model.dto.RestOPSlotDTO;
 import model.dto.RestPatientDTO;
 
-import org.apache.wicket.extensions.markup.html.repeater.util.SortParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -135,7 +135,7 @@ public class RestServiceController {
 		filter.setDoctor(doctor);
 		filter.setHospital(hospital);
 		
-		List<OPSlot> list = opSlotService.getOPSlots(user, new SortParam<String>("date", false), filter, 0, Integer.MAX_VALUE);
+		List<OPSlot> list = opSlotService.getOPSlots(user, new Sort(Sort.Direction.DESC, "date"), filter, 0, Integer.MAX_VALUE);
 		
 		List<RestOPSlotDTO> results = new ArrayList<>(list.size());
 		

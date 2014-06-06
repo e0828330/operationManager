@@ -13,11 +13,11 @@ import model.Patient;
 import model.User;
 import model.dto.OPSlotFilter;
 
-import org.apache.wicket.extensions.markup.html.repeater.util.SortParam;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import service.IOPSlotService;
@@ -25,7 +25,6 @@ import service.IOPSlotService;
 @Service
 public class MockedOPSlotService {
 
-	@SuppressWarnings("unchecked")
 	@Bean
 	static IOPSlotService getOPSlotService() {
 		IOPSlotService mock = Mockito.mock(IOPSlotService.class);
@@ -44,7 +43,7 @@ public class MockedOPSlotService {
 		third.add(getMockedOPSlot("6", OperationType.cardio, "LK-B", "Dr. Morks", "Gloria", "Geraus", OperationStatus.reserved));
 
 		//return different lists the first 3 calls, so the AjaxSelfUpdatingTimerBehavior can be tested
-		Mockito.when(mock.getOPSlots(Mockito.any(User.class), Mockito.any(SortParam.class), Mockito.any(OPSlotFilter.class), Mockito.anyLong(), Mockito.anyLong())).thenReturn(first).thenReturn(second).thenReturn(third);
+		Mockito.when(mock.getOPSlots(Mockito.any(User.class), Mockito.any(Sort.class), Mockito.any(OPSlotFilter.class), Mockito.anyLong(), Mockito.anyLong())).thenReturn(first).thenReturn(second).thenReturn(third);
 		
 		Mockito.when(mock.getOPSlotCount(Mockito.any(User.class), Mockito.any(OPSlotFilter.class))).thenReturn(1L).thenReturn(2L).thenReturn(3L);
 		

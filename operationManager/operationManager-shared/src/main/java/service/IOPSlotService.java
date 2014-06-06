@@ -7,7 +7,7 @@ import model.User;
 import model.dto.OPSlotDTO;
 import model.dto.OPSlotFilter;
 
-import org.apache.wicket.extensions.markup.html.repeater.util.SortParam;
+import org.springframework.data.domain.Sort;
 
 public interface IOPSlotService {
 
@@ -21,7 +21,7 @@ public interface IOPSlotService {
 	 * @param itemsPerPage the number of elements to include in a page
 	 * @return
 	 */
-	public List<OPSlot> getOPSlots(User user, SortParam<String> sort, OPSlotFilter filter, long page, long itemsPerPage);
+	public List<OPSlot> getOPSlots(User user, Sort sort, OPSlotFilter filter, long page, long itemsPerPage);
 	
 	/**
 	 * returns the number of found OP slots
