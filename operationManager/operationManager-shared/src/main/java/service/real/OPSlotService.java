@@ -7,14 +7,15 @@ import java.util.List;
 import lombok.Data;
 import model.Doctor;
 import model.Hospital;
+import model.NotificationType;
 import model.OPSlot;
 import model.OperationStatus;
 import model.Patient;
 import model.User;
+import model.dto.NotificationDTO;
 import model.dto.OPSlotDTO;
 import model.dto.OPSlotFilter;
 
-import org.apache.wicket.extensions.markup.html.repeater.util.SortParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -106,14 +107,13 @@ public class OPSlotService implements IOPSlotService {
 	}
 
 	@Override
-	public List<OPSlot> getOPSlots(User user, SortParam<String> sort, OPSlotFilter filter, long page, long itemsPerPage) {
+	public List<OPSlot> getOPSlots(User user, Sort sort, OPSlotFilter filter, long page, long itemsPerPage) {
 		FilterParams filterParams = new FilterParams(filter);
 
 		/* Sort and paging */
 		PageRequest pager;
 		if (sort != null) {
-			Sort sorter = new Sort(sort.isAscending() ? Sort.Direction.ASC : Sort.Direction.DESC, sort.getProperty());
-			pager = new PageRequest((int) page, (int) itemsPerPage, sorter);
+			pager = new PageRequest((int) page, (int) itemsPerPage, sort);
 		} else {
 			pager = new PageRequest((int) page, (int) itemsPerPage);
 		}
@@ -187,6 +187,19 @@ public class OPSlotService implements IOPSlotService {
 
 	@Override
 	public void cancelReservation(OPSlot slot) {
+		NotificationDTO notification = new NotificationDTO();
+		notification.setOpSlotID(slot.getId());
+		notification.setRecipientID(slot.getDoctor().getId());
+		notification.setType(NotificationType.RESERVATION_DELETED);
+		notification.setMessage("Reservierung stoniert");
+		queueService.sendToNewsBeeper(notification);
+		
+		notification.setRecipientID(slot.getPatient().getId());
+		queueService.sendToNewsBeeper(notification);
+		
+		notification.setRecipientID(slot.getHospital().getId());
+		queueService.sendToNewsBeeper(notification);	
+		
 		slot.setDoctor(null);
 		slot.setPatient(null);
 		slot.setStatus(OperationStatus.free);

@@ -25,6 +25,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import repository.DoctorRepository;
 import repository.HospitalRepository;
+import repository.NotificationRepository;
 import repository.OPSlotRepository;
 import repository.PatientRepository;
 import utils.Utils;
@@ -43,6 +44,9 @@ public class TestData {
 	
 	@Autowired 
 	private DoctorRepository doctorRepo;
+	
+	@Autowired
+	private NotificationRepository notifRepo;
 
 
 	@Test
@@ -226,5 +230,6 @@ public class TestData {
 		doctorRepo.deleteAll();
 		hsRepo.deleteAll();
 		opSlotRepo.deleteAll();
+		notifRepo.deleteAll();
 	}
 }

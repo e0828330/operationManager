@@ -37,7 +37,6 @@ public class OPSlotRepositoryImpl implements OPSlotRepositoryCustom {
 															Criteria.where("date").gte(from).lte(to));
 		query.addCriteria(queryCriteria);
 
-		System.out.println(query);
 		/* Do the geo query */
 		NearQuery nearQuery = NearQuery.near(point).spherical(true).maxDistance(distance).query(query);
 		GeoResults<OPSlot> rawResults = ((MongoOperations) template).geoNear(nearQuery, OPSlot.class);
@@ -52,15 +51,17 @@ public class OPSlotRepositoryImpl implements OPSlotRepositoryCustom {
 		Collections.sort(results, new Comparator<GeoResult<OPSlot>>() {
 			@Override
 			public int compare(GeoResult<OPSlot> s1, GeoResult<OPSlot> s2) {
-				if (s1.getDistance().equals(s2.getDistance())) {
-					return 0;
+				int distanceDiff = Double.compare(s1.getDistance().getValue(), s2.getDistance().getValue());
+				if (distanceDiff == 0) {
+					return s1.getContent().getFrom().compareTo(s2.getContent().getFrom());
 				}
 				else {
-					return s1.getContent().getDate().compareTo(s2.getContent().getDate());
+					return distanceDiff;
 				}
+
 			}
 		});
-
+		
 		/* Return the best (i.e first) result */
 		return results.get(0).getContent();
 	}

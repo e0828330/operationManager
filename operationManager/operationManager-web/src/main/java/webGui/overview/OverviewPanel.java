@@ -24,6 +24,7 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.ISortableDataProvider;
+import org.apache.wicket.extensions.markup.html.repeater.util.SortParam;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.MarkupStream;
@@ -45,6 +46,7 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.time.Duration;
+import org.springframework.data.domain.Sort;
 
 import service.IOPSlotService;
 import session.OperationManagerWebSession;
@@ -369,7 +371,12 @@ public class OverviewPanel extends Panel {
 
 			@Override
 			public Iterator<? extends OPSlot> iterator(long first, long count) {
-				return opSlotService.getOPSlots(session.getActiveUser(), getSort(), filterModel.getObject(), table.getCurrentPage(), table.getItemsPerPage()).iterator();
+				SortParam<String> sortParam = getSort();
+				Sort sort = null;
+				if (sortParam != null) {
+					sort = new Sort(getSort().isAscending() ? Sort.Direction.ASC : Sort.Direction.DESC, getSort().getProperty());
+				}
+				return opSlotService.getOPSlots(session.getActiveUser(), sort, filterModel.getObject(), table.getCurrentPage(), table.getItemsPerPage()).iterator();
 			}
 
 			@Override
