@@ -1,3 +1,4 @@
+package service;
 import static org.junit.Assert.*;
 import model.Doctor;
 import model.NotificationType;
