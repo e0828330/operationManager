@@ -91,6 +91,19 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.17</version>
+				<configuration>
+					<excludes>
+						<!-- only makes sense on cloud -->
+						<exclude>**/LoadTest.java</exclude>
+						<!-- is abstract -->
+						<exlcude>**/AbstractBaseTest.java</exlcude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
 					<webXml>src\main\webapp\WEB-INF\cloud\web.xml</webXml>
