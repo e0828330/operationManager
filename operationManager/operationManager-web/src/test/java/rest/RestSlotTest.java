@@ -28,7 +28,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/spring/application-config.xml" })
-public class RestSlotTest {
+public class RestSlotTest extends TestServer {
 	
 	@Autowired
 	private OPSlotRepository slotRepo;
