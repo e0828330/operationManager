@@ -2,6 +2,8 @@ package service;
 
 import model.Doctor;
 import model.Hospital;
+import model.Notification;
+import model.dto.NotificationDTO;
 
 public interface INewsbeeperService {
 	/**
@@ -19,5 +21,12 @@ public interface INewsbeeperService {
 	 * @return Returns the Hospital object or null if not found
 	 */
 	public Hospital getHospitalById(String id);	
+	
+	/**
+	 * Handles the notification for doctors, patients, hospitals
+	 * @param dto
+	 * @return
+	 */
+	public Notification handleNotification(NotificationDTO dto);
 	
 }
