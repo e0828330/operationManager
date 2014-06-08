@@ -38,14 +38,14 @@ public class NewsbeeperTest {
 	}
 	
 	@Test
-	public void testhandleNotification01() {
+	public void testhandleNotificationNullWithEmptyObject() {
 		NotificationDTO dto = new NotificationDTO();
 
 		assertNull(newsbeeperService.handleNotification(dto));
 	}	
 	
 	@Test
-	public void testhandleNotification02() {
+	public void testhandleNotificationNullWithNotExistingRecipient() {
 		NotificationDTO dto = new NotificationDTO();
 		dto.setMessage("Test");
 		dto.setType(NotificationType.RESERVATION_SUCESSFULL);
@@ -56,7 +56,7 @@ public class NewsbeeperTest {
 	}
 	
 	@Test
-	public void testhandleNotification03() {
+	public void testhandleNotificationWithExistingDoctor() {
 		NotificationDTO dto = new NotificationDTO();
 		dto.setMessage("Test");
 		dto.setType(NotificationType.RESERVATION_SUCESSFULL);
@@ -79,7 +79,7 @@ public class NewsbeeperTest {
 	}
 	
 	@Test
-	public void testhandleNotification04() {
+	public void testhandleNotificationWithExistingPatient() {
 		NotificationDTO dto = new NotificationDTO();
 		dto.setMessage("Test");
 		dto.setType(NotificationType.RESERVATION_SUCESSFULL);
