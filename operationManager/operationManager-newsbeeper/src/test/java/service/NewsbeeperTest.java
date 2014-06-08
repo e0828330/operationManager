@@ -14,14 +14,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import repository.DoctorRepository;
 import repository.PatientRepository;
-import service.INewsbeeperService;
+import testData.DatabaseTest;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/spring/application-config.xml" })
-
-public class NewsbeeperTest {
-	
+public class NewsbeeperTest extends DatabaseTest {
 
 	@Autowired
 	private INewsbeeperService newsbeeperService;

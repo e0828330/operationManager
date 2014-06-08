@@ -1,8 +1,5 @@
 package testData;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
 import java.util.Date;
@@ -16,12 +13,8 @@ import model.Patient;
 import model.Role;
 
 import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Point;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import repository.DoctorRepository;
 import repository.HospitalRepository;
@@ -30,38 +23,28 @@ import repository.OPSlotRepository;
 import repository.PatientRepository;
 import utils.Utils;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/spring/application-config.xml" })
-public class TestData {
+public class DatabaseTest {
 	@Autowired 
-	private PatientRepository patientRepo;
+	protected PatientRepository patientRepo;
 	
 	@Autowired 
-	private HospitalRepository hsRepo;
+	protected HospitalRepository hsRepo;
 	
 	@Autowired 
-	private OPSlotRepository opSlotRepo;
+	protected OPSlotRepository opSlotRepo;
 	
 	@Autowired 
-	private DoctorRepository doctorRepo;
+	protected DoctorRepository doctorRepo;
 	
 	@Autowired
-	private NotificationRepository notifRepo;
-
-
-	@Test
-	public void testPatientLogin() throws NoSuchAlgorithmException {
-		Patient p = patientRepo.findByUsernameAndPassword("abesser", Utils.computeHash("test01"));
-		assertNotNull(p);
-		assertEquals(p.getLastName(), "Abesser");
-	}
+	protected NotificationRepository notifRepo;
 	
 	/**
 	 * Adds some empty slots for a given hospital
 	 * 
 	 * @param hospital
 	 */
-	private void fillinSlots(Hospital hospital) {
+	protected void fillinSlots(Hospital hospital) {
 		Calendar calDate = Calendar.getInstance();
 		calDate.setTime(new Date());
 		calDate.set(Calendar.HOUR_OF_DAY, 0);
@@ -225,7 +208,7 @@ public class TestData {
 		fillinSlots(h);
 	}
 
-	public void cleanDataBase() {
+	protected void cleanDataBase() {
 		patientRepo.deleteAll();
 		doctorRepo.deleteAll();
 		hsRepo.deleteAll();

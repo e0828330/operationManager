@@ -17,10 +17,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import repository.OPSlotRepository;
+import testData.DatabaseTest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/spring/application-config.xml" })
-public class GeoSearchTest {
+public class GeoSearchTest extends DatabaseTest {
 
 	@Autowired
 	private OPSlotRepository repo;

@@ -16,11 +16,12 @@ import repository.DoctorRepository;
 import repository.PatientRepository;
 import service.IGeoResolverService;
 import service.exceptions.ServiceException;
+import testData.DatabaseTest;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/spring/application-config.xml" })
-public class GeoResolverServiceTest {
+public class GeoResolverServiceTest extends DatabaseTest {
 	@Autowired
 	private IGeoResolverService service;
 

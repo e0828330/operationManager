@@ -5,7 +5,9 @@ import org.eclipse.jetty.webapp.WebAppContext;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
-public abstract class TestServer {
+import testData.DatabaseTest;
+
+public abstract class TestServer extends DatabaseTest {
 	
 	protected static Server server;
 	
