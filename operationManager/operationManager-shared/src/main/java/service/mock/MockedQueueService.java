@@ -1,6 +1,6 @@
 package service.mock;
 
-import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import model.dto.Message;
 import model.dto.NotificationDTO;
@@ -22,8 +22,8 @@ public class MockedQueueService {
 	@Bean
 	static IQueueService getQueueService() {
 		
-		final ArrayBlockingQueue<Message> geoResolverQueue = new ArrayBlockingQueue<>(10);
-		final ArrayBlockingQueue<Message> newsBeeperQueue = new ArrayBlockingQueue<>(10);
+		final LinkedBlockingQueue<Message> geoResolverQueue = new LinkedBlockingQueue<>();
+		final LinkedBlockingQueue<Message> newsBeeperQueue = new LinkedBlockingQueue<>();
 		
 		IQueueService mock =  Mockito.mock(IQueueService.class);
 		
