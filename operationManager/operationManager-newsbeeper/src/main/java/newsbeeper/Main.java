@@ -1,13 +1,6 @@
 package newsbeeper;
 
-import java.util.Date;
-
-import model.Doctor;
-import model.Hospital;
 import model.Notification;
-import model.OPSlot;
-import model.Patient;
-import model.User;
 import model.dto.Message;
 import model.dto.NotificationDTO;
 
@@ -22,8 +15,6 @@ import org.springframework.stereotype.Component;
 
 import service.INewsbeeperService;
 import service.INotificationService;
-import service.IOPSlotService;
-import service.IPatientService;
 import service.IQueueListener;
 import service.IQueueService;
 import config.RabbitMQConfig;
@@ -38,12 +29,6 @@ public class Main implements InitializingBean {
 
 	@Autowired
 	private INewsbeeperService newsbeeperService;
-
-	@Autowired
-	private IPatientService patientService;
-
-	@Autowired
-	private IOPSlotService opSlotService;
 
 	@Autowired
 	private INotificationService notificationService;
@@ -61,46 +46,10 @@ public class Main implements InitializingBean {
 		queueService.registerListener(RabbitMQConfig.NEWSBEEPER_Q, new IQueueListener() {
 			@Override
 			public void handleMessage(Message m) {
-				try {
-					NotificationDTO notificationDTO = (NotificationDTO) m;
-					Notification notification = new Notification();
-					notification.setMessage(notificationDTO.getMessage());
-					notification.setType(notificationDTO.getType());
-
-					logger.info("Got request: " + notificationDTO);
-
-					Patient patient = patientService.getById(notificationDTO.getRecipientID());
-					OPSlot slot = notificationDTO.getOpSlotID() == null ? null : opSlotService.getById(notificationDTO.getOpSlotID());
-
-					if (patient != null) {
-						notification.setRecipient((User) patient);
-					} else {
-						Doctor doctor = newsbeeperService.getDoctorById(notificationDTO.getRecipientID());
-						if (doctor != null) {
-							notification.setRecipient((User) doctor);
-						} else {
-							Hospital hospital = newsbeeperService.getHospitalById(notificationDTO.getRecipientID());
-							if (hospital != null) {
-								notification.setRecipient((User) hospital);
-							} else {
-								logger.info("No User found with id = " + notificationDTO.getRecipientID());
-								return;
-							}
-						}
-					}
-
-					if (slot == null) {
-						logger.info("No slot found.");
-					}
-
-					notification.setSlot(slot);
-					notification.setTimestamp(new Date());
-
-					notificationService.save(notification);
-				} catch (Exception e) {
-					logger.error("Failed to handle message", e);
-
-				}
+				
+				Notification tmp = newsbeeperService.handleNotification((NotificationDTO) m);
+				if (tmp != null) notificationService.save(tmp);
+					
 			}
 		});
 	}
@@ -110,4 +59,5 @@ public class Main implements InitializingBean {
 		logger.info("Started listening");
 		listenOnQueue();
 	}
+
 }
