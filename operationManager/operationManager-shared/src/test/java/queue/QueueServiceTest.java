@@ -6,9 +6,11 @@ import static org.junit.Assert.*;
 import java.util.Date;
 import java.util.concurrent.Semaphore;
 
+import model.NotificationType;
 import model.OPSlot;
 import model.Patient;
 import model.dto.Message;
+import model.dto.NotificationDTO;
 import model.dto.OPSlotDTO;
 
 import org.junit.Before;
@@ -25,7 +27,7 @@ import service.IQueueService;
 import config.RabbitMQConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/spring/application-config.xml" })
+@ContextConfiguration(locations = { "/spring/test-config.xml" })
 public class QueueServiceTest {
 
 	private static OPSlot slot;
@@ -47,6 +49,8 @@ public class QueueServiceTest {
 		Patient p = new Patient();
 		p.setPosition(new Point(0., 0.));
 		slot.setPatient(p);
+		
+		
 	}
 	
 	@Before
@@ -55,7 +59,7 @@ public class QueueServiceTest {
 	}
 	
 	@Test (timeout = 2000)
-	public void testService() {
+	public void testGeoQueue() {
 		OPSlotDTO dto = new OPSlotDTO();
 		s = new Semaphore(0);
 		service.sendToGeoResolver(dto);
@@ -64,6 +68,33 @@ public class QueueServiceTest {
 			@Override
 			public void handleMessage(Message m) {
 				value = true;
+				s.release();
+			}
+		});
+		
+		try {
+			s.acquire();
+		} catch (InterruptedException e) {
+			fail(e.getMessage());
+		}
+		assertTrue(value);
+	}
+	
+	
+	@Test (timeout = 2000)
+	public void testNewsQueue() {
+		NotificationDTO notification = new NotificationDTO();
+		notification.setMessage("TEST");
+		notification.setOpSlotID(null);
+		notification.setRecipientID("xxx");
+		notification.setType(NotificationType.RESERVATION_FAILED);
+		s = new Semaphore(0);
+		service.sendToNewsBeeper(notification);
+
+		service.registerListener(RabbitMQConfig.NEWSBEEPER_Q, new IQueueListener() {
+			@Override
+			public void handleMessage(Message m) {
+				value = ((NotificationDTO) m).getMessage().equals("TEST");
 				s.release();
 			}
 		});
