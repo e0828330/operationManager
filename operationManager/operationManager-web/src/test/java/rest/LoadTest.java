@@ -23,10 +23,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class LoadTest {
 
 	private final int numberOfRequests = 1024;
+
+	/**
+	 * Should point to web instance in the format
+	 * http://host:PORT/path
+	 * when no host / port are given it defaults to localhost:8080
+	 */
+	//private final String baseURL = "operationManager-web";
+	private final String baseURL = "http://operationmanager-web.cfapps.io:80";
 	
 	private List<RestPatientDTO> getPatients() throws JsonParseException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();  
-		String json = given().param("username", "maria").param("password", "test09").get("operationManager-web/rest/getPatients/").asString();
+		String json = given().param("username", "maria").param("password", "test09").get(baseURL + "/rest/getPatients/").asString();
 		List<RestPatientDTO> result = mapper.readValue(json, new TypeReference<List<RestPatientDTO>>() {});
 		return result;
 	}
@@ -47,7 +55,6 @@ public class LoadTest {
 		 * Worker thread, sends the request 
 		 */
 		public void run() {
-			// TODO: Target cloud instead of localhost
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 			given().param("username", "maria").
 				param("password", "test09").
@@ -56,7 +63,7 @@ public class LoadTest {
 				param("from", dateFormat.format(new Date())).
 				param("to", "01.01.2016").
 				param("distance", "150").
-		    post("/operationManager-web/rest/reserveOPSlot/");
+		    post(baseURL + "/rest/reserveOPSlot/");
 		}
 	}
 	
