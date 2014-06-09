@@ -1,0 +1,1 @@
+{ "indexes" : [ { "v" : 1, "key" : { "_id" : 1 }, "ns" : "operations-db.oPSlot", "name" : "_id_" }, { "v" : 1, "key" : { "hospital.position" : "2d" }, "ns" : "operations-db.oPSlot", "name" : "position", "min" : -180, "max" : 180, "bits" : 26 } ] }
